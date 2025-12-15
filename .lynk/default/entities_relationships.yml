@@ -1,0 +1,548 @@
+relationships:
+  game-player:
+    relationship: many_to_many
+    description: Games are related to players through player_game_stats (box score
+      logs)
+    joins:
+    - name: game_player__by_player_game_stats
+      description: Default join using player_game_stats to connect games to players
+        via game_id and person_id
+      default: true
+      type: lookup
+      lookup:
+      - destination: nba.public.player_game_stats
+        type: fields
+        fields:
+        - source: game_id
+          destination: game_id
+          operator: equal
+      - destination: player
+        type: fields
+        fields:
+        - source: person_id
+          destination: id
+          operator: equal
+  game-team:
+    relationship: many_to_many
+    description: Games relate to Teams via per-team per-game aggregated stats
+    joins:
+    - name: game_team__by_team_game_stats
+      description: Connects games to teams through team_game_stats using game_id and
+        team_full_name
+      default: true
+      type: lookup
+      lookup:
+      - destination: nba.public.team_game_stats
+        type: fields
+        fields:
+        - source: game_id
+          destination: game_id
+          operator: equal
+      - destination: team
+        type: fields
+        fields:
+        - source: team_full_name
+          destination: full_name
+          operator: equal
+  team-player:
+    relationship: many_to_many
+    description: Players and Teams are related through player_team_stats stint periods
+      (team_full_name)
+    joins:
+    - name: player_team__by_player_team_stats
+      description: Connects players to teams through player_team_stats using team_full_name
+        and person_id
+      default: true
+      type: lookup
+      lookup:
+      - destination: nba.public.player_team_stats
+        type: fields
+        fields:
+        - source: full_name
+          destination: team_full_name
+          operator: equal
+      - destination: player
+        type: fields
+        fields:
+        - source: person_id
+          destination: id
+          operator: equal
+  game-team_game:
+    relationship: one_to_many
+    description: Games are related to team performance records through team_game entity
+    joins:
+    - name: game_to_team_game
+      description: Direct field join from game to team_game using game_id
+      default: true
+      type: fields
+      fields:
+      - source: game_id
+        destination: game_id
+        operator: equal
+  team-team_game:
+    relationship: one_to_many
+    description: Teams are related to their game performance records through team
+      name matching
+    joins:
+    - name: team_to_team_game
+      description: SQL join matching team full_name to team_game team_full_name
+      default: true
+      type: sql
+      sql: '{source}.{full_name} = {destination}.{team_full_name}'
+  player-player_team:
+    relationship: one_to_many
+    description: Players are related to their team affiliation history through player_team
+      entity
+    joins:
+    - name: player_to_player_team
+      description: Direct field join from player to player_team using player id and
+        person_id
+      default: true
+      type: fields
+      fields:
+      - source: id
+        destination: person_id
+        operator: equal
+  team-player_team:
+    relationship: one_to_many
+    description: Teams are related to player affiliation records through team name
+      matching
+    joins:
+    - name: team_to_player_team
+      description: SQL join matching team full_name to player_team team_full_name
+      default: true
+      type: sql
+      sql: '{source}.{full_name} = {destination}.{team_full_name}'
+  player-player_game:
+    relationship: one_to_many
+    joins:
+    - name: player_to_player_game
+      default: true
+      description: Direct field join from player to player_game using player id and
+        person_id
+      type: fields
+      fields:
+      - source: id
+        destination: person_id
+        operator: equal
+  game-player_game:
+    relationship: one_to_many
+    joins:
+    - name: game_to_player_game
+      default: true
+      description: Direct field join from game to player_game using game_id
+      type: fields
+      fields:
+      - source: game_id
+        destination: game_id
+        operator: equal
+  game-coaching_staff:
+    relationship: many_to_many
+    description: Games are related to coaching staff through team assignments and
+      team_game_stats
+    joins:
+    - name: game_coach_via_coaching_staff
+      default: true
+      type: lookup
+      lookup:
+      - destination: nba.public.team_game_stats
+        type: fields
+        fields:
+        - source: game_id
+          destination: game_id
+          operator: equal
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: team_id
+          destination: team_id
+          operator: equal
+        - source: season
+          destination: season
+          operator: equal
+  game-game_official:
+    relationship: one_to_many
+    description: Games are related to official assignments through game_official entity
+    joins:
+    - name: game_to_game_official
+      default: true
+      type: fields
+      fields:
+      - source: game_id
+        destination: game_id
+        operator: equal
+  player-draft:
+    relationship: one_to_many
+    description: Players are related to their draft combine statistics and draft history
+      through draft entity
+    joins:
+    - name: player_to_draft
+      default: true
+      type: fields
+      fields:
+      - source: id
+        destination: player_id
+        operator: equal
+  season-draft:
+    relationship: one_to_many
+    description: Seasons are related to draft combine statistics and draft history
+      through season identifier
+    joins:
+    - name: season_to_draft
+      default: true
+      type: fields
+      fields:
+      - source: season_year
+        destination: draft_year
+        operator: equal
+  season-game:
+    relationship: one_to_many
+    description: Seasons are related to games through season year
+    joins:
+    - name: season_to_game
+      description: Direct field join from season to game using season_year
+      default: true
+      type: fields
+      fields:
+      - source: season_year
+        destination: season_year
+        operator: equal
+  season-team:
+    relationship: many_to_many
+    description: Seasons are related to teams through championship results and Finals
+      participation
+    joins:
+    - name: season_to_champion_team
+      description: SQL join connecting season champion_team to team full_name
+      default: true
+      type: sql
+      sql: '{source}.{champion_team} = {destination}.{full_name}'
+    - name: season_to_defeated_team
+      description: SQL join connecting season defeated_team (Finals runner-up) to
+        team full_name
+      default: false
+      type: sql
+      sql: '{source}.{defeated_team} = {destination}.{full_name}'
+  coach-team:
+    relationship: many_to_many
+    joins:
+    - name: coach_team__by_coaching_staff
+      default: true
+      description: null
+      type: lookup
+      lookup:
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: coach_id
+          destination: coach_id
+          operator: equal
+      - destination: team
+        type: fields
+        fields:
+        - source: team_id
+          destination: id
+          operator: equal
+  coach-game:
+    relationship: many_to_many
+    joins:
+    - name: coach_game__by_coaching_staff
+      default: true
+      description: null
+      type: lookup
+      lookup:
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: coach_id
+          destination: coach_id
+          operator: equal
+      - destination: nba.public.team_game_stats
+        type: fields
+        fields:
+        - source: team_id
+          destination: team_id
+          operator: equal
+        - source: season
+          destination: season
+          operator: equal
+      - destination: game
+        type: fields
+        fields:
+        - source: game_id
+          destination: game_id
+          operator: equal
+  coach-player:
+    relationship: many_to_many
+    joins:
+    - name: coach_player__by_coaching_staff
+      default: true
+      description: null
+      type: lookup
+      lookup:
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: coach_id
+          destination: coach_id
+          operator: equal
+      - destination: nba.public.player_team_stats
+        type: fields
+        fields:
+        - source: team_id
+          destination: team_id
+          operator: equal
+        - source: season_year
+          destination: season_year
+          operator: equal
+      - destination: player
+        type: fields
+        fields:
+        - source: person_id
+          destination: id
+          operator: equal
+  season-team_game:
+    relationship: one_to_many
+    description: Seasons are related to team game performances through season year
+    joins:
+    - name: season_to_team_game
+      description: Direct field join from season to team_game using season_year
+      default: true
+      type: fields
+      fields:
+      - source: season_year
+        destination: season_year
+        operator: equal
+  season-player_team:
+    relationship: many_to_many
+    description: Seasons are related to player team affiliations through season year
+      ranges
+    joins:
+    - name: season_to_player_team
+      description: SQL join matching season_year to player_team season year range
+        (start_season_year to end_season_year)
+      default: true
+      type: sql
+      sql: '{source}.{season_year} >= {destination}.{start_season_year} AND ({destination}.{end_season_year}
+        IS NULL OR {source}.{season_year} <= {destination}.{end_season_year})'
+    - name: season_to_finals_mvp_player_team
+      default: false
+      type: sql
+      sql: '{source}.{season_year} >= {destination}.{start_season_year} AND ({destination}.{end_season_year}
+        IS NULL OR {source}.{season_year} <= {destination}.{end_season_year}) AND
+        {source}.{finals_mvp} = {destination}.{player_full_name}'
+    - name: season_to_regular_mvp_player_team
+      default: false
+      type: sql
+      sql: '{source}.{season_year} >= {destination}.{start_season_year} AND ({destination}.{end_season_year}
+        IS NULL OR {source}.{season_year} <= {destination}.{end_season_year}) AND
+        {source}.{regular_season_mvp} = {destination}.{player_full_name}'
+  season-player_game:
+    relationship: one_to_many
+    description: Seasons are related to individual player game performances through
+      season year
+    joins:
+    - name: season_to_player_game
+      default: true
+      type: fields
+      fields:
+      - source: season_year
+        destination: season_year
+        operator: equal
+  season-player:
+    relationship: many_to_many
+    description: Seasons are related to players through regular season MVP and Finals
+      MVP awards
+    joins:
+    - name: season_regular_mvp_to_player
+      default: false
+      type: sql
+      sql: '{source}.{regular_season_mvp} = {destination}.{full_name}'
+    - name: season_finals_mvp_to_player
+      default: true
+      type: sql
+      sql: '{source}.{finals_mvp} = {destination}.{full_name}'
+  coach-team_game:
+    relationship: many_to_many
+    joins:
+    - name: coach_team_game__by_coaching_staff
+      default: true
+      description: null
+      type: lookup
+      lookup:
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: coach_id
+          destination: coach_id
+          operator: equal
+      - destination: team_game
+        type: fields
+        fields:
+        - source: team_id
+          destination: team_id
+          operator: equal
+        - source: season_year
+          destination: season_year
+          operator: equal
+  coach-player_team:
+    relationship: many_to_many
+    joins:
+    - name: coach_player_team__by_coaching_staff
+      default: true
+      description: null
+      type: lookup
+      lookup:
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: coach_id
+          destination: coach_id
+          operator: equal
+      - destination: player_team
+        type: sql
+        sql: '{source}.{team_id} = {destination}.{team_id} AND {source}.{season_year}
+          >= {destination}.{start_season_year} AND ({destination}.{end_season_year}
+          IS NULL OR {source}.{season_year} <= {destination}.{end_season_year})'
+  coach-player_game:
+    relationship: many_to_many
+    joins:
+    - name: coach_player_game__by_coaching_staff
+      default: true
+      description: null
+      type: lookup
+      lookup:
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: coach_id
+          destination: coach_id
+          operator: equal
+      - destination: player_game
+        type: fields
+        fields:
+        - source: team_id
+          destination: team_id
+          operator: equal
+        - source: season_year
+          destination: season_year
+          operator: equal
+  coach-season:
+    relationship: many_to_many
+    joins:
+    - name: coach_season__by_coaching_staff
+      default: true
+      description: null
+      type: lookup
+      lookup:
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: coach_id
+          destination: coach_id
+          operator: equal
+      - destination: season
+        type: fields
+        fields:
+        - source: season_year
+          destination: season_year
+          operator: equal
+  coach-coaching_staff:
+    relationship: one_to_many
+    joins:
+    - name: coach_to_coaching_staff
+      default: true
+      description: null
+      type: fields
+      fields:
+      - source: coach_id
+        destination: coach_id
+        operator: equal
+  team-coaching_staff:
+    relationship: one_to_many
+    description: Teams are related to their coaching staff assignments through team_id
+    joins:
+    - name: team_to_coaching_staff
+      default: true
+      type: fields
+      fields:
+      - source: id
+        destination: team_id
+        operator: equal
+  coaching_staff-season:
+    relationship: many_to_one
+    description: Coaching staff assignments are related to seasons through season_year
+    joins:
+    - name: coaching_staff_to_season
+      default: true
+      type: fields
+      fields:
+      - source: season_year
+        destination: season_year
+        operator: equal
+  team-draft:
+    relationship: one_to_many
+    description: Teams are related to draft records through drafting team assignments
+    joins:
+    - name: team_to_draft
+      default: true
+      type: fields
+      fields:
+      - source: id
+        destination: drafting_team_id
+        operator: equal
+  player-coaching_staff:
+    relationship: many_to_many
+    description: Players are related to coaching staff through team assignments and
+      player_team_stats
+    joins:
+    - name: player_coach_via_coaching_staff
+      default: true
+      type: lookup
+      lookup:
+      - destination: nba.public.player_team_stats
+        type: fields
+        fields:
+        - source: id
+          destination: person_id
+          operator: equal
+      - destination: coaching_staff
+        type: fields
+        fields:
+        - source: team_id
+          destination: team_id
+          operator: equal
+        - source: season_year
+          destination: season_year
+          operator: equal
+  team-franchise:
+    relationship: one_to_many
+    description: Teams are related to their franchise history through team_id, where
+      one team can have multiple franchise iterations
+    joins:
+    - name: team_to_franchise
+      default: true
+      type: fields
+      fields:
+      - source: id
+        destination: team_id
+        operator: equal
+  player_game-team:
+    relationship: many_to_one
+    joins:
+    - name: team_to_player_game
+      default: true
+      description: SQL join matching team full_name to player_game player_team_name
+      type: sql
+      sql: '{destination}.{full_name} = {source}.{player_team_name}'
+  player_game-season:
+    relationship: many_to_one
+    joins:
+    - name: season_to_player_game
+      default: true
+      description: Direct field join from season to player_game using season_year
+      type: fields
+      fields:
+      - source: season_year
+        destination: season_year
+        operator: equal

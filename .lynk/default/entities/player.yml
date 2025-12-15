@@ -1,0 +1,1336 @@
+name: player
+
+description: Dimension table containing comprehensive player information, demographics, and career tags for NBA basketball players
+
+key_table: nba.public.player
+
+keys:
+- id
+
+features:
+
+# Player Identification Fields
+- type: field
+  name: id
+  data_type: number
+  source: nba.public.player
+  description: Unique identifier for each NBA player
+  field: id
+  join_name: null
+  time_field: null
+  filters: []
+
+# Player Name Fields
+- type: field
+  name: first_name
+  data_type: string
+  source: nba.public.player
+  description: Player's first name
+  field: first_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: last_name
+  data_type: string
+  source: nba.public.player
+  description: Player's last name
+  field: last_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: full_name
+  data_type: string
+  source: nba.public.player
+  description: Player's complete full name (first + last name)
+  field: full_name
+  join_name: null
+  time_field: null
+  filters: []
+
+# Player Status Fields
+- type: field
+  name: is_active
+  data_type: number
+  source: nba.public.player
+  description: Whether the player is currently active in the NBA (1 = active, 0 = inactive)
+  field: is_active
+  join_name: null
+  time_field: null
+  filters: []
+
+# Player Position Field
+- type: field
+  name: position_raw
+  data_type: string
+  source: nba.public.common_player_info
+  description: Player's primary position (PG, SG, SF, PF, C)
+  field: position
+  join_name: null
+  time_field: null
+  filters: []
+
+# Player experience
+- type: field
+  name: experience
+  data_type: number
+  source: nba.public.common_player_info
+  description: gives the player experience from the common_player_info table
+  field: season_exp
+  join_name: null
+  time_field: null
+  filters: []
+
+# Player Physical Attributes
+- type: field
+  name: height
+  data_type: number
+  source: nba.public.common_player_info
+  description: Player height in inches from official NBA records
+  field: height
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: weight_pounds
+  data_type: number
+  source: nba.public.common_player_info
+  description: Player weight in pounds from official NBA records
+  field: weight
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: country
+  data_type: string
+  source: nba.public.common_player_info
+  description: Player's country of origin
+  field: country
+  join_name: null
+  time_field: null
+  filters: []
+
+# Draft Combine Metrics
+- type: metric
+  name: avg_combine_height
+  description: Average height without shoes from draft combine data
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  metric: avg_height_no_shoes
+
+- type: metric
+  name: avg_combine_wingspan
+  description: Average wingspan measurement from draft combine data
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  metric: avg_wingspan
+
+- type: metric
+  name: avg_combine_vertical
+  description: Average vertical leap from draft combine data
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  metric: avg_vertical_leap
+
+- type: metric
+  name: avg_combine_reach
+  description: Average standing reach from draft combine data
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  metric: avg_standing_reach
+
+- type: metric
+  name: avg_combine_body_fat
+  description: Average body fat percentage from draft combine data
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  metric: avg_body_fat
+
+# Draft History Features (from draft entity)
+- type: first_last
+  name: draft_position
+  description: Player's overall draft pick position
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  options:
+    method: first
+    sort_by: draft_year
+    offset: 1
+    field: draft_position
+    data_type: number
+
+- type: first_last
+  name: draft_year
+  description: Year the player was drafted
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  options:
+    method: first
+    sort_by: draft_year
+    offset: 1
+    field: draft_year
+    data_type: number
+
+- type: first_last
+  name: draft_round
+  description: Round in which the player was drafted
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  options:
+    method: first
+    sort_by: draft_year
+    offset: 1
+    field: draft_round
+    data_type: number
+
+- type: first_last
+  name: drafting_team
+  description: Team ID that originally drafted the player
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  options:
+    method: first
+    sort_by: draft_year
+    offset: 1
+    field: drafting_team_id
+    data_type: number
+
+- type: first_last
+  name: pre_nba_organization
+  description: Organization type before NBA (College/University, High School, Other Team/Club)
+  data_type: string
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  options:
+    method: first
+    sort_by: draft_year
+    offset: 1
+    field: pre_nba_organization
+    data_type: string
+
+# International Player Metrics (from draft entity)
+- type: metric
+  name: international_players
+  description: Count of international players (no college listed)
+  data_type: number
+  source: draft
+  join_name: player_to_draft
+  time_field: null
+  filters: []
+  metric: international_players
+
+# Formula Features - Calculated Fields
+- type: formula
+  data_type: number
+  name: height_inches
+  description: Player height converted from feet-inches format (e.g., "6-10") to total
+    inches
+  sql: |
+    CASE
+        WHEN {height} IS NOT NULL AND {height} LIKE '%-%' THEN
+            TRY_CAST(SPLIT_PART({height}, '-', 1) AS INTEGER) * 12 +
+            TRY_CAST(SPLIT_PART({height}, '-', 2) AS INTEGER)
+        ELSE NULL
+    END
+
+- type: formula
+  data_type: boolean
+  name: is_rookie
+  description: Whether the player is a rookie (0 years experience)
+  sql: |
+    case when coalesce(cast({experience} as number), 0) = 0 then true else false
+    end
+
+- type: formula
+  name: position
+  description: Player position cleaned and standardized
+  data_type: string
+  sql: |
+    case 
+        when upper(trim({position_raw})) = 'GUARD' then 'G'
+        when upper(trim({position_raw})) = 'FORWARD' then 'F'
+        when upper(trim({position_raw})) = 'CENTER' then 'C'
+        when upper(trim({position_raw})) in ('FORWARD-GUARD', 'GUARD-FORWARD') then 'F-G'
+        when upper(trim({position_raw})) in ('POINT-GUARD', 'SHOOTING-GUARD', 'GUARD-POINT') then 'G'
+        when upper(trim({position_raw})) in ('CENTER-FORWARD', 'FORWARD-CENTER') then 'C-F'
+        else upper(trim({position_raw}))
+    end
+
+- type: formula
+  data_type: string
+  name: experience_bracket
+  description: Experience level category based on years in NBA
+  sql: |
+    case 
+      when {experience} <= 2 then 'Rookie/Sophomore (0-2 years)'
+      when {experience} <= 5 then 'Young Player (3-5 years)'
+      when {experience} <= 10 then 'Veteran (6-10 years)'
+      else 'Long-term Veteran (10+ years)'
+    end
+
+- type: formula
+  data_type: string
+  name: draft_tier
+  description: Draft position tier category for value analysis
+  sql: |
+    case 
+      when {draft_position} <= 5 then 'Top 5'
+      when {draft_position} <= 14 then 'Lottery (6-14)'
+      when {draft_position} <= 30 then 'First Round (15-30)'
+      else 'Second Round (30+)'
+    end
+
+# Career Statistics Features (from player_game_stats)
+- type: metric
+  name: career_points
+  description: Total career points scored by the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_points
+
+- type: metric
+  name: career_games
+  description: Total career games played by the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_games_played
+
+- type: metric
+  name: career_assists
+  description: Total career assists by the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_assists
+
+- type: metric
+  name: career_rebounds
+  description: Total career rebounds by the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_rebounds
+
+- type: metric
+  name: career_double_doubles
+  description: Total number of double-doubles achieved by the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: double_doubles_count
+
+- type: metric
+  name: career_triple_doubles
+  description: Total number of triple-doubles achieved by the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: triple_doubles_count
+
+- type: metric
+  name: avg_points_per_game
+  description: Average points per game for the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: avg_points_per_game
+
+- type: metric
+  name: avg_shooting_percentage
+  description: Average field goal percentage for the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: avg_field_goal_percentage
+
+- type: metric
+  name: player_win_percentage
+  description: Win percentage for games played by the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: win_percentage
+
+# Player Team History Features
+- type: metric
+  name: total_team_affiliations
+  description: Total number of teams this player has been affiliated with throughout their career
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_affiliations
+
+- type: metric
+  name: avg_team_tenure_years
+  description: Average number of years this player spent with each team
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: avg_affiliation_duration_years
+
+- type: metric
+  name: career_team_changes
+  description: Number of times this player changed teams (distinct teams minus one)
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: team_changes
+
+- type: metric
+  name: player_return_stints
+  description: Number of times this player returned to a previous team
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: return_stint_count
+
+- type: metric
+  name: player_return_stints_calculated
+  description: Calculated return stints (total stints minus distinct teams) - more reliable
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: calculated_return_stints
+
+- type: metric
+  name: player_return_stints_logical
+  description: Logical return stints (any stint beyond the first with each team) - most accurate
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: logical_return_stints
+
+- type: metric
+  name: avg_stints_per_team
+  description: Average number of stints per team (verification metric)
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: stint_verification
+
+- type: first_last
+  name: first_team_affiliation_date
+  description: The date when this player first joined a professional team
+  data_type: datetime
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  options:
+    method: first
+    sort_by: start_date
+    offset: 1
+    field: start_date
+    data_type: datetime
+
+- type: first_last
+  name: last_team_affiliation_date
+  description: The date of this player's most recent team affiliation
+  data_type: datetime
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  options:
+    method: last
+    sort_by: start_date
+    offset: 1
+    field: start_date
+    data_type: datetime
+
+- type: first_last
+  name: longest_team_tenure_years
+  description: The longest period (in years) this player spent with a single team
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  options:
+    method: last
+    sort_by: tenure_years
+    offset: 1
+    field: tenure_years
+    data_type: number
+
+- type: first_last
+  name: draft_team_name
+  description: The name of the team that originally drafted this player
+  data_type: string
+  source: player_team
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: is_draft_team
+    operator: equal
+    values:
+    - true
+  options:
+    method: first
+    sort_by: start_date
+    offset: 1
+    field: team_id
+    data_type: number
+
+# Player Team Stats Features
+- type: metric
+  name: team_affiliations
+  description: Comma-separated list of teams this player has played for (from stint history)
+  data_type: string
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: team_affiliations_list
+
+- type: metric
+  name: total_teams_played_for
+  description: Number of distinct teams this player has played for
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: distinct_teams_count
+
+# NBA Analytics Community Metrics with Filters
+
+- type: metric
+  name: high_minute_games_count
+  description: Number of games played with 30+ minutes (clutch/high-pressure indicator)
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: num_minutes
+    operator: 'gte'
+    values: 
+    - '30'
+  metric: total_games_played
+
+- type: metric
+  name: high_minute_shooting_percentage
+  description: Field goal percentage in games with 30+ minutes played
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: num_minutes
+    operator: 'gte'
+    values: 
+    - '30'
+  metric: avg_field_goal_percentage
+
+- type: metric
+  name: high_minute_true_shooting
+  description: True shooting percentage in games with 30+ minutes played
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: num_minutes
+    operator: 'gte'
+    values: 
+    - '30'
+  metric: true_shooting_percentage
+
+- type: metric
+  name: high_minute_points_per_game
+  description: Average points per game in games with 30+ minutes played
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: num_minutes
+    operator: 'gte'
+    values: 
+    - 30
+  metric: avg_points_per_game
+
+- type: metric
+  name: starter_games_count
+  description: Number of games started (games where start_position is not null)
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: start_position
+    operator: 'is_set'
+    values: null
+  metric: total_games_played
+
+- type: metric
+  name: bench_games_count
+  description: Number of games coming off the bench (games where start_position is null)
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: start_position
+    operator: 'is_not_set'
+    values: null
+  metric: total_games_played
+
+- type: metric
+  name: bench_scoring_average
+  description: Average points scored in bench games
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: start_position
+    operator: 'is_not_set'
+    values: null
+  metric: avg_points_per_game
+
+- type: metric
+  name: starter_scoring_average
+  description: Average points scored in starting games
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: start_position
+    operator: 'is_set'
+    values: null
+  metric: avg_points_per_game
+
+- type: metric
+  name: career_three_point_rate
+  description: Career three-point attempt rate
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: three_point_attempt_rate
+
+- type: metric
+  name: career_three_point_percentage
+  description: Career three-point shooting percentage
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: avg_three_point_percentage
+
+- type: metric
+  name: career_shooting_percentage
+  description: Career field goal shooting percentage
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: avg_field_goal_percentage
+
+- type: metric
+  name: career_true_shooting
+  description: Career true shooting percentage
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: true_shooting_percentage
+
+- type: metric
+  name: career_usage_rate
+  description: Career estimated usage rate
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: usage_rate_estimate
+
+- type: metric
+  name: career_versatility_score
+  description: Career statistical versatility score
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: versatility_score
+
+- type: metric
+  name: career_defensive_impact_games
+  description: Total games with defensive impact (2+ steals or blocks)
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: defensive_impact_games
+
+- type: metric
+  name: career_high_assist_game_rate
+  description: Percentage of games with 5+ assists
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: high_assist_game_rate
+
+- type: metric
+  name: career_efficient_scorer_rate
+  description: Percentage of games scoring efficiently (15+ points on 50%+ shooting)
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: efficient_scorer_percentage
+
+- type: metric
+  name: career_turnover_rate
+  description: Career turnover rate per 100 possessions
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: turnover_rate
+
+- type: metric
+  name: career_fourth_quarter_points
+  description: Estimated career fourth quarter points
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: fourth_quarter_points
+
+- type: metric
+  name: career_bench_impact_score
+  description: Career bench impact score (for bench players only)
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: bench_impact_score
+
+- type: metric
+  name: seasons_played_count
+  description: Number of distinct seasons played
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_games_played
+
+# Dunk Statistics Features
+- type: metric
+  name: career_dunks
+  description: Total career dunks by the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_dunks
+
+- type: metric
+  name: avg_dunks_per_game
+  description: Average dunks per game for the player
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: avg_dunks
+
+- type: metric
+  name: games_with_dunks
+  description: Number of games where the player made at least one dunk
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: games_with_dunks_count
+
+- type: metric
+  name: dunk_game_percentage
+  description: Percentage of games where the player made dunks
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: dunk_game_percentage
+
+- type: metric
+  name: max_dunks_in_game
+  description: Maximum dunks made by the player in a single game
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: max_dunks_in_game
+
+- type: metric
+  name: high_dunk_games
+  description: Number of games with 3+ dunks
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters:
+  - type: field
+    field: dunks
+    operator: 'gte'
+    values: 
+    - '3'
+  metric: total_games_played
+
+# Inactive Player Metrics from player_game entity
+- type: metric
+  name: career_inactive_games
+  description: Total number of games where player was inactive
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: inactive_games_count
+
+- type: metric
+  name: career_active_games
+  description: Total number of games where player was active
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: active_games_count
+
+- type: metric
+  name: inactive_game_percentage
+  description: Percentage of games where player was inactive
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: inactive_percentage
+
+
+# Coach Metrics from coaching_staff entity via coach-player relationship
+- type: metric
+  name: total_head_coaches_played_under
+  data_type: number
+  source: coaching_staff
+  description: Total number of different head coaches the player has played under
+  join_name: player_coach_via_coaching_staff
+  time_field: null
+  filters:
+  - type: field
+    field: coach_type
+    operator: equal
+    values:
+    - 'Head Coach'
+  metric: total_coaches_count
+
+- type: metric
+  name: coaching_stints_count
+  data_type: number
+  source: coaching_staff
+  description: Total number of player-coach combinations (stints with different coaches)
+  join_name: player_coach_via_coaching_staff
+  time_field: null
+  filters:
+  - type: field
+    field: coach_type
+    operator: equal
+    values:
+    - 'Head Coach'
+  metric: head_coach_assignments_count
+
+# Formula Features for Analytics
+
+- type: formula
+  data_type: boolean
+  name: is_high_volume_shooter
+  description: Player who attempts high volume of shots (>15 FGA per game average)
+  sql: |
+    case when {career_points} / NULLIF({career_games}, 0) >= 15 then true else false end
+
+- type: formula
+  data_type: boolean
+  name: is_efficient_scorer
+  description: Player with good scoring efficiency (>50% career TS%)
+  sql: |
+    case when {career_true_shooting} >= 50 then true else false end
+
+- type: formula
+  data_type: boolean
+  name: is_versatile_player
+  description: Player with high statistical versatility (versatility score >3)
+  sql: |
+    case when {career_versatility_score} >= 3 then true else false end
+
+- type: formula
+  data_type: string
+  name: player_role_type
+  description: Player role based on starter vs bench games
+  sql: |
+    case 
+      when {starter_games_count} > {bench_games_count} then 'Starter'
+      when {bench_games_count} > {starter_games_count} then 'Bench Player'
+      else 'Role Player'
+    end
+
+- type: formula
+  data_type: string
+  name: usage_tier
+  description: Player usage tier based on estimated usage rate
+  sql: |
+    case 
+      when {career_usage_rate} >= 30 then 'Superstar Usage (30%+)'
+      when {career_usage_rate} >= 25 then 'Star Usage (25-30%)'
+      when {career_usage_rate} >= 20 then 'High Usage (20-25%)'
+      when {career_usage_rate} >= 15 then 'Medium Usage (15-20%)'
+      else 'Low Usage (<15%)'
+    end
+
+- type: formula
+  data_type: string
+  name: scoring_tier
+  description: Player scoring tier based on career points per game
+  sql: |
+    case 
+      when ({career_points} / NULLIF({career_games}, 0)) >= 25 then 'Elite Scorer (25+ PPG)'
+      when ({career_points} / NULLIF({career_games}, 0)) >= 20 then 'Star Scorer (20-25 PPG)'
+      when ({career_points} / NULLIF({career_games}, 0)) >= 15 then 'Good Scorer (15-20 PPG)'
+      when ({career_points} / NULLIF({career_games}, 0)) >= 10 then 'Role Scorer (10-15 PPG)'
+      else 'Low Scorer (<10 PPG)'
+    end
+
+# Dunk-related Formulas
+- type: formula
+  data_type: boolean
+  name: is_high_dunker
+  description: Player who averages 1+ dunks per game
+  sql: |
+    case when {avg_dunks_per_game} >= 1.0 then true else false end
+
+- type: formula
+  data_type: boolean
+  name: is_occasional_dunker
+  description: Player who dunks in at least 20% of their games
+  sql: |
+    case when {dunk_game_percentage} >= 20.0 then true else false end
+
+- type: formula
+  data_type: string
+  name: dunk_tier
+  description: Player dunk tier based on career dunk performance
+  sql: |
+    case 
+      when {avg_dunks_per_game} >= 2.0 then 'Elite Dunker (2+ DPG)'
+      when {avg_dunks_per_game} >= 1.0 then 'High Dunker (1-2 DPG)'
+      when {avg_dunks_per_game} >= 0.5 then 'Regular Dunker (0.5-1 DPG)'
+      when {avg_dunks_per_game} >= 0.1 then 'Occasional Dunker (0.1-0.5 DPG)'
+      else 'Rare Dunker (<0.1 DPG)'
+    end
+
+- type: formula
+  data_type: string
+  name: dunk_consistency
+  description: Player dunk consistency based on game percentage
+  sql: |
+    case 
+      when {dunk_game_percentage} >= 60 then 'Very Consistent (60%+)'
+      when {dunk_game_percentage} >= 40 then 'Consistent (40-60%)'
+      when {dunk_game_percentage} >= 20 then 'Occasional (20-40%)'
+      when {dunk_game_percentage} >= 5 then 'Rare (5-20%)'
+      else 'Very Rare (<5%)'
+    end
+
+
+metrics:
+
+# Player Count Metrics
+- name: count_players
+  description: |
+    Count of players
+    - "Use for analyzing player population and demographics."
+    - "Filter by is_active to separate current vs former players."
+  sql: 'COUNT(*)'
+
+- name: active_player_percentage
+  description: |
+    Percentage of players who are currently active
+    - "Metrics the proportion of currently active players."
+    - "Values range from 0-100%."
+  sql: 'AVG({is_active}) * 100'
+
+# Name Analysis Metrics
+- name: avg_name_length
+  description: |
+    Average length of player full names
+    - "Metrics the average character length of player full names."
+    - "Useful for UI design and display formatting."
+  sql: 'AVG(LENGTH({full_name}))'
+
+- name: distinct_first_names
+  description: |
+    Count of unique first names
+    - "Metrics the diversity of player first names."
+    - "Useful for demographic analysis."
+  sql: 'COUNT(DISTINCT {first_name})'
+
+# Physical Attributes Metrics
+- name: avg_player_height
+  description: | 
+    Average height in inches across NBA players
+    - "Metrics average physical attributes for positional analysis."
+    - "Filter out zero or null values for accurate calculations."
+  sql: 'AVG({height_inches})'
+
+- name: avg_player_weight
+  description: | 
+    Average weight in pounds across NBA players
+    - "Metrics average weight for positional and physical analysis."
+    - "Useful for understanding physical requirements by position."
+  sql: 'AVG({weight_pounds})'
+
+# Career Performance Metrics for SQL Examples
+- name: avg_career_points
+  description: | 
+    Average career points scored by players
+    - "Metrics career scoring performance."
+    - "Useful for evaluating player success metrics."
+  sql: 'AVG({career_points})'
+
+- name: avg_career_games
+  description: |
+    Average career games played by players
+    - "Metrics career longevity."
+    - "Useful for analyzing player durability."
+  sql: 'AVG({career_games})'
+
+- name: avg_points
+  description: Average point
+  sql: 'AVG({avg_shooting_percentage})'
+
+- name: avg_points_per_game_career
+  description: |
+    Average points per game across all players
+    - "Metrics average scoring efficiency across players."
+    - "Useful for comparing positional scoring expectations."
+  sql: 'AVG({avg_points_per_game})'
+
+- name: avg_career_three_point_rate
+  description: |
+    Average career three-point attempt rate across players
+    - "Metrics average three-point usage by position."
+    - "Useful for analyzing positional shooting trends."
+  sql: 'AVG({career_three_point_rate})'
+
+- name: avg_career_three_point_percentage
+  description: |
+    Average career three-point shooting percentage across players
+    - "Metrics average three-point efficiency by position."
+    - "Useful for comparing positional shooting accuracy."
+  sql: 'AVG({career_three_point_percentage})'
+# International Player Analysis Metrics
+- name: international_players_count
+  description: |
+    Count of international players (players with no college listed)
+    - "Aggregates international player counts by year."
+    - "Uses the international_players metric from draft entity."
+  sql: 'SUM({international_players})'
+
+- name: international_player_percentage
+  description: |
+    Percentage of international players drafted each year
+    - "Calculates the percentage of international players per draft year."
+    - "Useful for analyzing global talent trends in NBA drafts."
+  sql: '(SUM({international_players}) * 100.0 / COUNT(*))'
+
+# Career Achievement Totals
+- name: total_career_double_doubles
+  description: |
+    Total double-doubles achieved across all players
+    - "Aggregates double-double achievements across player groups."
+    - "Useful for positional and demographic analysis of versatile players."
+  sql: 'SUM({career_double_doubles})'
+
+- name: total_career_triple_doubles
+  description: |
+    Total triple-doubles achieved across all players
+    - "Aggregates triple-double achievements across player groups."
+    - "Useful for analyzing elite versatility by position or era."
+  sql: 'SUM({career_triple_doubles})'
+
+- name: total_career_games_played
+  description: |
+    Total games played across all players
+    - "Aggregates total games played across player groups."
+    - "Useful for calculating rates and analyzing playing time distribution."
+  sql: 'SUM({career_games})'
+
+# Performance Rate Calculations
+- name: double_double_rate_percentage
+  description: | 
+    Percentage rate of double-doubles per game across players
+    - "Calculates the overall double-double rate as a percentage."
+    - "Shows how frequently players achieve double-doubles by group."
+  sql: 'ROUND(SUM({career_double_doubles}) * 100.0 / NULLIF(SUM({career_games}), 0), 2)'
+
+- name: triple_double_rate_percentage
+  description: | 
+    Percentage rate of triple-doubles per game across players
+    - "Calculates the overall triple-double rate as a percentage."
+    - "Shows how frequently players achieve triple-doubles by group."
+  sql: 'ROUND(SUM({career_triple_doubles}) * 100.0 / NULLIF(SUM({career_games}), 0), 2)'
+
+# Draft Combine Aggregate Metrics
+- name: avg_combine_height_metric
+  description: | 
+    Average height measurement across players (aggregated)
+    - "Aggregates average combine height measurements across player groups."
+    - "Useful for analyzing physical trends by draft year or position."
+  sql: 'AVG({avg_combine_height})'
+
+- name: avg_combine_wingspan_metric
+  description: |
+    Average wingspan measurement across players (aggregated)
+    - "Aggregates average wingspan measurements across player groups."
+    - "Useful for analyzing physical attributes by position or draft era."
+  sql: 'AVG({avg_combine_wingspan})'
+
+- name: avg_combine_vertical_metric
+  description: |
+    Average vertical leap measurement across players (aggregated)
+    - "Aggregates average vertical leap measurements across player groups."
+    - "Useful for analyzing athletic ability trends."
+  sql: 'AVG({avg_combine_vertical})'
+
+- name: avg_combine_reach_metric
+  description: |
+    Average standing reach measurement across players (aggregated)
+    - "Aggregates average standing reach measurements across player groups."
+    - "Useful for analyzing reach and length by position."
+  sql: 'AVG({avg_combine_reach})'
+
+# Dunk-related Metrics
+- name: total_dunks_across_players
+  description: |
+    Total dunks across all players
+    - "Aggregates total dunks across player groups."
+    - "Useful for analyzing dunk trends by position, team, or era."
+  sql: 'SUM({career_dunks})'
+
+- name: avg_dunks_per_player
+  description: |
+    Average dunks per player across the group
+    - "Metrics average dunk performance across player groups."
+    - "Useful for comparing positional dunk expectations."
+  sql: 'AVG({career_dunks})'
+
+- name: avg_dunk_rate_per_game
+  description: |
+    Average dunk rate per game across players
+    - "Metrics average dunk frequency across player groups."
+    - "Useful for analyzing dunk trends by position or era."
+  sql: 'AVG({avg_dunks_per_game})'
+
+- name: high_dunker_percentage
+  description: |
+    Percentage of players who are high dunkers (1+ DPG)
+    - "Metrics the proportion of high dunkers in a group."
+    - "Useful for analyzing dunk culture by position or team."
+  sql: 'AVG(CASE WHEN {is_high_dunker} THEN 1 ELSE 0 END) * 100'
+
+- name: occasional_dunker_percentage
+  description: |
+    Percentage of players who dunk occasionally (20%+ games)
+    - "Metrics the proportion of occasional dunkers in a group."
+    - "Useful for analyzing dunk participation rates."
+  sql: 'AVG(CASE WHEN {is_occasional_dunker} THEN 1 ELSE 0 END) * 100'
+
+examples:
+- type: SQL
+  name: players_longest_names
+  description: Player names with longest length
+  input: Who are the players with the longest names?
+  expected_output: |
+    SELECT 
+      full_name,
+      LENGTH(full_name) as name_length
+    FROM entity('player')
+    ORDER BY name_length DESC
+    LIMIT 10;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: total_player_count
+  description: Total player count using metrics
+  input: How many total players are in the dataset?
+  expected_output: |
+    SELECT 
+      metric(count_players) as total_players
+    FROM entity('player');
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: avg_height_weight_by_position
+  description: Average player height and weight by position
+  input: What are the average height and weight of NBA players by position?
+  expected_output: |
+    SELECT  
+      position,
+      metric(avg_player_height) as avg_height_inches,
+      metric(avg_player_weight) as avg_weight_pounds,
+      metric(count_players) as player_count
+    FROM entity('player')
+    WHERE position IS NOT NULL
+    GROUP BY position
+    ORDER BY avg_height_inches DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: top_career_dunkers
+  description: Top dunkers by career dunks
+  input: Who are the top 10 players with the most career dunks?
+  expected_output: |
+    SELECT 
+      full_name,
+      career_dunks,
+      avg_dunks_per_game,
+      dunk_game_percentage,
+      max_dunks_in_game
+    FROM entity('player')
+    WHERE career_dunks > 0
+    ORDER BY career_dunks DESC
+    LIMIT 10;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: dunk_performance_by_position
+  description: Dunk performance by position
+  input: What are the average dunks per game by position?
+  expected_output: |
+    SELECT 
+      position,
+      metric(avg_dunk_rate_per_game) as avg_dunks_per_game,
+      metric(high_dunker_percentage) as high_dunker_pct,
+      metric(count_players) as player_count
+    FROM entity('player')
+    WHERE position IS NOT NULL
+    GROUP BY position
+    ORDER BY avg_dunks_per_game DESC;
+  tags:
+    difficulty: MEDIUM
+
+related_sources:  
+  nba.public.common_player_info:    
+    description:  common_player_info is a slowly changing dimension of type 1—it only stores the most recent information.    
+    relationship: one_to_one    
+    joins:    
+    - name: player_player_info      
+      default: true      
+      type: fields      
+      fields:      
+      - source: id        
+        destination: person_id        
+        operator: equal  

@@ -1,0 +1,9 @@
+examples:
+- type: SQL
+  name: test_case_001
+  description: Query total sales for Q3
+  input: What were the total sales in Q3 2024?
+  expected_output: SELECT SUM(amount) FROM sales WHERE quarter = 'Q3' AND year = 2024
+  tags:
+    category: financial
+    complexity: simple

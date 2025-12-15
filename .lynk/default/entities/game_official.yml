@@ -1,0 +1,170 @@
+name: game_official
+
+description: Fact table containing NBA game official and referee assignments for each game, representing the officiating crew for individual games
+
+key_table: nba.public.officials
+
+keys:
+- game_id
+- official_id
+
+features:
+
+# Game Identification Fields
+- type: field
+  name: game_id
+  data_type: number
+  source: nba.public.officials
+  description: Unique identifier for the game
+  field: game_id
+  join_name: null
+  time_field: null
+  filters: []
+
+# Official Identification Fields
+- type: field
+  name: official_id
+  data_type: number
+  source: nba.public.officials
+  description: Unique identifier for the official/referee
+  field: official_id
+  join_name: null
+  time_field: null
+  filters: []
+
+# Official Name Fields
+- type: field
+  name: first_name
+  data_type: string
+  source: nba.public.officials
+  description: Official's first name
+  field: first_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: last_name
+  data_type: string
+  source: nba.public.officials
+  description: Official's last name
+  field: last_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: jersey_num
+  data_type: number
+  source: nba.public.officials
+  description: Official's jersey number
+  field: jersey_num
+  join_name: null
+  time_field: null
+  filters: []
+
+# Formula Features
+- type: formula
+  name: official_full_name
+  description: Official's complete full name (first name + last name)
+  data_type: string
+  sql: "TRIM({first_name} || ' ' || {last_name})"
+
+metrics:
+
+# Assignment Count Metrics
+- name: count_assignments
+  description: |
+    Count of official assignments.
+    - "Use for analyzing officiating activity and assignment volume."
+    - "Filter by game_id to analyze officiating crew size per game."
+    - "Filter by official_id to analyze individual official assignment counts."
+  sql: 'COUNT(*)'
+
+# Official Analysis Metrics
+- name: distinct_officials
+  description: |
+    Count of distinct officials.
+    - "Counts unique officials who have worked games."
+    - "Useful for analyzing official population."
+  sql: 'COUNT(DISTINCT {official_id})'
+
+# Game Analysis Metrics
+- name: distinct_games
+  description: |
+    Count of distinct games with official assignments.
+    - "Counts unique games with officiating data."
+    - "Useful for analyzing game coverage."
+  sql: 'COUNT(DISTINCT {game_id})'
+
+# Average Metrics
+- name: avg_officials_per_game
+  description: |
+    Average number of officials assigned per game.
+    - "Calculates average officiating crew size."
+    - "Typically 3 officials per game in NBA."
+    - "Useful for understanding officiating assignment patterns."
+  sql: 'COUNT(*) / COUNT(DISTINCT {game_id})'
+
+examples:
+- type: SQL
+  description: Officials assigned to a specific game
+  input: Who were the officials for game ID 12345?
+  expected_output: |
+    SELECT 
+      official_id,
+      first_name,
+      last_name,
+      official_full_name,
+      jersey_num
+    FROM entity('game_official')
+    WHERE game_id = 12345
+    ORDER BY jersey_num;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Games officiated by a specific official
+  input: How many games has a specific official worked?
+  expected_output: |
+    SELECT 
+      official_id,
+      first_name,
+      last_name,
+      official_full_name,
+      metric(count_assignments) as games_officiated
+    FROM entity('game_official')
+    WHERE official_id = [official_id]
+    GROUP BY official_id, first_name, last_name, official_full_name;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Most active officials
+  input: Which officials have worked the most games?
+  expected_output: |
+    SELECT 
+      official_id,
+      official_full_name,
+      metric(count_assignments) as total_games
+    FROM entity('game_official')
+    GROUP BY official_id, official_full_name
+    ORDER BY total_games DESC
+    LIMIT 10;
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Average officials per game
+  input: What is the average number of officials per game?
+  expected_output: |
+    SELECT 
+      metric(avg_officials_per_game) as avg_officials,
+      metric(distinct_games) as total_games,
+      metric(count_assignments) as total_assignments
+    FROM entity('game_official');
+  tags:
+    difficulty: EASY
+
+related_sources: {}
+

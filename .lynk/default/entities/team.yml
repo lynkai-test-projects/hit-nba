@@ -1,0 +1,1032 @@
+name: team
+
+description: Dimension table containing comprehensive team information, location data, and franchise tags for NBA basketball teams
+
+key_table: nba.public.team
+
+keys:
+- id
+
+features:
+
+# Team Identification Fields
+- type: field
+  name: id
+  data_type: number
+  source: nba.public.team
+  description: Unique identifier for each NBA team
+  field: id
+  join_name: null
+  time_field: null
+  filters: []
+
+# Team Name Fields
+- type: field
+  name: full_name
+  data_type: string
+  source: nba.public.team
+  description: Complete team name (e.g., "Los Angeles Lakers")
+  field: full_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: city
+  data_type: string
+  source: nba.public.team
+  description: City where the team is located (e.g., "Los Angeles")
+  field: city
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: nickname
+  data_type: string
+  source: nba.public.team
+  description: Team nickname/mascot name (e.g., "Lakers")
+  field: nickname
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: abbreviation
+  data_type: string
+  source: nba.public.team
+  description: Short team abbreviation (e.g., "LAL")
+  field: abbreviation
+  join_name: null
+  time_field: null
+  filters: []
+
+# Geographic Fields
+- type: field
+  name: state
+  data_type: string
+  source: nba.public.team
+  description: State where the team is located (e.g., "California")
+  field: state
+  join_name: null
+  time_field: null
+  filters: []
+
+# Franchise History Fields
+- type: field
+  name: year_founded
+  data_type: number
+  source: nba.public.team
+  description: Year when the team was founded (e.g., 1947)
+  field: year_founded
+  join_name: null
+  time_field: null
+  filters: []
+
+# Team Details Fields (from team_details asset)
+- type: field
+  name: arena
+  data_type: string
+  source: nba.public.team_details
+  description: Name of the team's home arena/stadium
+  field: ARENA
+  join_name: team_id
+  time_field: null
+  filters: []
+
+- type: field
+  name: arena_capacity
+  data_type: number
+  source: nba.public.team_details
+  description: Seating capacity of the team's home arena
+  field: ARENACAPACITY
+  join_name: team_id
+  time_field: null
+  filters: []
+
+- type: field
+  name: owner
+  data_type: string
+  source: nba.public.team_details
+  description: Name of the team's owner
+  field: OWNER
+  join_name: team_id
+  time_field: null
+  filters: []
+
+- type: field
+  name: general_manager
+  data_type: string
+  source: nba.public.team_details
+  description: Name of the team's general manager
+  field: GENERALMANAGER
+  join_name: team_id
+  time_field: null
+  filters: []
+
+- type: field
+  name: head_coach_name
+  data_type: string
+  source: nba.public.team_details
+  description: Name of the team's head coach
+  field: HEADCOACH
+  join_name: team_id
+  time_field: null
+  filters: []
+
+- type: field
+  name: dleague_affiliation
+  data_type: string
+  source: nba.public.team_details
+  description: Name of the team's G League (formerly D-League) affiliate
+  field: DLEAGUEAFFILIATION
+  join_name: team_id
+  time_field: null
+  filters: []
+
+- type: field
+  name: facebook_url
+  data_type: string
+  source: nba.public.team_details
+  description: Team's Facebook page URL
+  field: FACEBOOK
+  join_name: team_id
+  time_field: null
+  filters: []
+
+- type: field
+  name: instagram_url
+  data_type: string
+  source: nba.public.team_details
+  description: Team's Instagram profile URL
+  field: INSTAGRAM
+  join_name: team_id
+  time_field: null
+  filters: []
+
+- type: field
+  name: twitter_url
+  data_type: string
+  source: nba.public.team_details
+  description: Team's Twitter/X profile URL
+  field: TWITTER
+  join_name: team_id
+  time_field: null
+  filters: []
+
+# Calculated Fields from Team Details
+- type: formula
+  name: has_social_media
+  data_type: boolean
+  description: Whether the team has at least one social media account
+  sql: |
+    CASE 
+      WHEN {facebook_url} IS NOT NULL OR {instagram_url} IS NOT NULL OR {twitter_url} IS NOT NULL 
+      THEN TRUE 
+      ELSE FALSE 
+    END
+
+- type: formula
+  name: social_media_count
+  data_type: number
+  description: Number of social media accounts the team has
+  sql: |
+    (CASE WHEN {facebook_url} IS NOT NULL THEN 1 ELSE 0 END) +
+    (CASE WHEN {instagram_url} IS NOT NULL THEN 1 ELSE 0 END) +
+    (CASE WHEN {twitter_url} IS NOT NULL THEN 1 ELSE 0 END)
+
+- type: formula
+  name: has_gleague_affiliate
+  data_type: boolean
+  description: Whether the team has a G League affiliate
+  sql: |
+    CASE 
+      WHEN {dleague_affiliation} IS NOT NULL AND TRIM({dleague_affiliation}) != '' 
+      THEN TRUE 
+      ELSE FALSE 
+    END
+
+- type: formula
+  name: arena_size_category
+  data_type: string
+  description: Categorizes arena capacity into size categories
+  sql: |
+    CASE 
+      WHEN {arena_capacity} >= 20000 THEN 'Large (20,000+)'
+      WHEN {arena_capacity} >= 18000 THEN 'Medium-Large (18,000-19,999)'
+      WHEN {arena_capacity} >= 16000 THEN 'Medium (16,000-17,999)'
+      WHEN {arena_capacity} >= 14000 THEN 'Small-Medium (14,000-15,999)'
+      WHEN {arena_capacity} IS NOT NULL THEN 'Small (<14,000)'
+      ELSE 'Unknown'
+    END
+
+# Team Win-Loss Features from team_game entity
+- type: metric
+  name: total_home_wins
+  description: Total wins when playing at home
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: home_wins_count
+
+- type: metric
+  name: total_home_losses
+  description: Total losses when playing at home
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: home_losses_count
+
+- type: metric
+  name: total_away_wins
+  description: Total wins when playing away
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: away_wins_count
+
+- type: metric
+  name: total_away_losses
+  description: Total losses when playing away
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: away_losses_count
+
+# Formula Features for Combined Win-Loss Totals
+- type: formula
+  data_type: number
+  name: total_wins
+  description: Total wins across team history (home + away)
+  sql: '{total_home_wins} + {total_away_wins}'
+
+- type: formula
+  data_type: number
+  name: total_losses
+  description: Total losses across team history (home + away)
+  sql: '{total_home_losses} + {total_away_losses}'
+
+- type: formula
+  data_type: number
+  name: win_difference
+  description: Absolute difference between home and away wins (metric of home/away balance)
+  sql: 'ABS({total_home_wins} - {total_away_wins})'
+
+- type: formula
+  data_type: number
+  name: win_percentage
+  description: Overall win percentage across all games (home + away)
+  sql: |
+    case 
+      when {total_wins} + {total_losses} > 0 
+      then round({total_wins} * 100.0 / ({total_wins} + {total_losses}), 2)
+      else 0 
+    end
+
+- type: formula
+  data_type: number
+  name: total_games
+  description: Total games played across team history (home + away)
+  sql: '{total_wins} + {total_losses}'
+
+# Draft History Features (from draft entity)
+- type: metric
+  name: count_drafts
+  description: Total number of draft picks made by this team
+  data_type: number
+  source: draft
+  join_name: team_to_draft
+  time_field: null
+  filters: []
+  metric: count_drafts
+
+- type: metric
+  name: avg_team_draft_position
+  description: Average draft pick position for this team
+  data_type: number
+  source: draft
+  join_name: team_to_draft
+  time_field: null
+  filters: []
+  metric: avg_draft_position
+
+- type: metric
+  name: first_round_picks_count
+  description: Number of first round picks made by this team
+  data_type: number
+  source: draft
+  join_name: team_to_draft
+  time_field: null
+  filters: []
+  metric: first_round_picks
+
+- type: metric
+  name: lottery_picks_count
+  description: Number of lottery picks (1-14) made by this team
+  data_type: number
+  source: draft
+  join_name: team_to_draft
+  time_field: null
+  filters: []
+  metric: lottery_picks_count
+
+- type: first_last
+  name: highest_draft_pick
+  description: Highest (earliest) draft pick position for this team
+  data_type: number
+  source: draft
+  join_name: team_to_draft
+  time_field: null
+  filters: []
+  options:
+    method: first
+    sort_by: draft_position
+    offset: 1
+    field: draft_position
+    data_type: number
+
+- type: first_last
+  name: most_recent_draft_year
+  description: Most recent year this team made a draft pick
+  data_type: number
+  source: draft
+  join_name: team_to_draft
+  time_field: null
+  filters: []
+  options:
+    method: last
+    sort_by: draft_year
+    offset: 1
+    field: draft_year
+    data_type: number
+
+- type: first_last
+  name: most_recent_first_round_pick
+  description: Most recent first round draft pick by this team
+  data_type: number
+  source: draft
+  join_name: team_to_draft
+  time_field: null
+  filters:
+  - type: field
+    field: draft_round
+    operator: equal
+    values:
+    - 1
+  options:
+    method: last
+    sort_by: draft_year
+    offset: 1
+    field: player_id
+    data_type: number
+
+# Team Player History Features  
+- type: metric
+  name: total_player_affiliations
+  description: Total number of player affiliations this team has had throughout its history
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_affiliations
+
+- type: metric
+  name: avg_player_tenure_years  
+  description: Average number of years players spend with this team
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: avg_affiliation_duration_years
+
+- type: metric
+  name: team_player_loyalty_score
+  description: Number of long-term player relationships (3+ years) this team has maintained
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: long_tenure_affiliations
+
+- type: metric
+  name: team_roster_turnover
+  description: Number of short-term player relationships (less than 1 year) this team has had
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: short_stint_affiliations
+
+- type: metric
+  name: players_returning_to_team
+  description: Number of players who have returned to this team after playing elsewhere
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: return_stint_count
+
+- type: metric
+  name: draft_picks_retained
+  description: Number of players whose first recorded stint was with this team (proxy for drafted-and-retained)
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  metric: first_stints_count
+
+- type: first_last
+  name: first_player_affiliation_date
+  description: The earliest date when a player joined this team in recorded history
+  data_type: datetime
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  options:
+    method: first
+    sort_by: start_date
+    offset: 1
+    field: start_date
+    data_type: datetime
+
+- type: first_last
+  name: most_recent_player_signing
+  description: The most recent date when a player joined this team
+  data_type: datetime
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  options:
+    method: last
+    sort_by: start_date
+    offset: 1
+    field: start_date
+    data_type: datetime
+
+- type: first_last
+  name: longest_player_tenure_years
+  description: The longest period (in years) any player has spent with this team
+  data_type: number
+  source: player_team
+  join_name: null
+  time_field: null
+  filters: []
+  options:
+    method: last
+    sort_by: affiliation_period_years
+    offset: 1
+    field: affiliation_period_years
+    data_type: datetime
+
+# Team Game Performance Features (from team_game entity)
+- type: metric
+  name: team_total_points
+  description: Total points scored by all players on this team across all games
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_points
+
+- type: metric
+  name: team_total_assists
+  description: Total assists by all players on this team across all games
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_assists
+
+- type: metric
+  name: team_win_percentage
+  description: Win percentage for this team across all games
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: win_percentage
+
+- type: metric
+  name: team_wins_count
+  description: Total wins for this team across all games
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: wins_count
+
+- type: metric
+  name: team_losses_count
+  description: Total losses for this team across all games
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: losses_count
+
+- type: metric
+  name: team_home_wins_count
+  description: Total wins when playing at home
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: home_wins_count
+
+- type: metric
+  name: team_home_losses_count
+  description: Total losses when playing at home
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: home_losses_count
+
+- type: metric
+  name: team_away_wins_count
+  description: Total wins when playing away
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: away_wins_count
+
+- type: metric
+  name: team_away_losses_count
+  description: Total losses when playing away
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: away_losses_count
+
+- type: metric
+  name: team_home_win_percentage
+  description: Win percentage when playing at home
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: home_win_percentage
+
+- type: metric
+  name: team_away_win_percentage
+  description: Win percentage when playing away
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: away_win_percentage
+
+- type: metric
+  name: team_home_court_advantage
+  description: Difference between home and away win percentages
+  data_type: number
+  source: team_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: home_court_advantage
+
+# Coach Metrics from coaching_staff entity via coach-team relationship
+- type: metric
+  name: total_head_coaches
+  data_type: number
+  source: coaching_staff
+  description: Total number of different head coaches this team has had
+  join_name: team_to_coaching_staff
+  time_field: null
+  filters:
+  - type: field
+    field: coach_type
+    operator: equal
+    values:
+    - 'Head Coach'
+  metric: total_coaches_count
+
+- type: metric
+  name: distinct_seasons
+  data_type: number
+  source: coaching_staff
+  description: Total number of head coaching assignments for this team
+  join_name: team_to_coaching_staff
+  time_field: null
+  filters:
+  - type: field
+    field: coach_type
+    operator: equal
+    values:
+    - 'Head Coach'
+  metric: head_coach_count
+
+- type: metric
+  name: total_assistant_coaches
+  data_type: number
+  source: coaching_staff
+  description: Total number of different assistant coaches this team has had
+  join_name: team_to_coaching_staff
+  time_field: null
+  filters:
+  - type: field
+    field: coach_type
+    operator: in
+    values:
+    - 'Assistant Coach'
+    - 'Assistant Coach for Player Development'
+    - 'Lead Assistant Coach'
+    - 'Associate Head Coach'
+  metric: distinct_assistant_coaches
+
+# Dunk Statistics Features (from player_game entity)
+- type: metric
+  name: total_team_dunks
+  description: Total dunks made by all players on this team
+  data_type: number
+  source: player_game
+  join_name: team_to_player_game
+  time_field: null
+  filters: []
+  metric: total_dunks
+
+- type: metric
+  name: avg_dunks_team
+  description: Average dunks per game for this team
+  data_type: number
+  source: player_game
+  join_name: team_to_player_game
+  time_field: null
+  filters: []
+  metric: avg_dunks
+
+- type: metric
+  name: players_with_dunks_on_team
+  description: Number of players on this team who have made dunks
+  data_type: number
+  source: player_game
+  join_name: team_to_player_game
+  time_field: null
+  filters: []
+  metric: players_with_dunks_count
+
+- type: metric
+  name: team_dunk_game_percentage
+  description: Percentage of games where this team had players with dunks
+  data_type: number
+  source: player_game
+  join_name: team_to_player_game
+  time_field: null
+  filters: []
+  metric: dunk_game_percentage
+
+- type: metric
+  name: max_dunks_by_team_player
+  description: Maximum dunks made by any single player on this team
+  data_type: number
+  source: player_game
+  join_name: team_to_player_game
+  time_field: null
+  filters: []
+  metric: max_dunks_in_game
+
+- type: metric
+  name: high_dunk_players_on_team
+  description: Number of players on this team who average 1+ dunks per game
+  data_type: number
+  source: player_game
+  join_name: team_to_player_game
+  time_field: null
+  filters:
+  - type: field
+    field: dunks
+    operator: 'gte'
+    values: 
+    - '1'
+  metric: total_games_played
+
+metrics:
+
+# Team Count Metrics
+- name: count_teams
+  description: |
+    Count of teams
+    - "Use for analyzing team distribution and demographics."
+    - "Filter by state for geographic analysis."
+  sql: 'COUNT(*)'
+
+# Franchise Age Metrics
+- name: avg_franchise_age
+  description: |
+    Average age of NBA franchises (years since founding)
+    - "Metrics the average longevity of NBA franchises."
+    - "Higher values indicate older, more established teams."
+  sql: 'AVG(EXTRACT(YEAR FROM CURRENT_DATE) - {year_founded})'
+
+- name: oldest_franchise_year
+  description: |
+    Founding year of the oldest NBA franchise
+    - "Identifies the founding year of the oldest franchise."
+    - "Useful for historical analysis."
+  sql: 'MIN({year_founded})'
+
+# Name Analysis Metrics
+- name: avg_team_name_length
+  description: |
+    Average length of team full names
+    - "Metrics the average character length of team full names."
+    - "Useful for UI design and display formatting."
+  sql: 'AVG(LENGTH({full_name}))'
+
+- name: distinct_cities
+  description: |
+    Count of unique cities with NBA teams
+    - "Metrics the geographic diversity of NBA teams."
+    - "Useful for market analysis."
+  sql: 'COUNT(DISTINCT {city})'
+
+# Player Count Metrics  
+- name: count_players
+  description: |
+    Count of unique players associated with this team
+    - "Counts unique players who have been affiliated with this team."
+    - "Uses player_team relationship to count distinct players."
+    - "Useful for analyzing team roster history and player development."
+  sql: 'COUNT(DISTINCT {person_id})'
+
+# Dunk-related Metrics
+- name: total_dunks_across_teams
+  description: |
+    Total dunks across all teams
+    - "Aggregates total dunks across team groups."
+    - "Useful for analyzing dunk trends by conference, division, or era."
+  sql: 'SUM({total_team_dunks})'
+
+- name: avg_dunks_per_team
+  description: |
+    Average dunks per team
+    - "Metrics average dunk performance across teams."
+    - "Useful for comparing team dunk cultures."
+  sql: 'AVG({total_team_dunks})'
+
+- name: avg_dunk_rate_per_team_game
+  description: |
+    Average dunk rate per game across teams
+    - "Metrics average dunk frequency per game across teams."
+    - "Useful for analyzing team playing styles."
+  sql: 'AVG({avg_dunks_team})'
+
+- name: high_dunk_team_percentage
+  description: |
+    Percentage of teams with high dunk rates (1+ DPG)
+    - "Metrics the proportion of high-dunk teams."
+    - "Useful for analyzing dunk culture across the league."
+  sql: 'AVG(CASE WHEN {avg_dunks_team} >= 1.0 THEN 1 ELSE 0 END) * 100'
+
+- name: max_dunks_by_any_team_player
+  description: |
+    Maximum dunks by any player on any team
+    - "Finds the highest dunk count by any team player."
+    - "Useful for identifying exceptional team dunk performances."
+  sql: 'MAX({max_dunks_by_team_player})'
+
+# Arena and Facility Metrics
+- name: avg_arena_capacity
+  description: |
+    Average arena capacity across all teams
+    - "Metrics the average seating capacity of NBA arenas."
+    - "Useful for analyzing facility sizes and market sizes."
+  sql: 'AVG({arena_capacity})'
+
+- name: max_arena_capacity
+  description: |
+    Maximum arena capacity among all teams
+    - "Identifies the largest arena in the NBA."
+  sql: 'MAX({arena_capacity})'
+
+- name: min_arena_capacity
+  description: |
+    Minimum arena capacity among all teams
+    - "Identifies the smallest arena in the NBA."
+  sql: 'MIN({arena_capacity})'
+
+- name: teams_with_large_arenas
+  description: |
+    Count of teams with large arenas (20,000+ capacity)
+    - "Counts teams with arenas in the large category."
+  sql: 'SUM(CASE WHEN {arena_capacity} >= 20000 THEN 1 ELSE 0 END)'
+
+# Social Media Metrics
+- name: teams_with_social_media
+  description: |
+    Count of teams with at least one social media account
+    - "Metrics social media presence across teams."
+  sql: 'SUM(CASE WHEN {has_social_media} THEN 1 ELSE 0 END)'
+
+- name: avg_social_media_accounts
+  description: |
+    Average number of social media accounts per team
+    - "Metrics average social media presence."
+  sql: 'AVG({social_media_count})'
+
+- name: teams_with_all_social_media
+  description: |
+    Count of teams with all three social media accounts (Facebook, Instagram, Twitter)
+    - "Identifies teams with complete social media presence."
+  sql: 'SUM(CASE WHEN {social_media_count} = 3 THEN 1 ELSE 0 END)'
+
+# G League Affiliation Metrics
+- name: teams_with_gleague_affiliate
+  description: |
+    Count of teams with G League affiliates
+    - "Metrics G League affiliation across teams."
+  sql: 'SUM(CASE WHEN {has_gleague_affiliate} THEN 1 ELSE 0 END)'
+
+- name: gleague_affiliation_percentage
+  description: |
+    Percentage of teams with G League affiliates
+    - "Calculates the percentage of teams with G League affiliates."
+  sql: 'AVG(CASE WHEN {has_gleague_affiliate} THEN 100.0 ELSE 0.0 END)'
+
+related_sources:
+  nba.public.team_details:
+    relationship: one_to_one
+    joins:
+    - name: team_id
+      default: true
+      type: fields
+      fields:
+      - source: id
+        destination: team_id
+        operator: equal
+
+
+examples:
+- type: SQL
+  name: total_nba_teams_count
+  description: Total number of NBA teams
+  input: How many teams are there in the NBA?
+  expected_output: |
+    SELECT 
+      COUNT(*) as total_teams
+    FROM entity('team');
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: team_details_by_id
+  description: Team details for specific team ID
+  input: What are the team details for team ID 1610612747 (Los Angeles Lakers)?
+  expected_output: |
+    SELECT 
+      id,
+      full_name,
+      city,
+      nickname,
+      abbreviation,
+      state,
+      year_founded
+    FROM entity('team')
+    WHERE id = 1610612747;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: teams_count_by_state
+  description: Count of teams by state
+  input: How many teams are in each state?
+  expected_output: |
+    SELECT 
+      state, 
+      COUNT(*) as team_count
+    FROM entity('team')
+    GROUP BY state
+    ORDER BY team_count DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: teams_by_founding_year
+  description: Teams ordered by founding year
+  input: What are the oldest teams in the NBA?
+  expected_output: |
+    SELECT 
+      full_name,
+      year_founded
+    FROM entity('team')
+    ORDER BY year_founded ASC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: california_teams
+  description: Teams located in California
+  input: Which teams are located in California?
+  expected_output: |
+    SELECT 
+      city,
+      nickname,
+      abbreviation
+    FROM entity('team')
+    WHERE state = 'California';
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: team_count_by_state_metric
+  description: Team count by state using metrics
+  input: How many total teams are in the NBA by state?
+  expected_output: |
+    SELECT 
+      state, 
+      metric(count_teams) as team_count
+    FROM entity('team')
+    GROUP BY state
+    ORDER BY team_count DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: teams_founded_by_decade
+  description: Teams founded by decade
+  input: How many teams were founded in each decade?
+  expected_output: |
+    SELECT 
+      FLOOR(year_founded/10)*10 as decade,
+      metric(count_teams) as teams_founded
+    FROM entity('team')
+    GROUP BY decade
+    ORDER BY decade;
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: total_team_count_metric
+  description: Total team count
+  input: How many total teams are in the NBA?
+  expected_output: |
+    SELECT
+      metric(count_teams) as total_teams
+    FROM entity('team');
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Teams with most dunks
+  input: Which teams have the most dunks?
+  expected_output: |
+    SELECT 
+      full_name,
+      city,
+      nickname,
+      total_team_dunks,
+      avg_dunks_team,
+      players_with_dunks_on_team,
+      team_dunk_game_percentage
+    FROM entity('team')
+    WHERE total_team_dunks > 0
+    ORDER BY total_team_dunks DESC
+    LIMIT 10;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Dunk performance by conference
+  input: What are the dunk statistics by conference?
+  expected_output: |
+    SELECT 
+      conference,
+      metric(avg_dunks_per_team) as avg_dunks_per_team,
+      metric(avg_dunk_rate_per_team_game) as avg_dunks,
+      metric(high_dunk_team_percentage) as high_dunk_team_pct,
+      metric(count_teams) as total_teams
+    FROM entity('team')
+    GROUP BY conference
+    ORDER BY avg_dunks_per_team DESC;
+  tags:
+    difficulty: MEDIUM

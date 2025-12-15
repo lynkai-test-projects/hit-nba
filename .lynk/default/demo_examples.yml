@@ -1,0 +1,485 @@
+examples:
+- type: SQL
+  description: Identify the top-performing franchises by total wins to show ownership which organizations have sustained success.
+  input: Give me the top 5 teams by total wins in franchise history - I want to show ownership which organizations have sustained success.
+  expected_output: |
+    select  
+      full_name as team_name,
+      total_wins,
+      total_losses,
+      win_percentage,
+      total_games
+    from entity('team')
+    order by total_wins desc
+    limit 5
+  tags:
+    difficulty: EASY
+
+
+- type: SQL
+  description: Analyze physical evolution trends in NBA positions to understand if position-less basketball is reflected in player attributes.
+  input: What's the trend in average player height by position over the last 15 years? Are we seeing position-less basketball reflected in the physical data?
+  expected_output: |
+    select  
+      position,
+      experience_bracket,
+      metric(avg_player_height) as avg_height_inches,
+      metric(avg_player_weight) as avg_weight_pounds,
+      metric(count_players) as player_count
+    from entity('player')
+    where position is not null 
+      and draft_year >= 2009
+    group by position, experience_bracket
+    order by position, avg_height_inches desc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Compare performance metrics between international and domestic players for talent evaluation.
+  input: Compare international vs domestic player performance - how do career averages differ between these two groups?
+  expected_output: |
+    select  
+      CASE WHEN country = 'USA' OR country IS NULL THEN 'Domestic' ELSE 'International' END as player_origin,
+      metric(avg_points_per_game_career) as avg_ppg,
+      metric(avg_career_games) as avg_career_games,
+      metric(avg_points) as avg_fg_pct,
+      metric(count_players) as player_count
+    from entity('player')
+    where career_games >= 50
+    group by player_origin
+    order by avg_ppg desc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Identify most efficient scorers with significant playing time for free agent target identification.
+  input: Show me the top 5 most efficient scorers with at least 200 career games. I need to identify undervalued free agent targets.
+  expected_output: |
+    select  
+      full_name as player_name,
+      position,
+      career_true_shooting as true_shooting_pct,
+      avg_points_per_game,
+      career_games,
+      career_shooting_percentage as fg_pct
+    from entity('player')
+    where career_games >= 200
+      and is_efficient_scorer = true
+    order by career_true_shooting desc
+    limit 5
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Analyze team player development success by examining draft pick retention rates.
+  input: Which 5 teams have drafted and retained the most players? I want to understand organizational player development models.
+  expected_output: |
+    select  
+      full_name as team_name,
+      draft_picks_retained as players_drafted_retained,
+      count_drafts,
+      team_player_loyalty_score as long_term_relationships,
+      avg_player_tenure_years
+    from entity('team')
+    where count_drafts >= 5
+    order by draft_picks_retained desc
+    limit 5
+  tags:
+    difficulty: EASY
+
+
+- type: SQL
+  description: Identify top rebounding performances to understand which players dominate the glass and provide second-chance opportunities.
+  input: Show me the players with the most rebounds per game this season - I want to see who's controlling the boards.
+  expected_output: |
+    select  
+      player_full_name,
+      team_full_name,
+      metric(avg_rebounds_per_game) as rebounds_per_game,
+      metric(total_offensive_rebounds) as offensive_boards,
+      metric(total_defensive_rebounds) as defensive_boards,
+      metric(total_games_played) as games_played
+    from entity('player_game')
+    group by player_full_name, team_full_name
+    having games_played >= 20
+    order by rebounds_per_game desc
+    limit 20
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Analyze player versatility to identify well-rounded contributors who impact multiple statistical categories consistently.
+  input: Which players are the most versatile contributors? I need players who consistently fill up the stat sheet across multiple categories.
+  expected_output: |
+    select  
+      player_full_name,
+      team_full_name,
+      metric(versatility_score) as statistical_versatility,
+      metric(double_doubles_count) as double_doubles,
+      metric(avg_points_per_game) as scoring,
+      metric(avg_assists_per_game) as playmaking,
+      metric(avg_rebounds_per_game) as rebounding,
+      metric(total_games_played) as games_played
+    from entity('player_game')
+    group by player_full_name, team_full_name
+    having games_played >= 25
+    order by statistical_versatility desc
+    limit 15
+  tags:
+    difficulty: EASY
+
+
+- type: SQL
+  description: Analyze player movement patterns to identify career journeymen and evaluate roster stability for organizational insights.
+  input: Show me the players who have moved between the most teams - I want to understand player movement patterns.
+  expected_output: |
+    select  
+      player_full_name,
+      metric(distinct_teams_count) as teams_played_for,
+      metric(team_changes) as career_moves,
+      metric(avg_affiliation_duration_years) as avg_tenure,
+      metric(team_affiliations_list) as career_journey,
+      metric(total_affiliations) as total_stints
+    from entity('player_team')
+    group by player_full_name
+    having teams_played_for >= 6
+    order by teams_played_for desc, career_moves desc
+    limit 25
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Identify organizations with superior player development and retention capabilities for competitive advantage analysis.
+  input: Which teams are best at building long-term relationships with players? I need to understand organizational player development success.
+  expected_output: |
+    select  
+      team_full_name,
+      metric(long_tenure_affiliations) as long_term_relationships,
+      metric(avg_affiliation_duration_years) as player_loyalty_avg,
+      metric(return_stint_count) as boomerang_players,
+      metric(short_stint_affiliations) as roster_churn,
+      metric(total_affiliations) as total_player_history
+    from entity('player_team')
+    group by team_full_name
+    having total_player_history >= 30
+    order by player_loyalty_avg desc, long_term_relationships desc
+    limit 15
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Identify elite offensive teams by analyzing scoring efficiency and ball movement to understand modern basketball excellence.
+  input: Show me teams with the best offensive efficiency - high scoring with great ball movement and shooting.
+  expected_output: |
+    select  
+      team_full_name,
+      metric(avg_points_per_game) as offensive_output,
+      metric(avg_field_goal_percentage) as shooting_efficiency,
+      metric(avg_assists_per_game) as assists_per_game,
+      metric(avg_three_point_percentage) as three_point_efficiency,
+      metric(avg_turnovers_per_game) as turnovers_per_game,
+      metric(games_played) as games_analyzed
+    from entity('team_game')
+    group by team_full_name
+    having games_analyzed >= 25
+    order by offensive_output desc, shooting_efficiency desc
+    limit 15
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Analyze competitive balance by examining home court advantage patterns to identify organizations that maximize their environment.
+  input: Which teams have the strongest home court advantage? I want to understand venue impact on performance.
+  expected_output: |
+    select  
+      team_full_name,
+      metric(home_win_percentage) as home_dominance,
+      metric(away_win_percentage) as road_performance,
+      metric(home_court_advantage) as venue_advantage,
+      metric(wins_count) as total_victories,
+      metric(losses_count) as total_defeats,
+      metric(games_played) as sample_size
+    from entity('team_game')
+    group by team_full_name
+    having sample_size >= 35
+    order by venue_advantage desc, home_dominance desc
+    limit 20
+  tags:
+    difficulty: EASY
+
+# Player Game Rebounding Analytics (2) - Individual Player Rebounding Performance
+
+- type: SQL
+  description: Identify the most dominant rebounders by analyzing average rebounds per game performance across different seasons for elite glass cleaners.
+  input: Top 10 players with highest average number of rebounds per game. Show the top 10 per season
+  expected_output: |
+    select  
+      player_full_name,
+      season_year,
+      metric(avg_rebounds_per_game) as rebounds_per_game,
+      metric(total_offensive_rebounds) as offensive_boards,
+      metric(total_defensive_rebounds) as defensive_boards,
+      metric(total_games_played) as games_played,
+      metric(total_minutes_played) as total_minutes
+    from entity('player_game')
+    group by player_full_name, season_year
+    having games_played >= 20
+    order by season_year desc, rebounds_per_game desc
+    limit 10
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Find the single most dominant rebounder based on career rebounding efficiency and volume to identify the ultimate glass cleaner.
+  input: Player with highest number of rebounds per games played
+  expected_output: |
+    select  
+      player_full_name,
+      position,
+      metric(avg_rebounds_per_game) as career_rebounds_per_game,
+      metric(total_rebounds) as career_total_rebounds,
+      metric(total_games_played) as career_games,
+      metric(double_doubles_count) as double_doubles,
+      metric(total_minutes_played) as career_minutes
+    from entity('player_game')
+    group by player_full_name, position
+    having career_games >= 100
+    order by career_rebounds_per_game desc
+    limit 1
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Analyze home court advantage evolution and identify teams that still maximize this strategic advantage.
+  input: Analyze home court advantage trends - has it weakened over time, and which teams still maximize it effectively?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      season_id,
+      metric(home_win_percentage) as home_win_pct,
+      metric(away_win_percentage) as away_win_pct,
+      metric(home_court_advantage) as advantage_differential,
+      metric(count_games) as games_analyzed
+    from entity('game')
+    where season_type = 'Regular Season'
+    group by team_name_home, season_id
+    having games_analyzed >= 20
+    order by season_id desc, advantage_differential desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Evaluate draft strategy effectiveness by analyzing career production across different draft rounds for strategic planning.
+  input: Compare draft value by round: what's the average career production for lottery picks vs first round vs second round? I need this for our draft strategy.
+  expected_output: |
+    select  
+      draft_tier,
+      metric(avg_career_points) as avg_career_points,
+      metric(avg_points_per_game_career) as avg_ppg,
+      metric(avg_career_games) as avg_career_longevity,
+      metric(count_players) as players_drafted
+    from entity('player')
+    where draft_position is not null
+      and draft_year >= 2005
+    group by draft_tier
+    order by avg_career_points desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Examine the correlation between ball movement and team success to validate offensive philosophy.
+  input: Show me the correlation between team assist rates and winning percentage by season. Does ball movement truly translate to wins?
+  expected_output: |
+    select  
+      season_id,
+      team_name_home as team_name,
+      metric(avg_total_assists) as avg_assists_per_game,
+      metric(home_win_percentage) as win_percentage,
+      metric(total_home_wins) as wins,
+      metric(count_games) as games_played
+    from entity('game')
+    where season_type = 'Regular Season'
+    group by season_id, team_name_home
+    having games_played >= 30
+    order by season_id desc, win_percentage desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Identify clutch performers based on efficiency in high-pressure game situations for playoff roster construction.
+  input: Which players have the highest shooting efficiency in high-pressure situations (games with small point margins)? I want clutch performers for playoff consideration.
+  expected_output: |
+    select  
+      full_name as player_name,
+      position,
+      high_minute_shooting_percentage as clutch_fg_pct,
+      career_true_shooting as true_shooting_pct,
+      career_fourth_quarter_points as estimated_q4_scoring,
+      high_minute_games_count as high_pressure_games
+    from entity('player')
+    where position is not null 
+      and high_minute_games_count >= 25
+      and career_games >= 100
+    order by clutch_fg_pct desc, true_shooting_pct desc
+    limit 20
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Track the three-point revolution evolution by position to understand tactical adaptation and identify position advantages.
+  input: Analyze the three-point revolution: how has attempt rate and efficiency evolved by position since 2010, and which positions adapted best?
+  expected_output: |
+    select  
+      position,
+      CASE 
+        WHEN draft_year >= 2018 THEN 'Modern Era (2018+)'
+        WHEN draft_year >= 2014 THEN 'Transition Era (2014-2017)'
+        WHEN draft_year >= 2010 THEN 'Early Era (2010-2013)'
+        ELSE 'Pre-Revolution'
+      END as era,
+      metric(avg_career_three_point_rate) as avg_3pt_attempt_rate,
+      metric(avg_career_three_point_percentage) as three_point_efficiency,
+      metric(count_players) as players_analyzed
+    from entity('player')
+    where position is not null 
+      and draft_year >= 2010
+      and career_games >= 50
+    group by position, era
+    order by position, era desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Evaluate shooting efficiency and volume correlation to identify elite scorers who maintain efficiency at high usage rates.
+  input: Find players who combine high scoring volume with elite shooting efficiency. I want scorers who don't sacrifice efficiency for volume.
+  expected_output: |
+    select  
+      player_full_name,
+      team_full_name,
+      metric(avg_points_per_game) as scoring_average,
+      metric(true_shooting_percentage) as true_shooting_efficiency,
+      metric(usage_rate_estimate) as offensive_load,
+      metric(three_point_attempt_rate) as modern_shot_selection,
+      metric(efficient_scorer_percentage) as consistency_rate,
+      metric(total_games_played) as games_played
+    from entity('player_game')
+    group by player_full_name, team_full_name
+    having scoring_average >= 18 
+      and true_shooting_efficiency >= 58
+      and games_played >= 30
+    order by true_shooting_efficiency desc, scoring_average desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Analyze two-way player impact by correlating offensive efficiency with defensive contributions for roster construction insights.
+  input: Which players provide elite two-way impact? Show me players who score efficiently AND make defensive plays consistently.
+  expected_output: |
+    select  
+      player_full_name,
+      position,
+      metric(efficient_scorer_percentage) as offensive_consistency,
+      metric(defensive_impact_games) as defensive_contribution,
+      metric(avg_plus_minus) as court_impact,
+      metric(turnover_rate) as ball_security,
+      metric(win_percentage) as winning_impact,
+      metric(home_court_advantage) as home_vs_away_differential,
+      metric(total_games_played) as sample_size
+    from entity('player_game')
+    group by player_full_name, position
+    having offensive_consistency >= 35
+      and defensive_contribution >= 20
+      and sample_size >= 40
+    order by court_impact desc, offensive_consistency desc
+  tags:
+    difficulty: MEDIUM
+
+# Team Game Performance Analytics (4) - Team Efficiency and Competitive Analysis
+
+- type: SQL
+  description: Evaluate organizational stability metrics by analyzing teams that excel at minimizing roster turnover while maximizing player retention.
+  input: Find teams with the most stable rosters - high loyalty, minimal turnover, and players who choose to return.
+  expected_output: |
+    select  
+      team_full_name,
+      metric(long_tenure_affiliations) as stability_score,
+      metric(short_stint_affiliations) as turnover_count,
+      metric(return_stint_count) as loyalty_returns,
+      metric(avg_affiliation_duration_years) as retention_strength,
+      metric(unique_players_count) as total_players,
+      metric(total_affiliations) as organizational_experience
+    from entity('player_team')
+    group by team_full_name
+    having stability_score >= 3 
+      and turnover_count <= 25
+      and retention_strength >= 1.5
+      and total_players >= 45
+    order by retention_strength desc, stability_score desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Analyze elite player loyalty patterns by examining career commitment depth and return behavior for talent retention insights.
+  input: Which players demonstrate the strongest organizational loyalty through sustained commitments and return patterns?
+  expected_output: |
+    select  
+      player_full_name,
+      metric(long_tenure_affiliations) as deep_commitments,
+      metric(return_stint_count) as loyalty_demonstrations,
+      metric(avg_affiliation_duration_years) as commitment_quality,
+      metric(calculated_return_stints) as proven_loyalty,
+      metric(teams_returned_to_count) as organizations_chosen,
+      metric(team_affiliations_list) as loyalty_story
+    from entity('player_team')
+    group by player_full_name
+    having deep_commitments >= 3 
+      and loyalty_demonstrations >= 1
+      and commitment_quality >= 5.0
+    order by commitment_quality desc, deep_commitments desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Evaluate defensive excellence by analyzing comprehensive defensive metrics to identify teams that control pace and limit opponents.
+  input: Find the most dominant defensive teams based on multiple defensive categories - rebounds, steals, blocks, and opponent efficiency.
+  expected_output: |
+    select  
+      team_full_name,
+      metric(avg_defensive_rebounds_per_game) as defensive_boards_per_game,
+      metric(avg_steals_per_game) as steals_per_game,
+      metric(avg_blocks_per_game) as blocks_per_game,
+      metric(avg_turnovers_per_game) as turnovers_forced,
+      metric(win_percentage) as defensive_success_rate,
+      metric(avg_plus_minus) as defensive_impact,
+      metric(games_played) as games_evaluated
+    from entity('team_game')
+    group by team_full_name
+    having games_evaluated >= 30
+      and defensive_success_rate >= 0.55
+    order by defensive_boards_per_game desc, steals_per_game desc
+    limit 15
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Analyze organizational excellence by identifying teams that demonstrate sustained competitive performance across multiple performance dimensions.
+  input: Which teams show true organizational excellence with consistent winning, efficiency, and balanced performance?
+  expected_output: |
+    select  
+      team_full_name,
+      metric(win_percentage) as competitive_excellence,
+      metric(avg_points_per_game) as offensive_consistency,
+      metric(avg_field_goal_percentage) as shooting_mastery,
+      metric(home_court_advantage) as venue_optimization,
+      metric(avg_plus_minus) as performance_differential,
+      metric(assist_to_turnover_ratio) as ball_control_ratio,
+      metric(games_played) as organizational_sample
+    from entity('team_game')
+    group by team_full_name
+    having competitive_excellence >= 0.55
+      and offensive_consistency >= 105
+      and shooting_mastery >= 0.45
+      and organizational_sample >= 50
+    order by competitive_excellence desc, performance_differential desc
+  tags:
+    difficulty: MEDIUM

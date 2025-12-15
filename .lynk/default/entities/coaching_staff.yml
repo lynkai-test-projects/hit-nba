@@ -1,0 +1,449 @@
+name: coaching_staff
+
+description: Fact table containing coaching staff assignments linking coaches to teams by season, representing all coaching appointments (head coaches and assistant coaches) and team coaching staff composition
+
+key_table: nba.public.coaching_staff
+
+keys:
+- team_id
+- season
+- coach_id
+
+features:
+
+# Assignment Identification Fields
+- type: field
+  name: team_id
+  data_type: number
+  source: nba.public.coaching_staff
+  description: Unique identifier for the team
+  field: team_id
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: season
+  data_type: string
+  source: nba.public.coaching_staff
+  description: NBA season identifier (string format, e.g., "2023-24")
+  field: season
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: season_year
+  data_type: number
+  source: nba.public.coaching_staff
+  description: NBA season year (ending year of the season, e.g., 2023 for 2023-24 season)
+  field: season_year
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: coach_id
+  data_type: number
+  source: nba.public.coaching_staff
+  description: Unique identifier for the coach
+  field: coach_id
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: coach_type
+  data_type: string
+  source: nba.public.coaching_staff
+  description: Type or role classification of the coach (Head Coach, Associate Head Coach, Lead Assistant Coach, Assistant Coach, Assistant Coach for Player Development)
+  field: coach_type
+  join_name: null
+  time_field: null
+  filters: []
+
+# Coach Information Fields (from coach entity via foreign key)
+- type: field
+  name: coach_name
+  data_type: string
+  source: coach
+  description: Coach's complete full name
+  field: coach_name
+  join_name: coach_to_coaching_staff
+  time_field: null
+  filters: []
+
+- type: field
+  name: first_name
+  data_type: string
+  source: coach
+  description: Coach's first name
+  field: first_name
+  join_name: coach_to_coaching_staff
+  time_field: null
+  filters: []
+
+- type: field
+  name: last_name
+  data_type: string
+  source: coach
+  description: Coach's last name
+  field: last_name
+  join_name: coach_to_coaching_staff
+  time_field: null
+  filters: []
+
+# Team Information Fields (from team entity)
+- type: field
+  name: team_full_name
+  data_type: string
+  source: team
+  description: Full name of the team (city and team name combined)
+  field: full_name
+  join_name: team_to_coaching_staff
+  time_field: null
+  filters: []
+
+- type: field
+  name: team_city
+  data_type: string
+  source: team
+  description: City where the team is located
+  field: city
+  join_name: team_to_coaching_staff
+  time_field: null
+  filters: []
+
+- type: field
+  name: team_nickname
+  data_type: string
+  source: team
+  description: Team nickname/mascot name
+  field: nickname
+  join_name: team_to_coaching_staff
+  time_field: null
+  filters: []
+
+# Season Information Fields (from season entity)
+- type: field
+  name: season_champion
+  data_type: string
+  source: season
+  description: Championship team for this season
+  field: champion_team
+  join_name: coaching_staff_to_season
+  time_field: null
+  filters: []
+
+# Formula Features for Coach Type Analysis
+- type: formula
+  name: is_head_coach
+  data_type: boolean
+  description: Whether the coach is a head coach
+  sql: |
+    UPPER(TRIM({coach_type})) = 'HEAD COACH'
+
+- type: formula
+  name: is_assistant_coach
+  data_type: boolean
+  description: Whether the coach is an assistant coach (any type)
+  sql: |
+    UPPER(TRIM({coach_type})) IN (
+      'ASSISTANT COACH',
+      'ASSISTANT COACH FOR PLAYER DEVELOPMENT',
+      'LEAD ASSISTANT COACH',
+      'ASSOCIATE HEAD COACH'
+    )
+
+- type: formula
+  name: is_associate_head_coach
+  data_type: boolean
+  description: Whether the coach is an associate head coach
+  sql: |
+    UPPER(TRIM({coach_type})) = 'ASSOCIATE HEAD COACH'
+
+- type: formula
+  name: is_lead_assistant_coach
+  data_type: boolean
+  description: Whether the coach is a lead assistant coach
+  sql: |
+    UPPER(TRIM({coach_type})) = 'LEAD ASSISTANT COACH'
+
+metrics:
+
+# Assignment Count Metrics
+- name: count_assignments
+  description: |
+    Count of coaching staff assignments.
+    - "Use for analyzing coaching activity and staff composition."
+    - "Filter by season_year to analyze coaching staffs by year."
+    - "Filter by team_id to analyze team coaching staffs."
+    - "Filter by coach_type to analyze specific coaching roles."
+  sql: 'COUNT(*)'
+
+# Coach Analysis Metrics
+- name: distinct_coaches
+  description: |
+    Count of distinct coaches.
+    - "Counts unique coaches in the dataset."
+    - "Useful for analyzing coach population."
+    - "Filter by coach_type to count coaches by role."
+  sql: 'COUNT(DISTINCT {coach_id})'
+
+# Team Analysis Metrics
+- name: distinct_teams
+  description: |
+    Count of distinct teams with coaching staff.
+    - "Counts unique teams with coaching assignments."
+    - "Useful for analyzing coaching staff coverage."
+  sql: 'COUNT(DISTINCT {team_id})'
+
+# Season Analysis Metrics
+- name: distinct_seasons
+  description: |
+    Count of distinct seasons with coaching staff data.
+    - "Counts unique seasons in the dataset."
+    - "Useful for analyzing temporal coverage."
+  sql: 'COUNT(DISTINCT {season})'
+
+# Coach Type Analysis
+- name: distinct_coach_types
+  description: |
+    Count of distinct coach types.
+    - "Counts unique coach type classifications."
+    - "Useful for analyzing coaching role diversity."
+  sql: 'COUNT(DISTINCT {coach_type})'
+
+- name: total_head_coach_seasons
+  description: |
+    Total number of distinct seasons coaches have served as head coach.
+    - "Calculates distinct seasons per coach when grouping by coach_id."
+    - "Useful for analyzing head coaching career length."
+  sql: "COUNT(DISTINCT CASE WHEN UPPER(TRIM({coach_type})) = 'HEAD COACH' THEN {season} END)"
+
+- name: total_head_coach_teams
+  description: |
+    Total number of distinct teams coaches have served as head coach.
+    - "Calculates distinct teams per coach when grouping by coach_id."
+    - "Useful for analyzing head coaching team diversity."
+  sql: "COUNT(DISTINCT CASE WHEN UPPER(TRIM({coach_type})) = 'HEAD COACH' THEN {team_id} END)"
+
+- name: total_coaches_count
+  description: |
+    Total number of distinct head coaches for a team.
+    - "Counts unique head coaches when grouping by team_id."
+    - "Useful for analyzing head coach diversity."
+  sql: "COUNT(DISTINCT CASE WHEN UPPER(TRIM({coach_type})) = 'HEAD COACH' THEN {coach_id} END)"
+
+# Assistant Coach Specific Metrics
+- name: assistant_coach_assignments_count
+  description: |
+    Count of assistant coach assignments (all types).
+    - "Counts assignments where coach_type is any assistant coach type."
+    - "Useful for analyzing assistant coaching activity."
+  sql: |
+    SUM(CASE WHEN UPPER(TRIM({coach_type})) IN (
+      'ASSISTANT COACH',
+      'ASSISTANT COACH FOR PLAYER DEVELOPMENT',
+      'LEAD ASSISTANT COACH',
+      'ASSOCIATE HEAD COACH'
+    ) THEN 1 ELSE 0 END)
+
+- name: distinct_assistant_coaches
+  description: |
+    Count of distinct assistant coaches.
+    - "Counts unique coaches who have served as assistant coach."
+    - "Useful for analyzing assistant coach population."
+  sql: |
+    COUNT(DISTINCT CASE WHEN UPPER(TRIM({coach_type})) IN (
+      'ASSISTANT COACH',
+      'ASSISTANT COACH FOR PLAYER DEVELOPMENT',
+      'LEAD ASSISTANT COACH',
+      'ASSOCIATE HEAD COACH'
+    ) THEN {coach_id} END)
+
+- name: total_assistant_seasons
+  description: |
+    Total number of distinct seasons coaches have served as assistant coach.
+    - "Calculates distinct seasons per coach when grouping by coach_id."
+    - "Useful for analyzing assistant coaching career length."
+  sql: |
+    COUNT(DISTINCT CASE WHEN UPPER(TRIM({coach_type})) IN (
+      'ASSISTANT COACH',
+      'ASSISTANT COACH FOR PLAYER DEVELOPMENT',
+      'LEAD ASSISTANT COACH',
+      'ASSOCIATE HEAD COACH'
+    ) THEN {season} END)
+
+- name: total_assistant_teams
+  description: |
+    Total number of distinct teams coaches have served as assistant coach.
+    - "Calculates distinct teams per coach when grouping by coach_id."
+    - "Useful for analyzing assistant coaching team diversity."
+  sql: |
+    COUNT(DISTINCT CASE WHEN UPPER(TRIM({coach_type})) IN (
+      'ASSISTANT COACH',
+      'ASSISTANT COACH FOR PLAYER DEVELOPMENT',
+      'LEAD ASSISTANT COACH',
+      'ASSOCIATE HEAD COACH'
+    ) THEN {team_id} END)
+
+# Average Metrics
+- name: avg_teams_per_coach
+  description: |
+    Average number of teams each coach has worked for.
+    - "Calculates average team diversity across coaches."
+    - "Higher values indicate coaches work for more teams throughout their careers."
+    - "Use this metric when grouping by coach_id to get per-coach averages."
+  sql: 'AVG({distinct_teams})'
+
+- name: avg_seasons_per_coach
+  description: |
+    Average number of seasons each coach has worked.
+    - "Calculates average career length for coaches."
+    - "Useful for understanding coaching career longevity."
+    - "Use this metric when grouping by coach_id to get per-coach averages."
+  sql: 'AVG({distinct_seasons})'
+
+# Career Span Metrics
+- name: earliest_coaching_season
+  description: |
+    Earliest season year with coaching staff data.
+    - "Identifies the earliest season with coaching assignments."
+    - "Useful for understanding historical coverage."
+  sql: 'MIN({season_year})'
+
+- name: latest_coaching_season
+  description: |
+    Most recent season year with coaching staff data.
+    - "Identifies the most recent season with coaching assignments."
+    - "Useful for understanding data recency."
+  sql: 'MAX({season_year})'
+
+# Coach Type Distribution Metrics
+- name: assignments_with_coach_type
+  description: |
+    Count of assignments with coach type specified.
+    - "Counts assignments with coach type classifications."
+    - "Useful for analyzing role distribution and data completeness."
+  sql: 'SUM(CASE WHEN {coach_type} IS NOT NULL THEN 1 ELSE 0 END)'
+
+- name: coach_type_coverage_percentage
+  description: |
+    Percentage of assignments with coach type specified.
+    - "Metrics completeness of coach type data."
+    - "Values range from 0-100%."
+    - "Useful for understanding data quality for coach type field."
+  sql: 'AVG(CASE WHEN {coach_type} IS NOT NULL THEN 100.0 ELSE 0.0 END)'
+
+# Coach Type Specific Counts
+- name: head_coach_count
+  description: |
+    Count of head coach assignments.
+    - "Counts assignments with coach_type = 'Head Coach'."
+  sql: "SUM(CASE WHEN UPPER(TRIM({coach_type})) = 'HEAD COACH' THEN 1 ELSE 0 END)"
+
+- name: associate_head_coach_count
+  description: |
+    Count of associate head coach assignments.
+    - "Counts assignments with coach_type = 'Associate Head Coach'."
+  sql: "SUM(CASE WHEN UPPER(TRIM({coach_type})) = 'ASSOCIATE HEAD COACH' THEN 1 ELSE 0 END)"
+
+- name: lead_assistant_coach_count
+  description: |
+    Count of lead assistant coach assignments.
+    - "Counts assignments with coach_type = 'Lead Assistant Coach'."
+  sql: "SUM(CASE WHEN UPPER(TRIM({coach_type})) = 'LEAD ASSISTANT COACH' THEN 1 ELSE 0 END)"
+
+- name: assistant_coach_count
+  description: |
+    Count of assistant coach assignments.
+    - "Counts assignments with coach_type = 'Assistant Coach'."
+  sql: "SUM(CASE WHEN UPPER(TRIM({coach_type})) = 'ASSISTANT COACH' THEN 1 ELSE 0 END)"
+
+- name: player_development_coach_count
+  description: |
+    Count of player development coach assignments.
+    - "Counts assignments with coach_type = 'Assistant Coach for Player Development'."
+  sql: "SUM(CASE WHEN UPPER(TRIM({coach_type})) = 'ASSISTANT COACH FOR PLAYER DEVELOPMENT' THEN 1 ELSE 0 END)"
+
+examples:
+- type: SQL
+  description: Coaching staff for a specific team in a season
+  input: Who were the coaches for the Lakers in 2023?
+  expected_output: |
+    SELECT 
+      coach_name,
+      team_full_name,
+      season_year,
+      coach_type
+    FROM entity('coaching_staff')
+    WHERE team_full_name = 'Los Angeles Lakers' AND season_year = 2023
+    ORDER BY coach_type;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Teams a coach has worked for
+  input: Which teams has a specific coach worked for?
+  expected_output: |
+    SELECT 
+      coach_name,
+      team_full_name,
+      season_year,
+      coach_type,
+      metric(distinct_teams) as teams_worked_for
+    FROM entity('coaching_staff')
+    WHERE coach_id = [coach_id]
+    GROUP BY coach_name, team_full_name, season_year, coach_type
+    ORDER BY season_year DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Coaching career summary
+  input: Show me the coaching career summary for all coaches
+  expected_output: |
+    SELECT 
+      coach_name,
+      metric(distinct_seasons) as seasons_coached,
+      metric(distinct_teams) as teams_worked_for,
+      metric(count_coaches) as total_assignments,
+      metric(head_coach_count) as head_coach_seasons,
+      metric(assistant_coach_assignments_count) as assistant_coach_seasons
+    FROM entity('coaching_staff')
+    GROUP BY coach_id, coach_name
+    ORDER BY seasons_coached DESC;
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Coaches by coach type
+  input: How many coaches are there by coach type?
+  expected_output: |
+    SELECT 
+      coach_type,
+      metric(distinct_coaches) as coach_count,
+      metric(count_assignments) as total_assignments
+    FROM entity('coaching_staff')
+    WHERE coach_type IS NOT NULL
+    GROUP BY coach_type
+    ORDER BY coach_count DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Head coaches only
+  input: Show me all head coaches for each team by season
+  expected_output: |
+    SELECT 
+      coach_name,
+      team_full_name,
+      season_year
+    FROM entity('coaching_staff')
+    WHERE coach_type = 'Head Coach'
+    ORDER BY season_year DESC, team_full_name;
+  tags:
+    difficulty: EASY
+
+related_sources: {}

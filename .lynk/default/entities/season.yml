@@ -1,0 +1,432 @@
+name: season
+
+description: Dimension table containing comprehensive NBA season information, championship results, and performance tags for each NBA season
+
+key_table: nba.public.season
+
+keys:
+- season_year
+
+features:
+
+# Season Identification Fields
+- type: field
+  name: season_year
+  data_type: number
+  source: nba.public.season
+  description: NBA season year identifier (e.g., 2023 for 2023-24 season)
+  field: season_year
+  join_name: null
+  time_field: null
+  filters: []
+
+# Regular Season MVP
+- type: field
+  name: regular_season_mvp
+  data_type: string
+  asset: nba.public.season
+  description: Full name of the NBA Most Valuable Player (MVP) for the regular season
+  field: REGULAR_SEASON_MVP
+  join_name: null
+  time_field: null
+  filters: []
+
+# Finals MVP
+- type: field
+  name: finals_mvp
+  data_type: string
+  asset: nba.public.season
+  description: Full name of the NBA Finals Most Valuable Player (Finals MVP) for the championship series
+  field: FINALS_MVP
+  join_name: null
+  time_field: null
+  filters: []
+
+# Championship Results Fields
+- type: field
+  name: champion_team
+  data_type: string
+  source: nba.public.season
+  description: Name of the NBA championship team for this season
+  field: champion_team
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: defeated_team
+  data_type: string
+  source: nba.public.season
+  description: Name of the team defeated in the NBA Finals
+  field: defeated_team
+  join_name: null
+  time_field: null
+  filters: []
+
+# Championship Series Performance Fields
+- type: field
+  name: champ_wins
+  data_type: number
+  source: nba.public.season
+  description: Number of games won by the championship team in the Finals
+  field: champ_wins
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: def_wins
+  data_type: number
+  source: nba.public.season
+  description: Number of games won by the defeated team in the Finals
+  field: def_wins
+  join_name: null
+  time_field: null
+  filters: []
+
+# Calculated Fields - Championship Analysis
+- type: formula
+  data_type: number
+  name: series_length
+  description: Total number of games played in the Finals series
+  sql: '{champ_wins} + {def_wins}'
+
+- type: formula
+  data_type: number
+  name: win_loss_balance
+  description: Difference between champion wins and defeated team wins (margin of victory)
+  sql: '{champ_wins} - {def_wins}'
+
+- type: formula
+  data_type: number
+  name: champion_win_percentage
+  description: Championship team's win percentage in the Finals series
+  sql: 'ROUND(CAST({champ_wins} AS DECIMAL) / CAST(({champ_wins} + {def_wins}) AS DECIMAL) * 100, 2)'
+
+- type: formula
+  data_type: boolean
+  name: is_sweep
+  description: Whether the Finals series was a sweep (4-0)
+  sql: 'CASE WHEN {def_wins} = 0 THEN true ELSE false END'
+
+- type: formula
+  data_type: boolean
+  name: is_seven_game_series
+  description: Whether the Finals series went to seven games
+  sql: 'CASE WHEN ({champ_wins} + {def_wins}) = 7 THEN true ELSE false END'
+
+- type: formula
+  data_type: boolean
+  name: is_close_series
+  description: Whether the Finals series was decided by 2 games or fewer
+  sql: 'CASE WHEN ABS({champ_wins} - {def_wins}) <= 2 THEN true ELSE false END'
+
+# Season Context Fields
+- type: formula
+  data_type: string
+  name: season_display
+  description: Human-readable season format (e.g., "2023-24")
+  sql: 'CONCAT({season_year}, ''-'', SUBSTR(CAST({season_year} + 1 AS STRING), 3, 2))'
+
+- type: formula
+  data_type: string
+  name: championship_matchup
+  description: Finals matchup description
+  sql: 'CONCAT({champion_team}, '' vs. '', {defeated_team})'
+
+- type: formula
+  data_type: string
+  name: series_result
+  description: Complete series result description
+  sql: 'CONCAT({champion_team}, '' defeated '', {defeated_team}, '' '', {champ_wins}, ''-'', {def_wins})'
+
+metrics:
+
+# Season Volume Metrics
+- name: count_seasons
+  description: |
+    Count of NBA seasons in the dataset
+    - "Use for analyzing historical coverage and dataset completeness."
+    - "Useful for understanding the span of championship data available."
+  sql: 'COUNT(*)'
+
+# Championship Analysis Metrics
+- name: avg_series_length
+  description: |
+    Average number of games in Finals series
+    - "Metrics competitive balance and series competitiveness over time."
+    - "Higher values indicate more competitive Finals series."
+  sql: 'AVG({champ_wins} + {def_wins})'
+
+- name: avg_win_margin
+  description: |
+    Average margin of victory in Finals series (games)
+    - "Metrics dominance level of championship teams."
+    - "Lower values indicate more competitive championships."
+  sql: 'AVG({champ_wins} - {def_wins})'
+
+- name: avg_champion_win_percentage
+  description: |
+    Average win percentage of championship teams in Finals
+    - "Metrics overall dominance of championship teams in Finals."
+  sql: 'AVG(CAST({champ_wins} AS DECIMAL) / CAST(({champ_wins} + {def_wins}) AS DECIMAL) * 100)'
+
+# Series Type Analysis
+- name: sweep_count
+  description: |
+    Number of Finals series that were sweeps (4-0)
+    - "Counts dominant championship performances."
+    - "Use to analyze competitive balance in Finals."
+  sql: 'SUM(CASE WHEN {def_wins} = 0 THEN 1 ELSE 0 END)'
+
+- name: sweep_percentage
+  description: |
+    Percentage of Finals series that were sweeps
+    - "Metrics frequency of dominant championship performances."
+  sql: 'AVG(CASE WHEN {def_wins} = 0 THEN 1.0 ELSE 0.0 END) * 100'
+
+- name: seven_game_series_count
+  description: |
+    Number of Finals series that went to seven games
+    - "Counts the most competitive Finals series."
+    - "Use to analyze historical competitiveness."
+  sql: 'SUM(CASE WHEN ({champ_wins} + {def_wins}) = 7 THEN 1 ELSE 0 END)'
+
+- name: seven_game_series_percentage
+  description: |
+    Percentage of Finals series that went to seven games
+    - "Metrics frequency of maximum-length Finals series."
+  sql: 'AVG(CASE WHEN ({champ_wins} + {def_wins}) = 7 THEN 1.0 ELSE 0.0 END) * 100'
+
+- name: close_series_count
+  description: |
+    Number of Finals series decided by 2 games or fewer
+    - "Counts competitive Finals series."
+    - "Use to analyze overall competitiveness trends."
+  sql: 'SUM(CASE WHEN ABS({champ_wins} - {def_wins}) <= 2 THEN 1 ELSE 0 END)'
+
+- name: close_series_percentage
+  description: |
+    Percentage of Finals series decided by 2 games or fewer
+    - "Metrics frequency of competitive championship series."
+  sql: 'AVG(CASE WHEN ABS({champ_wins} - {def_wins}) <= 2 THEN 1.0 ELSE 0.0 END) * 100'
+
+# Team Performance Metrics
+- name: most_championships
+  description: |
+    Maximum number of championships by any single team
+    - "Requires grouping by champion_team first to count per team."
+    - "Use in subqueries for dynasty analysis."
+  sql: 'MAX(team_championship_count.championship_count)'
+
+- name: unique_champions
+  description: |
+    Number of different teams that have won championships
+    - "Metrics competitive balance across franchises."
+    - "Higher values indicate more parity."
+  sql: 'COUNT(DISTINCT {champion_team})'
+
+- name: unique_finalists
+  description: |
+    Number of different teams that have reached Finals
+    - "Metrics breadth of Finals participation."
+    - "Use to analyze which teams consistently compete at highest level."
+  sql: 'COUNT(DISTINCT {champion_team}) + COUNT(DISTINCT {defeated_team}) - COUNT(DISTINCT CASE WHEN {champion_team} = {defeated_team} THEN {champion_team} END)'
+
+# Historical Analysis Metrics
+- name: earliest_season
+  description: |
+    Earliest season year in the dataset
+    - "Useful for understanding historical coverage."
+  sql: 'MIN({season_year})'
+
+- name: latest_season
+  description: |
+    Most recent season year in the dataset
+    - "Useful for understanding data recency."
+  sql: 'MAX({season_year})'
+
+- name: season_span
+  description: |
+    Number of years covered in the dataset
+    - "Metrics total historical coverage span."
+  sql: 'MAX({season_year}) - MIN({season_year}) + 1'
+
+# MVP Analysis Metrics
+- name: unique_regular_season_mvps
+  description: |
+    Number of different players who have won regular season MVP awards
+    - "Metrics diversity of MVP winners over time."
+    - "Higher values indicate more parity among MVP winners."
+  sql: 'COUNT(DISTINCT {regular_season_mvp})'
+
+- name: unique_finals_mvps
+  description: |
+    Number of different players who have won Finals MVP awards
+    - "Metrics diversity of Finals MVP winners over time."
+    - "Higher values indicate more parity among Finals MVP winners."
+  sql: 'COUNT(DISTINCT {finals_mvp})'
+
+related_sources: {}
+
+examples:
+- type: SQL
+  name: champions_chronological
+  description: List all NBA champions chronologically
+  input: Who won the NBA championship each year?
+  expected_output: |
+    SELECT 
+      season_year,
+      champion_team,
+      defeated_team,
+      champ_wins,
+      def_wins
+    FROM entity('season')
+    ORDER BY season_year DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: championships_by_team
+  description: Count championships by team
+  input: Which teams have won the most NBA championships?
+  expected_output: |
+    SELECT 
+      champion_team,
+      metric(count_seasons) as championship_count
+    FROM entity('season')
+    GROUP BY champion_team
+    ORDER BY championship_count DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: finals_series_competitiveness
+  description: Analyze Finals series competitiveness
+  input: What's the average length of NBA Finals series?
+  expected_output: |
+    SELECT 
+      metric(avg_series_length) as avg_games,
+      metric(seven_game_series_percentage) as seven_game_pct,
+      metric(sweep_percentage) as sweep_pct
+    FROM entity('season');
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: most_frequent_finalists
+  description: Teams that reached Finals most frequently
+  input: Which teams have appeared in the most NBA Finals?
+  expected_output: |
+    WITH finals_appearances AS (
+      SELECT champion_team as team_name FROM entity('season')
+      UNION ALL
+      SELECT defeated_team as team_name FROM entity('season')
+    )
+    SELECT 
+      team_name,
+      COUNT(*) as finals_appearances
+    FROM finals_appearances
+    GROUP BY team_name
+    ORDER BY finals_appearances DESC;
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: most_dominant_championships
+  description: Most dominant championship performances
+  input: Which championships were the most dominant?
+  expected_output: |
+    SELECT 
+      season_year,
+      champion_team,
+      defeated_team,
+      win_loss_balance as margin,
+      champion_win_percentage as win_pct,
+      is_sweep
+    FROM entity('season')
+    WHERE is_sweep = true
+    ORDER BY season_year DESC;
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: most_competitive_finals
+  description: Most competitive Finals series
+  input: Which Finals series were the most competitive?
+  expected_output: |
+    SELECT 
+      season_year,
+      champion_team,
+      defeated_team,
+      series_length,
+      win_loss_balance as margin
+    FROM entity('season')
+    WHERE is_seven_game_series = true
+    ORDER BY season_year DESC;
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: championship_trends_by_decade
+  description: Championship trends over decades
+  input: How has championship competitiveness changed over time?
+  expected_output: |
+    SELECT 
+      FLOOR(season_year / 10) * 10 as decade,
+      metric(avg_series_length) as avg_games,
+      metric(sweep_percentage) as sweep_pct,
+      metric(close_series_percentage) as competitive_pct
+    FROM entity('season')
+    GROUP BY decade
+    ORDER BY decade;
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: recent_championship_winners
+  description: Recent championship winners
+  input: Who won the championship in the last 10 years?
+  expected_output: |
+    SELECT 
+      season_year,
+      champion_team,
+      series_result
+    FROM entity('season')
+    WHERE season_year >= (SELECT MAX(season_year) - 9 FROM entity('season'))
+    ORDER BY season_year DESC;
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: teams_never_won_finals
+  description: Teams that never won despite reaching Finals
+  input: Which teams reached the Finals but never won?
+  expected_output: |
+    SELECT DISTINCT
+      defeated_team as team_name
+    FROM entity('season')
+    WHERE defeated_team NOT IN (
+      SELECT DISTINCT champion_team 
+      FROM entity('season')
+    )
+    ORDER BY team_name;
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: repeat_champions_analysis
+  description: Repeat champions analysis
+  input: Which teams won consecutive championships?
+  expected_output: |
+    SELECT 
+      s1.season_year as first_year,
+      s1.champion_team,
+      COUNT(*) as consecutive_years
+    FROM entity('season') s1
+    JOIN entity('season') s2 ON s1.champion_team = s2.champion_team
+      AND s2.season_year = s1.season_year + 1
+    GROUP BY s1.season_year, s1.champion_team
+    ORDER BY consecutive_years DESC, first_year DESC;
+  tags:
+    difficulty: HARD 

@@ -1,0 +1,87 @@
+# Default Domain Configuration
+
+name: "default"
+
+description: >
+  The central business domain containing core NBA data entities and widely-used 
+  semantic definitions that span across all other business domains. This domain 
+  establishes the foundational data model and common business language for NBA 
+  analytics, serving as the single source of truth for core basketball concepts 
+  and measurements.
+
+glossary:
+  
+  # Time Periods
+  regular_season: "Standard 82-game season (historically varies) excluding playoffs"
+  playoffs: "Post-season elimination tournament"
+  pre_season: "Exhibition games before regular season"
+  all_star: "Annual mid-season exhibition events and games"
+  finals: "Championship series between conference winners (best-of-seven)"
+  
+  # Championship Concepts
+  champion: "Team that wins the NBA Finals and championship for a given season"
+  championship_series: "Best-of-seven Finals series determining the NBA champion"
+  sweep: "Winning a playoff series 4-0 without opponent winning any games"
+  seven_game_series: "Playoff series that goes to maximum seven games"
+  season_mvp: "Most Valuable Player award for the NBA Finals series"
+  
+  # Game Context
+  home_team: "Team playing at their designated home venue"
+  away_team: "Team playing at opponent's venue (also: visiting team)"
+  conference: "Eastern or Western Conference grouping"
+  division: "Sub-conference groupings (Atlantic, Central, Southeast, Northwest, Pacific, Southwest)"
+  
+  # Basic Statistics
+  points: "Total points scored by player or team"
+  minutes: "Playing time in minutes and seconds format (MM:SS)"
+  field_goals: "Successful shots from the field (excluding free throws)"
+  free_throws: "Successful shots from free throw line"
+  rebounds: "Retrieved missed shots (offensive + defensive)"
+  assists: "Passes directly leading to made field goals"
+  steals: "Defensive plays resulting in possession change"
+  blocks: "Defensive rejection of opponent's shot attempt"
+  turnovers: "Loss of possession through error or violation"
+  fouls: "Rule violations resulting in penalty"
+
+  ## Advanced Statistics
+  PER (Player Efficiency Rating): Overall player performance metric
+  TS% (True Shooting Percentage): Shooting efficiency accounting for 2PT, 3PT, and FT
+  USG% (Usage Rate): Percentage of team possessions used by player
+  BPM (Box Plus/Minus): Player's contribution per 100 possessions
+  VORP (Value Over Replacement Player): Player's total value contribution
+  Win Shares: Estimated wins contributed by player
+  Offensive Rating: Points scored per 100 possessions
+  Defensive Rating: Points allowed per 100 possessions
+  Net Rating: Offensive Rating minus Defensive Rating
+  Pace: Estimated possessions per game
+  
+  # Advanced Concepts
+  efficiency: "Statistical metric of productivity relative to usage or opportunity"
+  pace: "Estimate of possessions per 48 minutes"
+  usage_rate: "Percentage of team plays used by a player while on court"
+  true_shooting: "Shooting efficiency accounting for 2pt, 3pt, and free throws"
+  
+  # Team Context
+  roster: "List of players under contract to a team for a given season"
+  starting_lineup: "Five players who begin a game on the court"
+  bench: "Reserve players not in starting lineup"
+  rotation: "Regular pattern of player substitutions during games"
+  coaching_staff: "Coaching staff assignments linking coaches to teams by season, encompassing all coaching roles (head coaches, associate head coaches, lead assistant coaches, assistant coaches, and player development coaches)"
+  head_coach: "Primary coach responsible for team strategy and game management (coach_type = 'Head Coach' in coaching_staff entity)"
+  assistant_coach: "Supporting coach who assists the head coach in various capacities (coach_type includes 'Assistant Coach', 'Lead Assistant Coach', 'Associate Head Coach', 'Assistant Coach for Player Development' in coaching_staff entity)"
+  
+  # League Structure
+  salary_cap: "Maximum total salary a team can pay its players"
+  draft_combine: "Annual event where NBA prospects undergo physical measurements and athletic testing"
+  draft_position: "Overall pick number in the NBA draft (lower numbers = higher picks)"
+  lottery_pick: "First 14 picks in the draft (picks 1-14)"
+  first_round: "First 30 picks in the draft (round 1)"
+  trade: "Exchange of player contracts between teams"
+  free_agency: "Period when player contracts expire and players can sign with any team"
+  
+  # Performance Context
+  win: "Game result where team scores more points than opponent"
+  loss: "Game result where team scores fewer points than opponent"
+  streak: "Consecutive games with same outcome (wins or losses)"
+  record: "Team's win-loss totals for a time period"
+  standings: "Ranking of teams by winning percentage within conference/division"

@@ -1,0 +1,262 @@
+name: franchise
+
+description: Dimension table containing historical franchise information, tracking team relocations, name changes, and franchise evolution over time
+
+key_table: nba.public.team_history
+
+keys:
+- team_id
+- year_founded
+
+features:
+
+# Franchise Identification Fields
+- type: field
+  name: team_id
+  data_type: number
+  source: nba.public.team_history
+  description: Unique identifier for the franchise/team
+  field: team_id
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: city
+  data_type: string
+  source: nba.public.team_history
+  description: City where the franchise was located during this period
+  field: city
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: nickname
+  data_type: string
+  source: nba.public.team_history
+  description: Team nickname/mascot name during this period
+  field: nickname
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: year_founded
+  data_type: number
+  source: nba.public.team_history
+  description: Year when this franchise iteration was founded or when the team moved to this city/name
+  field: year_founded
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: year_active_till
+  data_type: number
+  source: nba.public.team_history
+  description: Year when this franchise iteration ended (NULL if still active or current)
+  field: year_active_till
+  join_name: null
+  time_field: null
+  filters: []
+
+# Calculated Fields
+- type: formula
+  name: franchise_name
+  data_type: string
+  description: Complete franchise name (city + nickname)
+  sql: |
+    TRIM({city}) || ' ' || TRIM({nickname})
+
+- type: formula
+  name: years_active
+  data_type: number
+  description: Number of years this franchise iteration was active
+  sql: |
+    CASE 
+      WHEN {year_active_till} IS NOT NULL 
+      THEN {year_active_till} - {year_founded}
+      ELSE EXTRACT(YEAR FROM CURRENT_DATE) - {year_founded}
+    END
+
+- type: formula
+  name: is_current
+  data_type: boolean
+  description: Whether this franchise iteration is currently active
+  sql: |
+    CASE 
+      WHEN {year_active_till} IS NULL THEN TRUE
+      ELSE FALSE
+    END
+
+- type: formula
+  name: is_historical
+  data_type: boolean
+  description: Whether this franchise iteration is historical (no longer active)
+  sql: |
+    CASE 
+      WHEN {year_active_till} IS NOT NULL THEN TRUE
+      ELSE FALSE
+    END
+
+metrics:
+
+# Franchise Count Metrics
+- name: count_franchises
+  description: |
+    Count of franchise records
+    - "Use for analyzing franchise distribution and historical iterations"
+    - "Each record represents a franchise iteration (city/name combination)"
+  sql: 'COUNT(*)'
+
+- name: count_active_franchises
+  description: |
+    Count of currently active franchise iterations
+    - "Counts franchise records that are currently active (year_active_till IS NULL)"
+  sql: 'SUM(CASE WHEN {year_active_till} IS NULL THEN 1 ELSE 0 END)'
+
+- name: count_historical_franchises
+  description: |
+    Count of historical franchise iterations
+    - "Counts franchise records that are no longer active"
+  sql: 'SUM(CASE WHEN {year_active_till} IS NOT NULL THEN 1 ELSE 0 END)'
+
+# Franchise Duration Metrics
+- name: avg_franchise_duration
+  description: |
+    Average duration of franchise iterations in years
+    - "Calculates average years active for franchise iterations"
+    - "Useful for analyzing franchise stability"
+  sql: 'AVG({years_active})'
+
+- name: max_franchise_duration
+  description: |
+    Maximum duration of any franchise iteration in years
+    - "Finds the longest-lasting franchise iteration"
+  sql: 'MAX({years_active})'
+
+- name: min_franchise_duration
+  description: |
+    Minimum duration of any franchise iteration in years
+    - "Finds the shortest-lasting franchise iteration"
+  sql: 'MIN({years_active})'
+
+# Geographic Metrics
+- name: distinct_cities
+  description: |
+    Count of unique cities where franchises have been located
+    - "Metrics geographic diversity of franchise locations"
+  sql: 'COUNT(DISTINCT {city})'
+
+- name: distinct_nicknames
+  description: |
+    Count of unique team nicknames across franchise history
+    - "Metrics the variety of team names used"
+  sql: 'COUNT(DISTINCT {nickname})'
+
+# Temporal Metrics
+- name: oldest_franchise_year
+  description: |
+    Earliest founding year across all franchise iterations
+    - "Identifies the oldest franchise founding year"
+  sql: 'MIN({year_founded})'
+
+- name: most_recent_founding_year
+  description: |
+    Most recent founding year across all franchise iterations
+    - "Identifies the most recent franchise founding year"
+  sql: 'MAX({year_founded})'
+
+related_sources: {}
+
+examples:
+- type: SQL
+  description: All franchise iterations for a specific team
+  input: Show me all franchise iterations for team ID 1610612747
+  expected_output: |
+    SELECT 
+      team_id,
+      city,
+      nickname,
+      franchise_name,
+      year_founded,
+      year_active_till,
+      years_active,
+      is_current
+    FROM entity('franchise')
+    WHERE team_id = 1610612747
+    ORDER BY year_founded;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Currently active franchises
+  input: Which franchises are currently active?
+  expected_output: |
+    SELECT 
+      team_id,
+      franchise_name,
+      city,
+      nickname,
+      year_founded,
+      years_active
+    FROM entity('franchise')
+    WHERE is_current = TRUE
+    ORDER BY year_founded;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Historical franchises by duration
+  input: What are the longest-lasting franchise iterations?
+  expected_output: |
+    SELECT 
+      team_id,
+      franchise_name,
+      city,
+      nickname,
+      year_founded,
+      year_active_till,
+      years_active
+    FROM entity('franchise')
+    WHERE is_historical = TRUE
+    ORDER BY years_active DESC
+    LIMIT 10;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Franchise relocations
+  input: Which franchises have changed cities?
+  expected_output: |
+    SELECT 
+      team_id,
+      city,
+      nickname,
+      year_founded,
+      year_active_till
+    FROM entity('franchise')
+    WHERE team_id IN (
+      SELECT team_id 
+      FROM entity('franchise')
+      GROUP BY team_id
+      HAVING COUNT(DISTINCT city) > 1
+    )
+    ORDER BY team_id, year_founded;
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  description: Franchise count by team
+  input: How many franchise iterations has each team had?
+  expected_output: |
+    SELECT 
+      team_id,
+      metric(count_franchises) as franchise_iterations
+    FROM entity('franchise')
+    GROUP BY team_id
+    ORDER BY franchise_iterations DESC;
+  tags:
+    difficulty: EASY
+

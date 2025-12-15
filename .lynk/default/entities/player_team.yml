@@ -1,0 +1,393 @@
+name: player_team
+
+description: Fact table containing player team affiliation periods and tenure information, representing complete player career team history
+
+key_table: nba.public.player_team_stats
+
+keys:
+- affiliation_id
+
+features:
+
+# Affiliation Identification Fields
+- type: field
+  name: affiliation_id
+  data_type: string
+  source: nba.public.player_team_stats
+  description: Unique identifier for each player-team affiliation stint
+  field: affiliation_id
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: person_id
+  data_type: string
+  source: nba.public.player_team_stats
+  description: Unique identifier for the player
+  field: person_id
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: player_full_name
+  data_type: string
+  source: player
+  description: Player's complete full name (computed from first + last name)
+  field: full_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: team_full_name
+  data_type: string
+  source: nba.public.player_team_stats
+  description: Full name of the team (city and team name combined)
+  field: team_full_name
+  join_name: null
+  time_field: null
+  filters: []
+
+# Date and Duration Fields
+- type: field
+  name: start_date
+  data_type: datetime
+  source: nba.public.player_team_stats
+  description: Start date of the player's affiliation with the team
+  field: start_date
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: end_date
+  data_type: datetime
+  source: nba.public.player_team_stats
+  description: End date of the player's affiliation with the team (null if ongoing)
+  field: end_date
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: start_season_year
+  data_type: number
+  source: nba.public.player_team_stats
+  description: Starting season year of the affiliation
+  field: start_season_year
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: end_season_year
+  data_type: number
+  source: nba.public.player_team_stats
+  description: Ending season year of the affiliation
+  field: end_season_year
+  join_name: null
+  time_field: null
+  filters: []
+
+# Performance and Duration Metrics
+- type: field
+  name: games_played
+  data_type: number
+  source: nba.public.player_team_stats
+  description: Total games played during this team affiliation period
+  field: games_played
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: tenure_days
+  data_type: number
+  source: nba.public.player_team_stats
+  description: Duration of the affiliation in days
+  field: tenure_days
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: tenure_years
+  data_type: number
+  source: nba.public.player_team_stats
+  description: Duration of the affiliation in years
+  field: tenure_years
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: seasons_count
+  data_type: number
+  source: nba.public.player_team_stats
+  description: Number of seasons spanned by this affiliation
+  field: seasons_count
+  join_name: null
+  time_field: null
+  filters: []
+
+# Categorical and Boolean Fields
+- type: field
+  name: is_return_stint
+  data_type: boolean
+  source: nba.public.player_team_stats
+  description: Whether this is a return stint with a team the player previously played for
+  field: is_return_stint
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: is_first_stint
+  data_type: boolean
+  source: nba.public.player_team_stats
+  description: Whether this is the player's first recorded team affiliation
+  field: is_first_stint
+  join_name: null
+  time_field: null
+  filters: []
+
+# System Fields
+- type: field
+  name: created_at
+  data_type: datetime
+  source: nba.public.player_team_stats
+  description: Timestamp when the record was created
+  field: created_at
+  join_name: null
+  time_field: null
+  filters: []
+
+# Calculated Fields
+- type: formula
+  name: is_long_tenure
+  data_type: boolean
+  description: Whether this affiliation lasted more than 3 years
+  sql: |
+    case when coalesce({tenure_years}, 0) > 3 then true else false end
+
+- type: formula
+  name: is_short_stint
+  data_type: boolean
+  description: Whether this affiliation lasted less than 1 year
+  sql: |
+    case when coalesce({tenure_years}, 0) < 1 then true else false end
+
+- type: formula
+  name: affiliation_decade
+  data_type: string
+  description: Decade bucket of stint start date (e.g., 1990s, 2000s)
+  sql: |
+    to_varchar(floor(year({start_date})/10)*10) || 's'
+
+- type: formula
+  name: is_draft_team
+  data_type: boolean
+  description: Whether this stint is with the player's original draft team
+  sql: 'coalesce({is_draft_team}, false)'
+
+metrics:
+
+# Basic Counting Metrics
+- name: total_affiliations
+  description: |
+    Total number of player-team stints
+    - "Counts all player-team affiliation records"
+    - "Use for analyzing player movement patterns"
+  sql: 'COUNT(*)'
+
+- name: avg_affiliation_duration_years
+  description: |
+    Average stint duration in years
+    - "Metrics average length of team commitments"
+    - "Higher values indicate more stable careers"
+  sql: 'AVG({tenure_years})'
+
+- name: avg_games_per_affiliation
+  description: |
+    - "Average games played per team affiliation"
+    - "Indicates typical stint length in terms of games"
+    Average number of games per stint
+  sql: 'AVG({games_played})'
+
+- name: total_games_all_affiliations
+  description: |
+    Total number of games across all stints
+    - "Total career games across all team affiliations"
+  sql: 'SUM({games_played})'
+
+# Team Movement Analysis
+- name: distinct_teams_count
+  description: |
+    Number of distinct teams across stints
+    - "Counts unique teams a player has been affiliated with"
+    - "Lower values indicate more loyalty"
+  sql: 'COUNT(DISTINCT {team_full_name})'
+
+- name: team_changes
+  description: |
+    Number of times the player changed teams
+    - "Counts team changes (distinct teams minus one)"
+    - "Zero means player stayed with one team"
+  sql: 'GREATEST(COUNT(DISTINCT {team_full_name}) - 1, 0)'
+
+- name: team_affiliations_list
+  description: |
+    Comma-separated list of distinct team names across stints
+    - "Provides readable list of all teams"
+  sql: "LISTAGG(DISTINCT {team_full_name}, ', ') WITHIN GROUP (ORDER BY {team_full_name})"
+
+# Stint Type Analysis
+- name: return_stint_count
+  description: |
+    Count of return stints (using database field)
+    - "Counts stints marked as returns to previous teams"
+  sql: 'SUM(CASE WHEN {is_return_stint} THEN 1 ELSE 0 END)'
+
+- name: calculated_return_stints
+  description: |
+    Calculated return stints (total stints minus distinct teams)
+    - "Calculates return stints mathematically"
+  sql: 'GREATEST(COUNT(*) - COUNT(DISTINCT {team_full_name}), 0)'
+
+- name: teams_returned_to_count
+  description: |
+    Number of teams this player returned to (had multiple stints with)
+    - "Counts teams with multiple stints"
+    - "For player-level analysis only"
+  sql: |
+    COUNT(DISTINCT CASE WHEN 
+      (SELECT COUNT(*) 
+       FROM nba.public.player_team_stats pts2 
+       WHERE pts2.person_id = {person_id} 
+       AND pts2.team_full_name = {team_full_name}) > 1 
+    THEN {team_full_name} END)
+
+- name: unique_players_count
+  description: |
+    Number of distinct players who have had affiliations with teams
+    - "Counts unique players affiliated with teams"
+    - "Useful for team-level roster analysis"
+  sql: 'COUNT(DISTINCT {person_id})'
+
+- name: first_stints_count
+  description: |
+    Count of stints that are the player's first stint
+    - "Counts first career stints"
+  sql: 'SUM(CASE WHEN {is_first_stint} THEN 1 ELSE 0 END)'
+
+# Tenure Analysis
+- name: long_tenure_affiliations
+  description: |
+    Count of long-tenure stints (>3 years)
+    - "Counts stints lasting more than 3 years"
+    - "Indicates player-team stability"
+  sql: 'SUM(CASE WHEN {is_long_tenure} THEN 1 ELSE 0 END)'
+
+- name: short_stint_affiliations
+  description: |
+    Count of short stints (<1 year and ended)
+    - "Counts brief affiliations"
+    - "May indicate trades or roster moves"
+  sql: 'SUM(CASE WHEN {is_short_stint} THEN 1 ELSE 0 END)'
+
+- name: draft_affiliations_count
+  description: |
+    Count of draft team stints
+    - "Counts stints with original draft team"
+  sql: 'SUM(CASE WHEN {is_draft_team} THEN 1 ELSE 0 END)'
+
+# Advanced Metrics
+- name: stint_verification
+  description: |
+    Average stints per team (verification metric)
+    - "Shows average stints per team"
+    - "Values >1 indicate return stints"
+  sql: 'COUNT(*) * 1.0 / NULLIF(COUNT(DISTINCT {team_full_name}), 0)'
+
+- name: avg_tenure_days
+  description: |
+    Average tenure duration in days
+    - "Average stint length in days"
+  sql: 'AVG({tenure_days})'
+
+- name: total_tenure_days
+  description: |
+    Total tenure across all affiliations in days
+    - "Total career days across all teams"
+  sql: 'SUM({tenure_days})'
+
+- name: avg_seasons_per_stint
+  description: |
+    Average seasons per team affiliation
+    - "Average seasons covered per stint"
+  sql: 'AVG({seasons_count})'
+
+- name: total_seasons_all_stints
+  description: |
+    Total seasons across all affiliations
+    - "Total seasons across all team affiliations"
+  sql: 'SUM({seasons_count})'
+
+related_sources: {}
+
+examples:
+- type: SQL
+  name: player_career_team_movement
+  description: Player career team movement analysis
+  input: Show me players who have played for the most teams
+  expected_output: |
+    SELECT 
+      person_id,
+      metric(distinct_teams_count) as teams_played_for,
+      metric(team_changes) as team_changes,
+      metric(total_affiliations) as total_stints,
+      metric(team_affiliations_list) as teams_list
+    FROM entity('player_team')
+    GROUP BY person_id
+    ORDER BY teams_played_for DESC
+    LIMIT 20;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: team_loyalty_analysis
+  description: Team loyalty analysis
+  input: Which players have the longest average tenure with their teams?
+  expected_output: |
+    SELECT 
+      person_id,
+      team_full_name,
+      metric(avg_affiliation_duration_years) as avg_tenure_years,
+      metric(long_tenure_affiliations) as long_stints,
+      metric(total_affiliations) as total_stints
+    FROM entity('player_team')
+    GROUP BY person_id, team_full_name
+    HAVING avg_tenure_years >= 5
+    ORDER BY avg_tenure_years DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: return_stint_analysis
+  description: Return stint analysis for player loyalty patterns
+  input: Analyze players who frequently return to teams - show those with multiple return stints
+  expected_output: |
+    SELECT 
+      person_id,
+      metric(return_stint_count) as return_stints,
+      metric(teams_returned_to_count) as teams_returned_to,
+      metric(distinct_teams_count) as total_teams,
+      metric(team_affiliations_list) as career_teams
+    FROM entity('player_team')
+    GROUP BY person_id
+    HAVING return_stints >= 2
+    ORDER BY return_stints DESC, teams_returned_to DESC;
+  tags:
+    difficulty: MEDIUM 

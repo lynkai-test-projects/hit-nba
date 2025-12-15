@@ -1,0 +1,934 @@
+name: game
+
+features:
+- type: field
+  name: game_id
+  description: Unique identifier for each NBA game
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: game_id
+- type: field
+  name: game_date
+  description: Date when the game was played
+  data_type: datetime
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: game_date
+- type: field
+  name: season_id
+  description: Identifier for the NBA season (e.g., 2023 for 2023-24 season)
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: season_id
+- type: field
+  name: season_type
+  description: Type of season game (Regular Season, Playoffs, All-Star, Pre Season)
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: season_type
+- type: field
+  name: team_id_away
+  description: Unique identifier for the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: team_id_away
+- type: field
+  name: team_name_away
+  description: Full name of the away team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: team_name_away
+- type: field
+  name: team_abbreviation_away
+  description: Abbreviated name of the away team (e.g., LAL, BOS)
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: team_abbreviation_away
+- type: field
+  name: team_id_home
+  description: Unique identifier for the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: team_id_home
+- type: field
+  name: team_name_home
+  description: Full name of the home team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: team_name_home
+- type: field
+  name: team_abbreviation_home
+  description: Abbreviated name of the home team (e.g., LAL, BOS)
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: team_abbreviation_home
+- type: field
+  name: matchup_away
+  description: Matchup description for the away team (e.g., "vs. BOS")
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: matchup_away
+- type: field
+  name: matchup_home
+  description: Matchup description for the home team (e.g., "vs. LAL")
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: matchup_home
+- type: field
+  name: min
+  description: Minutes played in the game
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: min
+- type: field
+  name: pts_away
+  description: Total points scored by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: pts_away
+- type: field
+  name: fgm_away
+  description: Field goals made by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fgm_away
+- type: field
+  name: fga_away
+  description: Field goal attempts by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fga_away
+- type: field
+  name: fg_pct_away
+  description: Field goal percentage for the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fg_pct_away
+- type: field
+  name: fg3m_away
+  description: Three-point field goals made by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fg3m_away
+- type: field
+  name: fg3a_away
+  description: Three-point field goal attempts by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fg3a_away
+- type: field
+  name: fg3_pct_away
+  description: Three-point field goal percentage for the away team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fg3_pct_away
+- type: field
+  name: ftm_away
+  description: Free throws made by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: ftm_away
+- type: field
+  name: fta_away
+  description: Free throw attempts by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fta_away
+- type: field
+  name: ft_pct_away
+  description: Free throw percentage for the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: ft_pct_away
+- type: field
+  name: pts_home
+  description: Total points scored by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: pts_home
+- type: field
+  name: fgm_home
+  description: Field goals made by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fgm_home
+- type: field
+  name: fga_home
+  description: Field goal attempts by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fga_home
+- type: field
+  name: fg_pct_home
+  description: Field goal percentage for the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fg_pct_home
+- type: field
+  name: fg3m_home
+  description: Three-point field goals made by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fg3m_home
+- type: field
+  name: fg3a_home
+  description: Three-point field goal attempts by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fg3a_home
+- type: field
+  name: fg3_pct_home
+  description: Three-point field goal percentage for the home team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fg3_pct_home
+- type: field
+  name: ftm_home
+  description: Free throws made by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: ftm_home
+- type: field
+  name: fta_home
+  description: Free throw attempts by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: fta_home
+- type: field
+  name: ft_pct_home
+  description: Free throw percentage for the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: ft_pct_home
+- type: field
+  name: reb_away
+  description: Total rebounds by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: reb_away
+- type: field
+  name: oreb_away
+  description: Offensive rebounds by the away team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: oreb_away
+- type: field
+  name: dreb_away
+  description: Defensive rebounds by the away team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: dreb_away
+- type: field
+  name: reb_home
+  description: Total rebounds by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: reb_home
+- type: field
+  name: oreb_home
+  description: Offensive rebounds by the home team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: oreb_home
+- type: field
+  name: dreb_home
+  description: Defensive rebounds by the home team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: dreb_home
+- type: field
+  name: ast_away
+  description: Assists by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: ast_away
+- type: field
+  name: stl_away
+  description: Steals by the away team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: stl_away
+- type: field
+  name: blk_away
+  description: Blocks by the away team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: blk_away
+- type: field
+  name: tov_away
+  description: Turnovers by the away team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: tov_away
+- type: field
+  name: pf_away
+  description: Personal fouls by the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: pf_away
+- type: field
+  name: plus_minus_away
+  description: Plus/minus rating for the away team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: plus_minus_away
+- type: field
+  name: ast_home
+  description: Assists by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: ast_home
+- type: field
+  name: stl_home
+  description: Steals by the home team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: stl_home
+- type: field
+  name: blk_home
+  description: Blocks by the home team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: blk_home
+- type: field
+  name: tov_home
+  description: Turnovers by the home team
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: tov_home
+- type: field
+  name: pf_home
+  description: Personal fouls by the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: pf_home
+- type: field
+  name: plus_minus_home
+  description: Plus/minus rating for the home team
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: plus_minus_home
+- type: field
+  name: wl_away
+  description: Win/Loss result for the away team (W or L)
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: wl_away
+- type: field
+  name: wl_home
+  description: Win/Loss result for the home team (W or L)
+  data_type: string
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: wl_home
+- type: field
+  name: video_available_away
+  description: Whether video is available for the away team (1 = available, 0 = not
+    available)
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: video_available_away
+- type: field
+  name: video_available_home
+  description: Whether video is available for the home team (1 = available, 0 = not
+    available)
+  data_type: number
+  source: nba.public.game
+  join_name: null
+  time_field: null
+  filters: []
+  field: video_available_home
+- type: formula
+  name: season_year
+  description: season year. use this when a user asks questions that require season.
+  data_type: number
+  sql: substring({season_id}, 2)
+- type: formula
+  name: total_points
+  description: Total points scored in the game (home + away teams)
+  data_type: number
+  sql: '{pts_home} + {pts_away}'
+- type: formula
+  name: point_margin
+  description: Signed point margin (home team points minus away team points)
+  data_type: number
+  sql: '{pts_home} - {pts_away}'
+- type: formula
+  name: point_margin_abs
+  description: Absolute point margin for blowout detection
+  data_type: number
+  sql: ABS({pts_home} - {pts_away})
+- type: field
+  name: ot1_points_home_game
+  description: Home team points in first overtime (per game)
+  data_type: number
+  source: nba.public.line_score
+  join_name: game_id_line_score__team_home
+  time_field: null
+  filters: []
+  field: pts_ot1_home
+- type: field
+  name: ot1_points_away_game
+  description: Away team points in first overtime (per game)
+  data_type: number
+  source: nba.public.line_score
+  join_name: game_id_line_score__team_away
+  time_field: null
+  filters: []
+  field: pts_ot1_away
+- type: formula
+  name: is_overtime_game
+  description: Whether the game went to overtime (either team scored in OT1)
+  data_type: boolean
+  sql: |
+    case when coalesce({ot1_points_home_game}, 0) > 0 or coalesce({ot1_points_away_game}, 0) > 0 then true else false end
+- type: field
+  name: q4_points_home_game
+  description: Home team points scored in the 4th quarter (per game)
+  data_type: number
+  source: nba.public.line_score
+  join_name: game_id_line_score__team_home
+  time_field: null
+  filters: []
+  field: pts_qtr4_home
+- type: metric
+  name: avg_q4_scoring_home
+  description: Average 4th quarter points scored by home team
+  data_type: number
+  source: nba.public.line_score
+  join_name: game_id_line_score__team_home
+  time_field: null
+  filters: []
+  metric: avg_q4_scoring_home
+- type: field
+  name: q4_points_away_game
+  description: Away team points scored in the 4th quarter (per game)
+  data_type: number
+  source: nba.public.line_score
+  join_name: game_id_line_score__team_away
+  time_field: null
+  filters: []
+  field: pts_qtr4_away
+- type: metric
+  name: avg_q4_scoring_away
+  description: Average 4th quarter points scored by away team
+  data_type: number
+  source: nba.public.line_score
+  join_name: game_id_line_score__team_away
+  time_field: null
+  filters: []
+  metric: avg_q4_scoring_away
+- type: metric
+  name: officials_per_game
+  description: Number of officials assigned to each game
+  data_type: number
+  source: nba.public.officials
+  join_name: game_id_officials
+  time_field: null
+  filters: []
+  metric: count_assignments
+- type: field
+  name: attendance
+  description: Reported attendance for the game
+  data_type: number
+  source: nba.public.game_info
+  join_name: game_id_info
+  time_field: null
+  filters: []
+  field: attendance
+- type: metric
+  name: total_game_points
+  description: Total points scored by all players in this game
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_points
+- type: metric
+  name: total_game_assists
+  description: Total assists by all players in this game
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_assists
+- type: metric
+  name: total_game_rebounds
+  description: Total rebounds by all players in this game
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: total_rebounds
+- type: metric
+  name: game_double_doubles
+  description: Number of double-doubles achieved in this game
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: double_doubles_count
+- type: metric
+  name: game_triple_doubles
+  description: Number of triple-doubles achieved in this game
+  data_type: number
+  source: player_game
+  join_name: null
+  time_field: null
+  filters: []
+  metric: triple_doubles_count
+
+metrics:
+- name: count_games
+  description: Count of games played
+  sql: COUNT(*)
+  examples: []
+  comments:
+  - Use for analyzing game volume and scheduling patterns.
+  - Filter by season_type to compare Regular Season vs Playoffs.
+  summary: null
+- name: total_game_points_scored
+  description: Total points scored across all games
+  sql: SUM(COALESCE({total_game_points}, {pts_home} + {pts_away}))
+  examples: []
+  comments:
+  - Aggregates all points scored in games, using player statistics when available.
+  - Falls back to direct game points for games without player stats (e.g., All-Star
+    games).
+  - Useful for analyzing total offensive output across periods.
+  summary: null
+- name: avg_game_points_scored
+  description: Average points scored per game
+  sql: AVG(COALESCE({total_game_points}, {pts_home} + {pts_away}))
+  examples: []
+  comments:
+  - Calculates average scoring per game, using player statistics when available.
+  - Falls back to direct game points for games without player stats (e.g., All-Star
+    games).
+  - Useful for analyzing pace and offensive trends over time.
+  summary: null
+- name: count_assignments
+  description: Total number of officials assigned across all games
+  sql: SUM({officials_per_game})
+  examples: []
+  comments:
+  - Aggregates officials assignments across games.
+  - Useful for referee assignment analysis.
+  summary: null
+- name: avg_officials_assigned
+  description: Average number of officials assigned per game
+  sql: AVG({officials_per_game})
+  examples: []
+  comments:
+  - Metrics average officiating capacity per game.
+  - Useful for understanding referee assignment patterns.
+  summary: null
+- name: avg_total_points
+  description: Average total points scored per game (home + away teams)
+  sql: AVG({pts_home} + {pts_away})
+  examples: []
+  comments:
+  - Key metric for analyzing offensive trends and game pace.
+  - Higher values indicate more offensive-oriented games.
+  summary: null
+- name: sum_total_points
+  description: Sum of total points scored across all games
+  sql: SUM({pts_home} + {pts_away})
+  examples: []
+  comments:
+  - Use for total scoring volume analysis.
+  summary: null
+- name: avg_q4_scoring_home
+  description: Average 4th quarter points by home team, aggregated by team
+  sql: AVG({q4_points_home_game})
+  examples: []
+  comments:
+  - Team-level aggregation over per-game home Q4 scoring metric.
+  summary: null
+- name: avg_q4_scoring_away
+  description: Average 4th quarter points by away team, aggregated by team
+  sql: AVG({q4_points_away_game})
+  examples: []
+  comments:
+  - Team-level aggregation over per-game away Q4 scoring metric.
+  summary: null
+- name: avg_point_differential
+  description: Average point differential (home team points - away team points)
+  sql: AVG({pts_home} - {pts_away})
+  examples: []
+  comments:
+  - Positive values indicate home team advantage.
+  - Use to analyze home court advantage and team dominance.
+  summary: null
+- name: avg_field_goal_percentage
+  description: Average field goal percentage across both teams
+  sql: AVG(({fg_pct_home} + {fg_pct_away}) / 2)
+  examples: []
+  comments:
+  - Metrics overall shooting efficiency in games.
+  - Higher percentages indicate better offensive execution.
+  summary: null
+- name: avg_three_point_percentage
+  description: Average three-point percentage across both teams
+  sql: AVG((CAST({fg3_pct_home} AS DECIMAL) + CAST({fg3_pct_away} AS DECIMAL)) / 2)
+  examples: []
+  comments:
+  - Metrics three-point shooting efficiency.
+  - 'Note: Some fg3_pct fields may be stored as strings.'
+  summary: null
+- name: avg_possessions
+  description: Average estimated possessions per game (based on field goal attempts
+    and free throw attempts)
+  sql: AVG(({fga_home} + {fga_away}) + 0.44 * ({fta_home} + {fta_away}))
+  examples: []
+  comments:
+  - Estimates game pace using field goal and free throw attempts.
+  - Higher values indicate faster-paced games.
+  summary: null
+- name: avg_total_rebounds
+  description: Average total rebounds per game (home + away teams)
+  sql: AVG({reb_home} + {reb_away})
+  examples: []
+  comments:
+  - Metrics overall rebounding activity in games.
+  summary: null
+- name: avg_total_assists
+  description: Average total assists per game (home + away teams)
+  sql: AVG({ast_home} + {ast_away})
+  examples: []
+  comments:
+  - Metrics ball movement and team play.
+  summary: null
+- name: home_win_percentage
+  description: Percentage of games won by home teams
+  sql: |
+    AVG(CASE WHEN {wl_home} = 'W' THEN 1 ELSE 0 END) * 100
+  examples: []
+  comments:
+  - Metrics home court advantage effectiveness.
+  - Values above 50% indicate home court advantage.
+  summary: null
+- name: avg_game_minutes
+  description: Average minutes played per game
+  sql: AVG({min})
+  examples: []
+  comments:
+  - Metrics actual game duration in minutes.
+  - Useful for scheduling and broadcast planning.
+  summary: null
+- name: total_away_wins
+  description: Total wins for teams playing away
+  sql: |
+    SUM(CASE WHEN {wl_away} = 'W' THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Counts total away wins for win-loss analysis.
+  summary: null
+- name: total_away_losses
+  description: Total losses for teams playing away
+  sql: |
+    SUM(CASE WHEN {wl_away} = 'L' THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Counts total away losses for win-loss analysis.
+  summary: null
+- name: total_home_wins
+  description: Wins per team per season
+  sql: |
+    SUM(CASE WHEN {wl_home} = 'W' THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Seasonal win totals for team performance analysis.
+  summary: null
+- name: total_home_losses
+  description: Losses per team per season
+  sql: |
+    SUM(CASE WHEN {wl_home} = 'L' THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Seasonal loss totals for team performance analysis.
+  summary: null
+- name: away_win_percentage
+  description: Away game win percentage
+  sql: |
+    AVG(CASE WHEN {wl_away} = 'W' THEN 1.0 ELSE 0.0 END)
+  examples: []
+  comments:
+  - Metrics performance away from home court.
+  summary: null
+- name: home_court_advantage
+  description: Difference between home and away win percentages
+  sql: "(AVG(CASE WHEN {wl_home} = 'W' THEN 1.0 ELSE 0.0 END) - \n    AVG(CASE WHEN\
+    \ {wl_away} = 'W' THEN 1.0 ELSE 0.0 END))\n"
+  examples: []
+  comments:
+  - Quantifies home court advantage effect.
+  summary: null
+- name: avg_attendance
+  description: Average game attendance
+  sql: AVG({attendance})
+  examples: []
+  comments:
+  - Metrics fan engagement through attendance.
+  summary: null
+- name: max_attendance
+  description: Maximum game attendance
+  sql: MAX({attendance})
+  examples: []
+  comments:
+  - Tracks peak attendance figures.
+  summary: null
+- name: avg_margin_of_victory
+  description: Average margin of victory (absolute point differential)
+  sql: AVG(ABS({pts_home} - {pts_away}))
+  examples: []
+  comments:
+  - Metrics competitiveness of games.
+  summary: null
+- name: close_game_wins_home
+  description: "Number of close game wins (\u22645 points) for home teams"
+  sql: SUM(CASE WHEN ABS({pts_home} - {pts_away}) <= 5 AND {pts_home} > {pts_away}
+    THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Metrics clutch performance in tight games.
+  summary: null
+- name: close_game_losses_home
+  description: "Number of close game losses (\u22645 points) for home teams"
+  sql: SUM(CASE WHEN ABS({pts_home} - {pts_away}) <= 5 AND {pts_home} < {pts_away}
+    THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Tracks close game losses for clutch analysis.
+  summary: null
+- name: total_close_games_home
+  description: "Total number of close games (\u22645 points) for home teams"
+  sql: SUM(CASE WHEN ABS({pts_home} - {pts_away}) <= 5 THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Counts total close game experiences.
+  summary: null
+- name: avg_offensive_rating
+  description: Average points scored per game (offensive rating)
+  sql: AVG({pts_home})
+  examples: []
+  comments:
+  - Metrics offensive efficiency.
+  summary: null
+- name: avg_defensive_rating
+  description: Average points allowed per game (defensive rating)
+  sql: AVG({pts_away})
+  examples: []
+  comments:
+  - Metrics defensive efficiency.
+  summary: null
+- name: net_rating
+  description: Net rating (offensive rating minus defensive rating)
+  sql: AVG({pts_home}) - AVG({pts_away})
+  examples: []
+  comments:
+  - Overall team efficiency metric.
+  summary: null
+- name: regular_season_wins
+  description: Total wins in regular season games
+  sql: |
+    SUM(CASE WHEN {season_type} = 'Regular Season' AND {wl_home} = 'W' THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Counts wins specifically in regular season.
+  summary: null
+- name: regular_season_games
+  description: Total games played in regular season
+  sql: |
+    SUM(CASE WHEN {season_type} = 'Regular Season' THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Counts total regular season games.
+  summary: null
+- name: playoff_wins
+  description: Total wins in playoff games
+  sql: |
+    SUM(CASE WHEN {season_type} = 'Playoffs' AND {wl_home} = 'W' THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Counts wins specifically in playoffs.
+  summary: null
+- name: playoff_games
+  description: Total games played in playoffs
+  sql: |
+    SUM(CASE WHEN {season_type} = 'Playoffs' THEN 1 ELSE 0 END)
+  examples: []
+  comments:
+  - Counts total playoff games.
+  summary: null
+- name: last_game_date
+  description: Date of the most recent game
+  sql: MAX({game_date})
+  examples: []
+  comments:
+  - Tracks most recent game activity.
+  summary: null

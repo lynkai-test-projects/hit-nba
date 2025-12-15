@@ -1,0 +1,634 @@
+name: team_game
+
+description: Fact table containing team-level performance statistics for each game, representing aggregated box score data at the team-game level
+
+key_table: nba.public.team_game_stats
+
+keys:
+- team_full_name
+- game_id
+
+features:
+
+# Game Identification Fields
+- type: field
+  name: game_id
+  data_type: string
+  source: nba.public.team_game_stats
+  description: Unique identifier for the game
+  field: game_id
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: game_date
+  data_type: datetime
+  source: nba.public.team_game_stats
+  description: Date and time when the game was played
+  field: game_date
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: season_year
+  data_type: number
+  source: nba.public.team_game_stats
+  description: NBA season year for the game
+  field: season_year
+  join_name: null
+  time_field: null
+  filters: []
+
+# Team Identification Fields
+- type: field
+  name: team_full_name
+  data_type: string
+  source: nba.public.team_game_stats
+  description: Full name of the team (city and team name combined)
+  field: team_full_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: team_id
+  data_type: string
+  source: nba.public.team_game_stats
+  description: Team id
+  field: team_id
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: opponent_team_full_name
+  data_type: string
+  source: nba.public.team_game_stats
+  description: Full name of the opposing team (city and team name combined)
+  field: opponent_team_full_name
+  join_name: null
+  time_field: null
+  filters: []
+
+# Game Context Fields
+- type: field
+  name: home
+  data_type: boolean
+  source: nba.public.team_game_stats
+  description: Whether the team was playing at home
+  field: home
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: win
+  data_type: boolean
+  source: nba.public.team_game_stats
+  description: Whether the team won the game
+  field: win
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: season_type
+  data_type: string
+  source: nba.public.team_game_stats
+  description: Type of season (Regular Season, Playoffs, etc.)
+  field: season_type
+  join_name: null
+  time_field: null
+  filters: []
+
+# Performance Statistics Fields
+- type: field
+  name: points
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total points scored by the team in the game
+  field: points
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: assists
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total assists recorded by the team in the game
+  field: assists
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: rebounds_total
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total rebounds by the team in the game
+  field: rebounds_total
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: rebounds_offensive
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total offensive rebounds by the team in the game
+  field: rebounds_offensive
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: rebounds_defensive
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total defensive rebounds by the team in the game
+  field: rebounds_defensive
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: blocks
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total blocks recorded by the team in the game
+  field: blocks
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: steals
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total steals recorded by the team in the game
+  field: steals
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: turnovers
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total turnovers by the team in the game
+  field: turnovers
+  join_name: null
+  time_field: null
+  filters: []
+
+# Field Goal Statistics
+- type: field
+  name: field_goals_attempted
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total field goal attempts by the team in the game
+  field: field_goals_attempted
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: field_goals_made
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total field goals made by the team in the game
+  field: field_goals_made
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: field_goals_percentage
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Field goal shooting percentage for the team in the game
+  field: field_goals_percentage
+  join_name: null
+  time_field: null
+  filters: []
+
+# Three-Point Statistics
+- type: field
+  name: three_pointers_attempted
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total three-point attempts by the team in the game
+  field: three_pointers_attempted
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: three_pointers_made
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total three-pointers made by the team in the game
+  field: three_pointers_made
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: three_pointers_percentage
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Three-point shooting percentage for the team in the game
+  field: three_pointers_percentage
+  join_name: null
+  time_field: null
+  filters: []
+
+# Free Throw Statistics
+- type: field
+  name: free_throws_attempted
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total free throw attempts by the team in the game
+  field: free_throws_attempted
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: free_throws_made
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Total free throws made by the team in the game
+  field: free_throws_made
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: free_throws_percentage
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Free throw shooting percentage for the team in the game
+  field: free_throws_percentage
+  join_name: null
+  time_field: null
+  filters: []
+
+# Other Statistics
+- type: field
+  name: plus_minus_points
+  data_type: number
+  source: nba.public.team_game_stats
+  description: Plus-minus points differential for the team
+  field: plus_minus_points
+  join_name: null
+  time_field: null
+  filters: []
+
+# Calculated Fields
+- type: formula
+  name: is_home
+  data_type: boolean
+  description: Whether this team is playing at home (semantic alias for home field)
+  sql: '{home}'
+
+- type: formula
+  name: is_away
+  data_type: boolean
+  description: Whether this team is playing away from home
+  sql: 'NOT {home}'
+
+- type: formula
+  name: win_loss
+  data_type: string
+  description: Win/Loss indicator as text
+  sql: |
+    CASE WHEN {win} THEN 'W' ELSE 'L' END
+
+- type: formula
+  name: point_differential
+  data_type: number
+  description: Point differential (positive if won, negative if lost)
+  sql: |
+    CASE WHEN {win} THEN {points} 
+    ELSE -{points} 
+    END
+
+- type: formula
+  name: total_rebounds_calc
+  data_type: number
+  description: Total rebounds (offensive + defensive)
+  sql: '{rebounds_offensive} + {rebounds_defensive}'
+
+- type: formula
+  name: field_goal_percentage_clean
+  data_type: number
+  description: Field goal percentage as decimal (0-1) instead of percentage
+  sql: '{field_goals_percentage} / 100.0'
+
+- type: formula
+  name: three_point_percentage_clean
+  data_type: number
+  description: Three-point percentage as decimal (0-1) instead of percentage
+  sql: '{three_pointers_percentage} / 100.0'
+
+- type: formula
+  name: free_throw_percentage_clean
+  data_type: number
+  description: Free throw percentage as decimal (0-1) instead of percentage
+  sql: '{free_throws_percentage} / 100.0'
+
+metrics:
+
+# Basic Counting Metrics
+- name: total_points
+  description: |
+    Total points across selected games
+    - "Aggregates all points scored by teams in games"
+    - "Use for analyzing total offensive output"
+  sql: 'SUM({points})'
+
+- name: avg_points_per_game
+  description: |
+    Average points per game
+    - "Average scoring performance per game"
+    - "Use for comparing scoring averages across teams"
+  sql: 'AVG({points})'
+
+- name: games_played
+  description: |
+    Total games played
+    - "Counts total game records"
+    - "Use for analyzing game volume and activity"
+  sql: 'COUNT(*)'
+
+- name: total_assists
+  description: |
+    Total assists across selected games
+    - "Aggregates all assists recorded"
+    - "Use for analyzing ball movement and team play"
+  sql: 'SUM({assists})'
+
+- name: avg_assists_per_game
+  description: |
+    Average assists per game
+    - "Average ball movement and team play per game"
+    - "Use for analyzing offensive flow and passing efficiency"
+  sql: 'AVG({assists})'
+
+- name: total_rebounds
+  description: |
+    Total rebounds across selected games
+    - "Aggregates all rebounds (offensive + defensive)"
+    - "Use for analyzing rebounding performance"
+  sql: 'SUM({rebounds_total})'
+
+- name: total_offensive_rebounds
+  description: |
+    Total offensive rebounds across selected games
+    - "Aggregates offensive rebounding performance"
+  sql: 'SUM({rebounds_offensive})'
+
+- name: total_defensive_rebounds
+  description: |
+    Total defensive rebounds across selected games
+    - "Aggregates defensive rebounding performance"
+  sql: 'SUM({rebounds_defensive})'
+
+- name: avg_defensive_rebounds_per_game
+  description: |
+    Average defensive rebounds per game
+    - "Average defensive rebounding performance per game"
+    - "Use for analyzing defensive glass control"
+  sql: 'AVG({rebounds_defensive})'
+
+- name: total_blocks
+  description: |
+    Total blocks across selected games
+    - "Aggregates defensive block statistics"
+  sql: 'SUM({blocks})'
+
+- name: total_steals
+  description: |
+    Total steals across selected games
+    - "Aggregates defensive steal statistics"
+  sql: 'SUM({steals})'
+
+- name: total_turnovers
+  description: |
+    Total turnovers across selected games
+    - "Aggregates turnover statistics"
+  sql: 'SUM({turnovers})'
+
+- name: avg_rebounds_per_game
+  description: |
+    Average rebounds per game
+    - "Average rebounding performance per game"
+    - "Use for analyzing team rebounding effectiveness"
+  sql: 'AVG({rebounds_total})'
+
+- name: avg_steals_per_game
+  description: |
+    Average steals per game
+    - "Average defensive steals per game"
+    - "Use for analyzing defensive pressure and ball hawking"
+  sql: 'AVG({steals})'
+
+- name: avg_blocks_per_game
+  description: |
+    Average blocks per game
+    - "Average shot blocking per game"
+    - "Use for analyzing rim protection and interior defense" 
+  sql: 'AVG({blocks})'
+
+- name: avg_turnovers_per_game
+  description: |
+    Average turnovers per game (turnovers forced by this team)
+    - "Average turnovers forced per game"
+    - "Use for analyzing defensive pressure and ball security impact"
+  sql: 'AVG({turnovers})'
+
+- name: assist_to_turnover_ratio
+  description: |
+    Ratio of total assists to total turnovers
+    - "Metrics ball control efficiency and offensive discipline"
+    - "Higher values indicate better ball management and offensive flow"
+  sql: 'CASE WHEN SUM({turnovers}) > 0 THEN SUM({assists}) / SUM({turnovers}) ELSE NULL END'
+
+# Shooting Efficiency Metrics
+- name: avg_field_goal_percentage
+  description: |
+    Average field goal percentage
+    - "Average shooting efficiency from the field"
+    - "Use for analyzing shooting performance"
+  sql: 'AVG({field_goals_percentage})'
+
+- name: avg_three_point_percentage
+  description: |
+    Average three-point percentage
+    - "Average three-point shooting efficiency"
+  sql: 'AVG({three_pointers_percentage})'
+
+- name: avg_free_throw_percentage
+  description: |
+    Average free throw percentage
+    - "Average free throw shooting efficiency"
+  sql: 'AVG({free_throws_percentage})'
+
+- name: total_field_goals_made
+  description: |
+    Total field goals made across selected games
+    - "Total successful field goal attempts"
+  sql: 'SUM({field_goals_made})'
+
+- name: total_field_goals_attempted
+  description: |
+    Total field goals attempted across selected games
+    - "Total field goal attempts"
+  sql: 'SUM({field_goals_attempted})'
+
+- name: total_three_pointers_made
+  description: |
+    Total three-pointers made across selected games
+    - "Total successful three-point attempts"
+  sql: 'SUM({three_pointers_made})'
+
+- name: total_three_pointers_attempted
+  description: |
+    Total three-pointers attempted across selected games
+    - "Total three-point attempts"
+  sql: 'SUM({three_pointers_attempted})'
+
+# Win-Loss Analysis
+- name: wins_count
+  description: |
+    Total wins
+    - "Counts games where team won"
+  sql: 'SUM(CASE WHEN {win} THEN 1 ELSE 0 END)'
+
+- name: losses_count
+  description: |
+    Total losses
+    - "Counts games where team lost"
+  sql: 'SUM(CASE WHEN {win} THEN 0 ELSE 1 END)'
+
+- name: win_percentage
+  description: |
+    Win percentage
+    - "Win rate for games played"
+    - "Values range from 0.0 to 1.0"
+  sql: 'AVG(CASE WHEN {win} THEN 1.0 ELSE 0.0 END)'
+
+- name: avg_plus_minus
+  description: |
+    Average plus/minus across selected games
+    - "Average point differential while team played"
+  sql: 'AVG({plus_minus_points})'
+
+# Home/Away Performance
+- name: home_wins_count
+  description: |
+    Total wins when playing at home
+    - "Counts home wins"
+  sql: 'SUM(CASE WHEN CAST({win} AS INT) = 1 AND CAST({home} AS INT) = 1 THEN 1 ELSE 0 END)'
+
+- name: home_losses_count
+  description: |
+    Total losses when playing at home
+    - "Counts home losses"
+  sql: 'SUM(CASE WHEN NOT {win} AND {home} THEN 1 ELSE 0 END)'
+
+- name: away_wins_count
+  description: |
+    Total wins when playing away
+    - "Counts away wins"
+  sql: 'SUM(CASE WHEN {win} AND NOT {home} THEN 1 ELSE 0 END)'
+
+- name: away_losses_count
+  description: |
+    Total losses when playing away
+    - "Counts away losses"
+  sql: 'SUM(CASE WHEN NOT {win} AND NOT {home} THEN 1 ELSE 0 END)'
+
+- name: home_win_percentage
+  description: |
+    Win percentage when playing at home
+    - "Win rate specifically for home games"
+  sql: 'AVG(CASE WHEN {home} AND {win} THEN 1.0 WHEN {home} THEN 0.0 ELSE NULL END)'
+
+- name: away_win_percentage
+  description: |
+    Win percentage when playing away
+    - "Win rate specifically for away games"
+  sql: 'AVG(CASE WHEN NOT {home} AND {win} THEN 1.0 WHEN NOT {home} THEN 0.0 ELSE NULL END)'
+
+- name: home_court_advantage
+  description: |
+    Difference between home and away win percentages
+    - "Metrics performance differential between home and away games"
+  sql: |
+    AVG(CASE WHEN {home} AND {win} THEN 1.0 WHEN {home} THEN 0.0 ELSE NULL END) - 
+    AVG(CASE WHEN NOT {home} AND {win} THEN 1.0 WHEN NOT {home} THEN 0.0 ELSE NULL END)
+
+related_sources: {}
+
+examples:
+- type: SQL
+  name: team_performance_recent_games
+  description: Team performance in specific games
+  input: Show me the Lakers' performance in their last 10 games
+  expected_output: |
+    SELECT 
+      team_full_name,
+      game_date,
+      points,
+      assists,
+      rebounds_total,
+      field_goals_percentage,
+      win_loss
+    FROM entity('team_game')
+    WHERE team_full_name = 'Los Angeles Lakers'
+    ORDER BY game_date DESC
+    LIMIT 10;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: home_vs_away_performance
+  description: Home vs away performance comparison
+  input: Compare team performance at home vs away for all teams
+  expected_output: |
+    SELECT 
+      team_full_name,
+      metric(home_win_percentage) as home_win_pct,
+      metric(away_win_percentage) as away_win_pct,
+      metric(home_court_advantage) as advantage,
+      metric(games_played) as total_games
+    FROM entity('team_game')
+    GROUP BY team_full_name
+    HAVING total_games >= 20
+    ORDER BY advantage DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: high_scoring_teams_analysis
+  description: High-scoring teams analysis
+  input: Which teams have the highest scoring averages this season?
+  expected_output: |
+    SELECT 
+      team_full_name,
+      metric(avg_points_per_game) as scoring_average,
+      metric(avg_field_goal_percentage) as shooting_efficiency,
+      metric(total_assists) as ball_movement,
+      metric(games_played) as games
+    FROM entity('team_game')
+    GROUP BY team_full_name
+    HAVING games >= 30
+    ORDER BY scoring_average DESC
+    LIMIT 15;
+  tags:
+    difficulty: MEDIUM 

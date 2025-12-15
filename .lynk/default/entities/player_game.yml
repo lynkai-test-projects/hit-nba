@@ -1,0 +1,794 @@
+name: player_game
+
+description: Fact table containing individual player performance statistics for each
+  game, representing detailed box score data at the player-game level
+
+aliases: []
+
+key_table: nba.public.player_game_stats
+
+keys:
+- person_id
+- game_id
+
+defaults: null
+
+features:
+- type: field
+  name: first_name
+  description: Player's first name
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: first_name
+- type: field
+  name: last_name
+  description: Player's last name
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: last_name
+- type: field
+  name: person_id
+  description: Unique identifier for the player
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: person_id
+- type: field
+  name: position
+  description: Player's primary position (PG, SG, SF, PF, C)
+  data_type: string
+  asset: player
+  join_name: null
+  time_field: null
+  filters: []
+  field: position
+- type: field
+  name: game_id
+  description: Unique identifier for the game
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: game_id
+- type: field
+  name: game_date
+  description: Date and time when the game was played
+  data_type: datetime
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: game_date
+- type: field
+  name: team_id
+  description: The player's team id
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: team_id
+- type: field
+  name: player_team_city
+  description: City of the player's team
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: player_team_city
+- type: field
+  name: player_team_name
+  description: Name of the player's team
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: player_team_name
+- type: field
+  name: opponent_team_city
+  description: City of the opposing team
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: opponent_team_city
+- type: field
+  name: opponent_team_name
+  description: Name of the opposing team
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: opponent_team_name
+- type: field
+  name: game_type
+  description: Type of game (Regular Season, Playoffs, etc.)
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: game_type
+- type: field
+  name: game_label
+  description: Game label or description
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: game_label
+- type: field
+  name: game_sub_label
+  description: Game sub-label or additional description
+  data_type: string
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: game_sub_label
+- type: field
+  name: series_game_number
+  description: Game number within a playoff series
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: series_game_number
+- type: field
+  name: win
+  description: Whether the player's team won the game
+  data_type: boolean
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: win
+- type: field
+  name: home
+  description: Whether the player's team was playing at home
+  data_type: boolean
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: home
+- type: field
+  name: is_inactive
+  description: Whether the player was inactive for the game
+  data_type: boolean
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: is_inactive
+- type: field
+  name: num_minutes
+  description: Number of minutes played in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: num_minutes
+- type: field
+  name: points
+  description: Total points scored in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: points
+- type: field
+  name: assists
+  description: Total assists recorded in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: assists
+- type: field
+  name: blocks
+  description: Total blocks recorded in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: blocks
+- type: field
+  name: steals
+  description: Total steals recorded in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: steals
+- type: field
+  name: field_goals_attempted
+  description: Total field goal attempts in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: field_goals_attempted
+- type: field
+  name: field_goals_made
+  description: Total field goals made in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: field_goals_made
+- type: field
+  name: field_goals_percentage
+  description: Field goal shooting percentage for the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: field_goals_percentage
+- type: field
+  name: three_pointers_attempted
+  description: Total three-point attempts in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: three_pointers_attempted
+- type: field
+  name: three_pointers_made
+  description: Total three-pointers made in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: three_pointers_made
+- type: field
+  name: three_pointers_percentage
+  description: Three-point shooting percentage for the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: three_pointers_percentage
+- type: field
+  name: free_throws_attempted
+  description: Total free throw attempts in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: free_throws_attempted
+- type: field
+  name: free_throws_made
+  description: Total free throws made in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: free_throws_made
+- type: field
+  name: free_throws_percentage
+  description: Free throw shooting percentage for the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: free_throws_percentage
+- type: field
+  name: rebounds_defensive
+  description: Total defensive rebounds in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: rebounds_defensive
+- type: field
+  name: rebounds_offensive
+  description: Total offensive rebounds in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: rebounds_offensive
+- type: field
+  name: rebounds_total
+  description: Total rebounds (offensive + defensive) in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: rebounds_total
+- type: field
+  name: fouls_personal
+  description: Total personal fouls committed in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: fouls_personal
+- type: field
+  name: turnovers
+  description: Total turnovers in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: turnovers
+- type: field
+  name: plus_minus_points
+  description: Plus-minus points differential while player was on court
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: plus_minus_points
+- type: field
+  name: dunks
+  description: Total dunks made in the game
+  data_type: number
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: dunks
+- type: field
+  name: created_at
+  description: Timestamp when the record was created
+  data_type: datetime
+  asset: nba.public.player_game_stats
+  join_name: null
+  time_field: null
+  filters: []
+  field: created_at
+- type: formula
+  name: season_year
+  description: Derived NBA season year (from game id)
+  data_type: number
+  sql: |
+    case when substr({game_id}, 2, 2) >= '46' then 1900 + substr({game_id}, 2, 2)::INT
+    else 2000 + substr({game_id}, 2, 2)::INT end
+- type: formula
+  name: player_full_name
+  description: Player's full name (first and last name combined)
+  data_type: string
+  sql: |
+    TRIM({first_name}) || ' ' || TRIM({last_name})
+- type: formula
+  name: team_full_name
+  description: Complete team name (city and team name combined)
+  data_type: string
+  sql: |
+    CONCAT({player_team_city}, ' ', {player_team_name})
+- type: formula
+  name: shooting_efficiency
+  description: True shooting percentage approximation
+  data_type: number
+  sql: "CASE \n  WHEN ({field_goals_attempted} + 0.44 * {free_throws_attempted}) >\
+    \ 0 \n  THEN {points} / (2 * ({field_goals_attempted} + 0.44 * {free_throws_attempted}))\n\
+    \  ELSE NULL \nEND\n"
+- type: formula
+  name: is_double_double
+  description: Whether the player achieved a double-double (10+ in two categories)
+  data_type: boolean
+  sql: |
+    CASE WHEN (
+      (CASE WHEN {points} >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN {rebounds_total} >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN {assists} >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN {steals} >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN {blocks} >= 10 THEN 1 ELSE 0 END)
+    ) >= 2 THEN TRUE ELSE FALSE END
+- type: formula
+  name: is_triple_double
+  description: Whether the player achieved a triple-double (10+ in three categories)
+  data_type: boolean
+  sql: |
+    CASE WHEN (
+      (CASE WHEN {points} >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN {rebounds_total} >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN {assists} >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN {steals} >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN {blocks} >= 10 THEN 1 ELSE 0 END)
+    ) >= 3 THEN TRUE ELSE FALSE END
+- type: formula
+  name: minutes_played
+  description: Minutes played in the game
+  data_type: number
+  sql: COALESCE({num_minutes}, 0)
+- type: formula
+  name: field_goal_attempts_per_minute
+  description: Field goal attempts per minute played
+  data_type: number
+  sql: "CASE \n  WHEN {num_minutes} > 0 THEN {field_goals_attempted} / {num_minutes}\n\
+    \  ELSE NULL \nEND\n"
+- type: formula
+  name: assists_to_turnovers_ratio
+  description: Assists to turnovers ratio
+  data_type: number
+  sql: "CASE \n  WHEN COALESCE({turnovers}, 0) > 0 THEN COALESCE({assists}, 0) / {turnovers}\n\
+    \  WHEN COALESCE({assists}, 0) > 0 THEN 999.0\n  ELSE 0 \nEND\n"
+
+metrics:
+- name: total_points
+  description: |
+    Total points scored across all games
+    - "Aggregates all points scored by players in games"
+    - "Use for analyzing total offensive output"
+  sql: SUM(COALESCE({points}, 0))
+  examples: []
+- name: avg_points_per_game
+  description: |
+    Average points scored per game
+    - "Average scoring performance per game"
+    - "Use for comparing scoring averages across players"
+  sql: AVG(COALESCE({points}, 0))
+  examples: []
+- name: total_games_played
+  description: |
+    Total number of games played
+    - "Counts total game records"
+    - "Use for analyzing game volume and activity"
+  sql: COUNT(*)
+  examples: []
+- name: avg_minutes_per_game
+  description: |
+    Average minutes played per game
+    - "Average playing time per game"
+    - "Use for analyzing player usage and availability"
+  sql: AVG(COALESCE({num_minutes}, 0))
+  examples: []
+- name: total_minutes_played
+  description: |
+    Total minutes played across all games
+    - "Aggregates all minutes played"
+    - "Use for analyzing total playing time and career workload"
+  sql: SUM(COALESCE({num_minutes}, 0))
+  examples: []
+- name: total_assists
+  description: |
+    Total assists across all games
+    - "Aggregates all assists recorded"
+    - "Use for analyzing playmaking and team play"
+  sql: SUM(COALESCE({assists}, 0))
+  examples: []
+- name: avg_assists_per_game
+  description: |
+    Average assists per game
+    - "Average playmaking performance per game"
+  sql: AVG(COALESCE({assists}, 0))
+  examples: []
+- name: total_rebounds
+  description: "Total rebounds across all games  \n- \"Aggregates all rebounds (offensive\
+    \ + defensive)\"\n- \"Use for analyzing rebounding performance\"\n"
+  sql: SUM(COALESCE({rebounds_total}, 0))
+  examples: []
+- name: avg_rebounds_per_game
+  description: |
+    Average rebounds per game
+    - "Average rebounding performance per game"
+  sql: AVG(COALESCE({rebounds_total}, 0))
+  examples: []
+- name: total_offensive_rebounds
+  description: |
+    Total offensive rebounds across all games
+    - "Aggregates offensive rebounding performance"
+  sql: SUM(COALESCE({rebounds_offensive}, 0))
+  examples: []
+- name: total_defensive_rebounds
+  description: |
+    Total defensive rebounds across all games
+    - "Aggregates defensive rebounding performance"
+  sql: SUM(COALESCE({rebounds_defensive}, 0))
+  examples: []
+- name: total_steals
+  description: |
+    Total steals across all games
+    - "Aggregates defensive steal statistics"
+  sql: SUM(COALESCE({steals}, 0))
+  examples: []
+- name: total_blocks
+  description: |
+    Total blocks across all games
+    - "Aggregates defensive block statistics"
+  sql: SUM(COALESCE({blocks}, 0))
+  examples: []
+- name: total_turnovers
+  description: |
+    Total turnovers across all games
+    - "Aggregates turnover statistics"
+  sql: SUM(COALESCE({turnovers}, 0))
+  examples: []
+- name: avg_field_goal_percentage
+  description: |
+    Average field goal percentage
+    - "Average shooting efficiency from the field"
+    - "Use for analyzing shooting performance"
+  sql: AVG(COALESCE({field_goals_percentage}, 0))
+  examples: []
+- name: avg_three_point_percentage
+  description: |
+    Average three-point percentage
+    - "Average three-point shooting efficiency"
+  sql: AVG(COALESCE({three_pointers_percentage}, 0))
+  examples: []
+- name: avg_free_throw_percentage
+  description: |
+    Average free throw percentage
+    - "Average free throw shooting efficiency"
+  sql: AVG(COALESCE({free_throws_percentage}, 0))
+  examples: []
+- name: total_field_goals_made
+  description: |
+    Total field goals made
+    - "Total successful field goal attempts"
+  sql: SUM(COALESCE({field_goals_made}, 0))
+  examples: []
+- name: total_field_goals_attempted
+  description: |
+    Total field goals attempted
+    - "Total field goal attempts"
+  sql: SUM(COALESCE({field_goals_attempted}, 0))
+  examples: []
+- name: total_three_pointers_made
+  description: |
+    Total three-pointers made
+    - "Total successful three-point attempts"
+  sql: SUM(COALESCE({three_pointers_made}, 0))
+  examples: []
+- name: total_three_pointers_attempted
+  description: |
+    Total three-pointers attempted
+    - "Total three-point attempts"
+  sql: SUM(COALESCE({three_pointers_attempted}, 0))
+  examples: []
+- name: double_doubles_count
+  description: |
+    Total number of double-doubles achieved
+    - "Counts games with double-digit performance in two categories"
+  sql: SUM(CASE WHEN {is_double_double} THEN 1 ELSE 0 END)
+  examples: []
+- name: triple_doubles_count
+  description: |
+    Total number of triple-doubles achieved
+    - "Counts games with double-digit performance in three categories"
+  sql: SUM(CASE WHEN {is_triple_double} THEN 1 ELSE 0 END)
+  examples: []
+- name: wins_count
+  description: |
+    Total number of wins
+    - "Counts games where player's team won"
+  sql: SUM(CASE WHEN {win} THEN 1 ELSE 0 END)
+  examples: []
+- name: win_percentage
+  description: |
+    Percentage of games won
+    - "Win rate for games played"
+    - "Values range from 0.0 to 1.0"
+  sql: AVG(CASE WHEN {win} THEN 1.0 ELSE 0.0 END)
+  examples: []
+- name: avg_plus_minus
+  description: |
+    Average plus/minus rating
+    - "Average point differential while player was on court"
+  sql: AVG(COALESCE({plus_minus_points}, 0))
+  examples: []
+- name: three_point_attempt_rate
+  description: |
+    Percentage of field goal attempts that are three-pointers
+    - "Metrics shot selection preference for three-pointers"
+  sql: "CASE WHEN SUM(COALESCE({field_goals_attempted}, 0)) > 0 \nTHEN SUM(COALESCE({three_pointers_attempted},\
+    \ 0)) * 100.0 / SUM(COALESCE({field_goals_attempted}, 0))\nELSE 0 END\n"
+  examples: []
+- name: true_shooting_percentage
+  description: |
+    True shooting percentage accounting for three-pointers and free throws
+    - "More accurate shooting efficiency metric than FG%"
+    - "Accounts for three-pointers and free throws"
+  sql: |
+    CASE WHEN SUM(COALESCE({field_goals_attempted}, 0) + 0.44 * COALESCE({free_throws_attempted}, 0)) > 0
+    THEN SUM(COALESCE({points}, 0)) * 100.0 / (2 * SUM(COALESCE({field_goals_attempted}, 0) + 0.44 * COALESCE({free_throws_attempted}, 0)))
+    ELSE 0 END
+  examples: []
+- name: efficient_scorer_percentage
+  description: |
+    Percentage of games with 15+ points on 50%+ shooting
+    - "Metrics consistency of efficient scoring performances"
+  sql: "AVG(CASE WHEN COALESCE({points}, 0) >= 15 AND COALESCE({field_goals_percentage},\
+    \ 0) >= 0.5 \nTHEN 100.0 ELSE 0 END)\n"
+  examples: []
+- name: high_assist_game_rate
+  description: |
+    Percentage of games with 5+ assists
+    - "Metrics playmaking consistency"
+  sql: |
+    AVG(CASE WHEN COALESCE({assists}, 0) >= 5 THEN 100.0 ELSE 0 END)
+  examples: []
+- name: defensive_impact_games
+  description: |
+    Games with 2+ steals or 2+ blocks (defensive impact)
+    - "Counts games with significant defensive contributions"
+  sql: |
+    SUM(CASE WHEN (COALESCE({steals}, 0) >= 2 OR COALESCE({blocks}, 0) >= 2) THEN 1 ELSE 0 END)
+  examples: []
+- name: usage_rate_estimate
+  description: |
+    Estimated usage rate based on field goal attempts, free throw attempts, and turnovers
+    - "Estimates offensive usage and involvement"
+  sql: |
+    CASE WHEN SUM(COALESCE({num_minutes}, 0)) > 0
+    THEN (SUM(COALESCE({field_goals_attempted}, 0) + 0.44 * COALESCE({free_throws_attempted}, 0) + COALESCE({turnovers}, 0)) * 40) / (SUM(COALESCE({num_minutes}, 0)) * 5)
+    ELSE 0 END
+  examples: []
+- name: turnover_rate
+  description: |
+    Turnovers per 100 possessions (estimated)
+    - "Metrics ball protection efficiency"
+  sql: |
+    CASE WHEN SUM(COALESCE({field_goals_attempted}, 0) + 0.44 * COALESCE({free_throws_attempted}, 0) + COALESCE({assists}, 0) + COALESCE({turnovers}, 0)) > 0
+    THEN SUM(COALESCE({turnovers}, 0)) * 100.0 / SUM(COALESCE({field_goals_attempted}, 0) + 0.44 * COALESCE({free_throws_attempted}, 0) + COALESCE({assists}, 0) + COALESCE({turnovers}, 0))
+    ELSE 0 END
+  examples: []
+- name: versatility_score
+  description: |
+    Statistical versatility based on contributing in multiple categories
+    - "Metrics well-rounded statistical contributions"
+  sql: |
+    AVG(
+      (CASE WHEN COALESCE({points}, 0) >= 10 THEN 1 ELSE 0 END) +
+      (CASE WHEN COALESCE({rebounds_total}, 0) >= 5 THEN 1 ELSE 0 END) +
+      (CASE WHEN COALESCE({assists}, 0) >= 3 THEN 1 ELSE 0 END) +
+      (CASE WHEN COALESCE({steals}, 0) >= 1 THEN 1 ELSE 0 END) +
+      (CASE WHEN COALESCE({blocks}, 0) >= 1 THEN 1 ELSE 0 END)
+    )
+  examples: []
+- name: fourth_quarter_points
+  description: |
+    Total points scored in fourth quarter games (approximated by games with 30+ minutes)
+    - "Approximates fourth quarter scoring for high-minute games"
+  sql: |
+    SUM(CASE WHEN COALESCE({num_minutes}, 0) >= 30 THEN COALESCE({points}, 0) * 0.25 ELSE 0 END)
+  examples: []
+- name: home_win_percentage
+  description: |
+    Win percentage in home games
+    - "Win rate specifically for home games"
+  sql: AVG(CASE WHEN {home} AND {win} THEN 1.0 ELSE 0.0 END)
+  examples: []
+- name: away_win_percentage
+  description: |
+    Win percentage in away games
+    - "Win rate specifically for away games"
+  sql: AVG(CASE WHEN NOT {home} AND {win} THEN 1.0 ELSE 0.0 END)
+  examples: []
+- name: home_court_advantage
+  description: |
+    Difference between home and away win percentages
+    - "Metrics performance differential between home and away games"
+  sql: "AVG(CASE WHEN {home} AND {win} THEN 1.0 ELSE 0.0 END) - \nAVG(CASE WHEN NOT\
+    \ {home} AND {win} THEN 1.0 ELSE 0.0 END)\n"
+  examples: []
+- name: total_dunks
+  description: |
+    Total dunks made across all games
+    - "Aggregates all dunks made by players in games"
+    - "Use for analyzing total dunk performance"
+  sql: SUM(COALESCE({dunks}, 0))
+  examples: []
+- name: players_with_dunks_count
+  description: |
+    Count of distinct players who have made at least one dunk
+    - "Counts unique players who have made dunks"
+    - "Useful for analyzing dunk participation"
+  sql: COUNT(DISTINCT CASE WHEN COALESCE({dunks}, 0) > 0 THEN {person_id} END)
+  examples: []
+- name: dunk_game_percentage
+  description: |
+    Percentage of games where player made at least one dunk
+    - "Metrics consistency of dunk performances"
+    - "Values range from 0-100%"
+  sql: AVG(CASE WHEN COALESCE({dunks}, 0) > 0 THEN 100.0 ELSE 0.0 END)
+  examples: []
+- name: max_dunks_in_game
+  description: |
+    Maximum dunks made in a single game
+    - "Finds the highest dunk count in any single game"
+    - "Useful for identifying exceptional dunk performances"
+  sql: MAX(COALESCE({dunks}, 0))
+  examples: []
+- name: avg_dunks
+  description: |
+    Average dunks per player (useful when grouping by player)
+    - "Calculates average dunks per player when grouping by player_id"
+    - "Useful for analyzing average dunk performance across players"
+    - "Use this metric when grouping by person_id to get per-player averages"
+  sql: AVG(COALESCE({dunks}, 0))
+  examples: []
+- name: games_with_dunks_count
+  description: |
+    Count of games where player made at least one dunk
+    - "Counts games where player recorded at least one dunk"
+    - "Useful for analyzing dunk frequency and consistency"
+    - "Use this metric when grouping by person_id to get per-player counts"
+  sql: SUM(CASE WHEN COALESCE({dunks}, 0) > 0 THEN 1 ELSE 0 END)
+  examples: []
+- name: inactive_games_count
+  description: |
+    Total number of games where player was inactive
+    - "Counts games where player was on the inactive list"
+    - "Useful for analyzing player availability and roster management"
+    - "Use this metric when grouping by person_id to get per-player inactive game counts"
+  sql: SUM(CASE WHEN {is_inactive} = TRUE THEN 1 ELSE 0 END)
+  examples: []
+- name: active_games_count
+  description: |
+    Total number of games where player was active
+    - "Counts games where player was active (not on inactive list)"
+    - "Useful for analyzing player availability and participation"
+    - "Use this metric when grouping by person_id to get per-player active game counts"
+  sql: SUM(CASE WHEN {is_inactive} = FALSE THEN 1 ELSE 0 END)
+  examples: []
+- name: inactive_percentage
+  description: |
+    Percentage of games where player was inactive
+    - "Calculates the percentage of games where player was on inactive list"
+    - "Values range from 0-100%"
+    - "Useful for analyzing player availability patterns"
+  sql: AVG(CASE WHEN {is_inactive} = TRUE THEN 100.0 ELSE 0.0 END)
+  examples: []
+
+related_sources: {}
+
+examples:
+  - type: SQL
+    name: top_rebounders
+    description: Analyze individual player rebounding performance to identify the top rebounders in recent games.
+    input: Who are the top 10 players by total rebounds in their last 20 games?
+    expected_output: |
+      select  
+        player_full_name,
+        metric(total_rebounds) as total_rebounds,
+        metric(avg_rebounds_per_game) as avg_rebounds_per_game,
+        metric(total_offensive_rebounds) as offensive_rebounds,
+        metric(total_defensive_rebounds) as defensive_rebounds,
+        metric(total_games_played) as games_played
+      from entity('player_game')
+      group by player_full_name
+      having games_played >= 20
+      order by total_rebounds desc
+      limit 10
+    tags:
+      difficulty: EASY

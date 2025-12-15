@@ -1,0 +1,2305 @@
+examples:
+- type: SQL
+  name: player_physical_attributes_by_position
+  description: Analyze physical attributes of NBA players to understand the typical player profile.
+  input: What are the average height and weight of NBA players by position?
+  expected_output: |
+    select  
+      position,
+      metric(avg_player_height) as avg_height_inches,
+      metric(avg_player_weight) as avg_weight_pounds,
+      metric(count_players) as player_count
+    from entity('player')
+    where position is not null
+    group by position
+    order by avg_height_inches desc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: total_game_officials
+  description: Analyze game officiating patterns by counting total officials assigned across all games.
+  input: What is the total number of officials assigned across all games?
+  expected_output: |
+    select  
+      metric(count_games) as total_games,
+      metric(count_assignments) as total_official_assignments,
+      metric(avg_officials_assigned) as avg_officials_per_game
+    from entity('game')
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: team_win_loss_records
+  description: Calculate total wins and losses for each team across their entire history by analyzing home and away game results.
+  input: How many games has each team won and lost in their entire history?
+  expected_output: |
+    select  
+      full_name as team_name,
+      total_wins,
+      total_losses
+    from entity('team')
+    order by total_wins desc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: draft_position_career_success
+  description: Analyze draft position and career success correlation by examining player performance metrics vs draft position.
+  input: How does draft position correlate with player career success?
+  expected_output: |
+    select  
+      draft_position,
+      metric(avg_career_points) as avg_career_points,
+      metric(avg_career_games) as avg_career_games,
+      metric(avg_points_per_game_career) as avg_ppg,
+      metric(count_players) as players_drafted
+    from entity('player')
+    where draft_position is not null
+    group by draft_position
+    order by draft_position
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: scoring_by_season_type
+  description: Analyze total points distribution to understand scoring patterns across different game types.
+  input: What is the average total points scored per game by season type?
+  expected_output: |
+    select  
+      season_type,
+      metric(total_game_points_scored) as total_points_all_games,
+      metric(count_games) as total_games,
+      metric(avg_game_points_scored) as avg_points_per_game
+    from entity('game')
+    group by season_type
+    order by avg_points_per_game desc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: home_away_win_rate_balance
+  description: Identify teams with the most balanced home/away performance by comparing win percentages.
+  input: Which teams have the smallest difference between home and away win rates?
+  expected_output: |
+    select  
+      full_name as team_name,
+      total_home_wins,
+      total_away_wins,
+      total_home_losses,
+      total_away_losses,
+      win_difference
+    from entity('team')
+    order by win_difference asc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  comment: works locally on dev. The production branch not updated with a fixed bug
+  name: player_experience_distribution
+  description: Find the distribution of NBA experience levels to understand league veteran composition.
+  input: How many players fall into different experience brackets?
+  expected_output: |
+    select  
+      experience_bracket,
+      metric(count_players) as player_count
+    from entity('player')
+    where experience is not null
+    group by experience_bracket
+    order by player_count desc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: attendance_trends_by_season
+  description: Calculate average attendance patterns to understand fan engagement across different seasons.
+  input: What are the attendance trends by season and game type?
+  expected_output: |
+    select  
+      season_id,
+      season_type,
+      metric(avg_attendance) as avg_attendance,
+      metric(max_attendance) as max_attendance,
+      metric(count_games) as games_with_attendance
+    from entity('game')
+    where attendance is not null
+    group by season_id, season_type
+    order by season_id desc, avg_attendance desc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: international_draft_trends
+  description: Analyze international player representation in NBA drafts over time.
+  input: How has international player drafting trended over the years?
+  expected_output: |
+    select  
+      draft_year,
+      metric(count_players) as total_players_drafted,
+      metric(international_players_count) as international_count,
+      metric(international_player_percentage) as international_percentage
+    from entity('player')
+    where draft_year is not null
+    group by draft_year
+    order by draft_year desc
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: top_offensive_teams
+  description: Offensive output leaders by team (points and assists)
+  input: Which teams recorded the highest combined points and assists historically?
+  expected_output: |
+    select
+      t.full_name as team_name,
+      t.team_total_points as total_points,
+      t.team_total_assists as total_assists
+    from entity('team') t
+    order by total_points desc, total_assists desc
+    limit 25
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: most_team_changes
+  description: Players with the most team changes
+  input: Which players have played for the most different teams?
+  expected_output: |
+    select
+      full_name as player_name,
+      total_teams_played_for as distinct_teams,
+      career_team_changes as team_changes
+    from entity('player')
+    where team_changes > 0
+    order by distinct_teams desc, team_changes desc, player_name
+    limit 30
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: top_rebounders
+  description: Analyze individual player rebounding performance to identify the top rebounders in recent games.
+  input: Who are the top 10 players by total rebounds in their last 20 games?
+  expected_output: |
+    select  
+      player_full_name,
+      metric(total_rebounds) as total_rebounds,
+      metric(avg_rebounds_per_game) as avg_rebounds_per_game,
+      metric(total_offensive_rebounds) as offensive_rebounds,
+      metric(total_defensive_rebounds) as defensive_rebounds,
+      metric(total_games_played) as games_played
+    from entity('player_game')
+    group by player_full_name
+    having games_played >= 20
+    order by total_rebounds desc
+    limit 10
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: most_versatile_players
+  description: Identify the most versatile players based on statistical contribution across multiple categories.
+  input: Which players have the highest versatility scores this season, showing well-rounded statistical contributors?
+  expected_output: |
+    select  
+      player_full_name,
+      team_full_name,
+      metric(versatility_score) as versatility_rating,
+      metric(avg_points_per_game) as avg_points,
+      metric(avg_rebounds_per_game) as avg_rebounds,
+      metric(avg_assists_per_game) as avg_assists,
+      metric(total_games_played) as games_played
+    from entity('player_game')
+    group by player_full_name, team_full_name
+    having games_played >= 30
+    order by versatility_rating desc
+    limit 15
+  tags:
+    difficulty: EASY
+
+
+- type: SQL
+  name: career_journeymen
+  description: Analyze player loyalty and team movement patterns to identify career journeymen vs franchise players.
+  input: Show me players who have played for the most teams in their careers
+  expected_output: |
+    select  
+      person_id,
+      metric(distinct_teams_count) as teams_played_for,
+      metric(team_changes) as team_changes,
+      metric(return_stint_count) as return_stints,
+      metric(team_affiliations_list) as career_teams,
+      metric(avg_affiliation_duration_years) as avg_tenure_years
+    from entity('player_team')
+    group by person_id
+    having teams_played_for >= 5
+    order by teams_played_for desc, team_changes desc
+    limit 20
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: team_player_loyalty
+  description: Identify teams with the strongest player development and retention programs.
+  input: Which teams have the highest player loyalty scores and longest average tenure?
+  expected_output: |
+    select  
+      team_full_name,
+      metric(long_tenure_affiliations) as long_term_players,
+      metric(avg_affiliation_duration_years) as avg_player_tenure,
+      metric(return_stint_count) as players_who_returned,
+      metric(total_affiliations) as total_player_stints
+    from entity('player_team')
+    group by team_full_name
+    having total_player_stints >= 20
+    order by avg_player_tenure desc, long_term_players desc
+    limit 15
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: team_offensive_efficiency
+  description: Analyze team offensive performance and efficiency patterns to identify high-scoring and well-rounded teams.
+  input: Which teams have the highest scoring averages and best shooting efficiency this season?
+  expected_output: |
+    select  
+      team_full_name,
+      metric(avg_points_per_game) as scoring_average,
+      metric(avg_field_goal_percentage) as shooting_efficiency,
+      metric(total_assists) as ball_movement,
+      metric(total_rebounds) as rebounding,
+      metric(games_played) as games
+    from entity('team_game')
+    group by team_full_name
+    having games >= 30
+    order by scoring_average desc, shooting_efficiency desc
+    limit 15
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: home_court_advantage_analysis
+  description: Compare home and away performance to identify teams with the strongest home court advantage.
+  input: Show me teams with the biggest home court advantage - best difference between home and away win rates
+  expected_output: |
+    select  
+      team_full_name,
+      metric(home_win_percentage) as home_win_rate,
+      metric(away_win_percentage) as away_win_rate,
+      metric(home_court_advantage) as advantage_differential,
+      metric(wins_count) as total_wins,
+      metric(games_played) as total_games
+    from entity('team_game')
+    group by team_full_name
+    having total_games >= 40
+    order by advantage_differential desc
+    limit 20
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: player_performance_across_teams
+  description: Analyze how a player's career performance varies across different teams they've played for.
+  input: How does a player's performance change when they switch teams after a long tenure?
+  expected_output: |
+    SELECT 
+      full_name,
+      team_affiliations,
+      total_team_affiliations,
+      avg_team_tenure_years,
+      career_team_changes,
+      player_return_stints_calculated,
+      career_points,
+      career_games,
+      avg_points_per_game
+    FROM entity('player')
+    WHERE total_team_affiliations >= 3 
+      AND avg_team_tenure_years >= 3.0
+      AND career_games >= 100
+    ORDER BY career_team_changes DESC, avg_points_per_game DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: works on dev
+  name: early_career_scoring_leaders
+  description: Find players with the highest average points per game in their careers, focusing on those with significant experience.
+  input: Which players have the highest average points per game in their first three seasons?
+  expected_output: |
+    SELECT 
+      full_name,
+      position,
+      draft_year,
+      draft_position,
+      draft_tier,
+      experience_bracket,
+      avg_points_per_game,
+      career_games,
+      career_points
+    FROM entity('player')
+    WHERE experience_bracket IN ('Rookie/Sophomore (0-2 years)', 'Young Player (3-5 years)')
+      AND career_games >= 150
+    ORDER BY avg_points_per_game DESC
+    LIMIT 20
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: double_doubles_by_position
+  description: Analyze how the rate of double-doubles and triple-doubles varies by player position.
+  input: How does the rate of double-doubles and triple-doubles vary by player position over the last decade?
+  expected_output: |
+    SELECT 
+      position,
+      metric(total_career_double_doubles) as total_double_doubles,
+      metric(total_career_triple_doubles) as total_triple_doubles,
+      metric(total_career_games_played) as total_games_played,
+      metric(double_double_rate_percentage) as double_double_rate_pct,
+      metric(triple_double_rate_percentage) as triple_double_rate_pct
+    FROM entity('player')
+    WHERE position IS NOT NULL 
+      AND career_games >= 200
+    GROUP BY position
+    ORDER BY total_double_doubles DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: shooting_efficiency_leaders
+  description: Identify players with excellent shooting efficiency metrics across their careers.
+  input: Which players have had the most dramatic improvements in their shooting efficiency from one season to the next?
+  expected_output: |
+    SELECT 
+      full_name,
+      position,
+      career_shooting_percentage,
+      career_true_shooting,
+      career_three_point_percentage,
+      career_three_point_rate,
+      scoring_tier,
+      is_efficient_scorer,
+      career_games
+    FROM entity('player')
+    WHERE career_games >= 200
+      AND is_efficient_scorer = true
+    ORDER BY career_true_shooting DESC, career_shooting_percentage DESC
+    LIMIT 25
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: works on dev
+  name: draft_height_trends
+  description: Analyze how the average height of players drafted in the first round has changed over time.
+  input: How has the average height of players drafted in the first round changed over the last 20 years?
+  expected_output: |
+    SELECT 
+      draft_year,
+      draft_tier,
+      metric(count_players) as first_round_picks,
+      metric(avg_player_height) as avg_height_inches,
+      metric(avg_player_weight) as avg_weight_pounds,
+      metric(avg_combine_height_metric) as avg_combine_height,
+      metric(avg_combine_wingspan_metric) as avg_wingspan
+    FROM entity('player')
+    WHERE draft_tier = 'Top 5' OR draft_tier = 'Lottery (6-14)' OR draft_tier = 'First Round (15-30)'
+      AND draft_year >= 2004
+      AND draft_year <= 2023
+      AND height_inches IS NOT NULL
+    GROUP BY draft_year, draft_tier
+    ORDER BY draft_year DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: works on dev
+  name: second_round_longevity
+  name: second_round_longevity
+  description: Find second round draft picks who have had the longest NBA careers.
+  input: Which draft picks from the second round have had the longest careers?
+  expected_output: |
+    SELECT 
+      full_name,
+      draft_year,
+      draft_position,
+      draft_tier,
+      drafting_team,
+      career_games,
+      seasons_played_count,
+      total_team_affiliations,
+      career_points,
+      avg_points_per_game,
+      experience_bracket
+    FROM entity('player')
+    WHERE draft_tier = 'Second Round (30+)'
+      AND career_games >= 400
+    ORDER BY career_games DESC, seasons_played_count DESC
+    LIMIT 25
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: works on dev
+  name: elite_player_draft_analysis
+  description: Find the draft positions of elite players using career achievement metrics.
+  input: What is the average draft position of players who have won the MVP award since 2000?
+  expected_output: |
+    SELECT 
+      draft_tier,
+      metric(count_players) as total_elite_players,
+      metric(avg_career_points) as avg_career_points,
+      metric(avg_points_per_game_career) as avg_ppg,
+      metric(avg_career_games) as avg_career_longevity,
+      metric(total_career_double_doubles) as total_double_doubles,
+      metric(total_career_triple_doubles) as total_triple_doubles
+    FROM entity('player')
+    WHERE (career_double_doubles >= 100 OR career_triple_doubles >= 10)
+      AND career_games >= 600
+      AND avg_points_per_game >= 20
+      AND draft_year >= 2000
+    GROUP BY draft_tier
+    ORDER BY avg_career_points DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: playoff_performance_comparison
+  description: Compare regular season and playoff performers by analyzing their career achievements.
+  input: How do players' statistics in playoff games compare to their regular-season averages?
+  expected_output: |
+    SELECT 
+      full_name,
+      position,
+      career_points,
+      career_games,
+      avg_points_per_game,
+      career_shooting_percentage,
+      career_true_shooting,
+      career_double_doubles,
+      career_triple_doubles,
+      scoring_tier,
+      usage_tier
+    FROM entity('player')
+    WHERE career_games >= 500
+      AND avg_points_per_game >= 15
+    ORDER BY avg_points_per_game DESC, career_true_shooting DESC
+    LIMIT 30
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: works on dev
+  name: overtime_shooting_efficiency
+  description: Find teams with the highest shooting percentage in overtime games.
+  input: In games that go to overtime, which teams have the highest shooting percentage?
+  expected_output: |
+    SELECT 
+      team_name_home,
+      is_overtime_game,
+      metric(avg_field_goal_percentage) as avg_fg_pct,
+      metric(avg_three_point_percentage) as avg_3pt_pct,
+      metric(count_games) as overtime_games,
+      metric(home_win_percentage) as ot_win_pct
+    FROM entity('game')
+    WHERE is_overtime_game = true
+      AND season_type = 'Regular Season'
+    GROUP BY team_name_home, is_overtime_game
+    HAVING overtime_games >= 5
+    ORDER BY avg_fg_pct DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: home_margin_of_victory
+  description: Find teams with the highest average margin of victory in their home wins.
+  input: Which teams have the highest average margin of victory in their home wins over the past five seasons?
+  expected_output: |
+    SELECT 
+      full_name,
+      total_home_wins,
+      team_home_win_percentage,
+      team_total_points,
+      team_wins_count,
+      win_percentage
+    FROM entity('team')
+    WHERE total_home_wins >= 100
+    ORDER BY team_home_win_percentage DESC, total_home_wins DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: wins_vs_assists_correlation
+  description: Analyze the correlation between a team's winning percentage and its average assists per game.
+  input: How does a team's winning percentage correlate with its average assists per game?
+  expected_output: |
+    SELECT 
+      full_name,
+      team_total_assists,
+      team_win_percentage,
+      team_wins_count,
+      team_losses_count,
+      total_games,
+      CASE 
+        WHEN team_total_assists >= 20000 THEN 'High Assists'
+        WHEN team_total_assists >= 15000 THEN 'Medium Assists'
+        ELSE 'Low Assists'
+      END as assists_category
+    FROM entity('team')
+    WHERE total_games >= 500
+    ORDER BY team_total_assists DESC, team_win_percentage DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: road_performance_leaders
+  description: Identify teams that have historically performed best on the road.
+  input: Which teams have historically performed best on the road against teams with winning records?
+  expected_output: |
+    SELECT 
+      full_name,
+      total_away_wins,
+      total_away_losses,
+      team_away_win_percentage,
+      team_home_court_advantage,
+      team_wins_count,
+      team_losses_count,
+      win_percentage
+    FROM entity('team')
+    WHERE total_away_wins >= 50
+    ORDER BY team_away_win_percentage DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: salary_cap_performance
+  description: Analyze team performance metrics and draft success correlation.
+  input: What is the relationship between a team's total salary cap spending and its total wins in a given season?
+  expected_output: |
+    SELECT 
+      full_name,
+      total_wins,
+      total_losses,
+      win_percentage,
+      count_drafts,
+      first_round_picks_count,
+      lottery_picks_count,
+      avg_team_draft_position,
+      team_player_loyalty_score,
+      team_roster_turnover
+    FROM entity('team')
+    WHERE total_games >= 500
+    ORDER BY win_percentage DESC, lottery_picks_count DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: high_turnover_games
+  description: Find games that had the highest total number of combined turnovers and other statistics.
+  input: Which games had the highest total number of combined turnovers?
+  expected_output: |
+    SELECT 
+      game_id,
+      game_date,
+      season_type,
+      team_name_home,
+      team_name_away,
+      total_points,
+      total_game_points,
+      total_game_assists,
+      total_game_rebounds,
+      point_margin_abs as margin_of_victory,
+      attendance
+    FROM entity('game')
+    WHERE total_game_points IS NOT NULL
+    ORDER BY total_game_assists DESC, total_points DESC
+    LIMIT 25
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: officials_assignment_trends
+  description: Analyze historical trends for the number of officials assigned to each game over time.
+  input: What are the historical trends for the number of officials assigned to each game?
+  expected_output: |
+    SELECT 
+      season_id,
+      season_type,
+      metric(count_games) as total_games,
+      metric(count_assignments) as total_officials,
+      metric(avg_officials_assigned) as avg_officials_per_game
+    FROM entity('game')
+    WHERE season_type IN ('Regular Season', 'Playoffs')
+    GROUP BY season_id, season_type
+    ORDER BY season_id DESC, season_type
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: rest_time_offensive_rating
+  description: Analyze correlation between rest time and team offensive performance metrics.
+  input: What is the correlation between a team's rest time before a game and its offensive rating?
+  expected_output: |
+    SELECT 
+      team_name_home,
+      season_id,
+      metric(avg_offensive_rating) as avg_points_scored,
+      metric(avg_defensive_rating) as avg_points_allowed,
+      metric(net_rating) as efficiency_differential,
+      metric(avg_total_points) as avg_game_scoring,
+      metric(count_games) as games_analyzed
+    FROM entity('game')
+    WHERE season_type = 'Regular Season'
+    GROUP BY team_name_home, season_id
+    ORDER BY avg_points_scored DESC
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: best_single_season_record
+  description: Find the best single-season win-loss record by calculating win percentage for each team per season in regular season games.
+  input: What is the best win-loss record by a team in a single season?
+  expected_output: |
+    select  
+      season_id,
+      team_name_home as team_name,
+      metric(total_home_wins) as wins,
+      metric(total_home_losses) as losses,
+      metric(home_win_percentage) as win_pct
+    from entity('game')
+    where season_type = 'Regular Season'
+    group by season_id, team_name_home
+    order by win_pct desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: worst_single_season_record
+  description: Find the worst single-season win-loss record by calculating win percentage for each team per season in regular season games.
+  input: Who has the worst win-loss record by a team in a single season?
+  expected_output: |
+    select  
+      season_id,
+      team_name_home as team_name,
+      metric(total_home_wins) as wins,
+      metric(total_home_losses) as losses,
+      metric(home_win_percentage) as win_pct
+    from entity('game')
+    where season_type = 'Regular Season'
+    group by season_id, team_name_home
+    order by win_pct asc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: best_home_court_advantage
+  description: Find teams with the best home court advantage by comparing home vs away win percentages.
+  input: Which teams have the best home court advantage?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      metric(home_win_percentage) as home_win_pct,
+      metric(away_win_percentage) as away_win_pct,
+      metric(home_court_advantage) as advantage
+    from entity('game')
+    where season_type = 'Regular Season'
+    group by team_name_home
+    order by advantage desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: fourth_quarter_scoring_leaders
+  description: Analyze scoring trends by quarter to identify which teams perform best in clutch situations (4th quarter) at home.
+  input: Which teams score the most in the 4th quarter on average at home?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      metric(avg_q4_scoring_home) as avg_fourth_quarter_points
+    from entity('game')
+    group by team_name_home
+    order by avg_fourth_quarter_points desc nulls last
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: biggest_blowouts
+  name: biggest_blowouts
+  description: Identify the biggest blowouts by point margin.
+  input: Which games had the largest point margin?
+  expected_output: |
+    select  
+      game_id,
+      team_name_home,
+      team_name_away,
+      pts_home,
+      pts_away,
+      total_points,
+      game_date,
+      season_type
+    from entity('game')
+    where pts_home is not null and pts_away is not null
+    order by point_margin_abs desc
+    limit 10
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: team_consistency_analysis
+  description: Calculate team consistency by measuring standard deviation of performance across games.
+  input: Which teams have the most consistent performance (least variance in wins/losses)?
+  expected_output: |
+    select  
+      full_name as team_name,
+      total_wins,
+      total_losses,
+      win_percentage,
+      total_games
+    from entity('team')
+    where total_games > 50
+    order by win_percentage desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: point_differential_by_season
+  description: Analyze scoring efficiency by examining point differential patterns across seasons.
+  input: What are the average point differentials for home vs away teams by season?
+  expected_output: |
+    select  
+      season_id,
+      metric(avg_point_differential) as avg_home_advantage_points,
+      metric(avg_margin_of_victory) as avg_margin_of_victory,
+      metric(count_games) as total_games
+    from entity('game')
+    where season_type = 'Regular Season'
+      and pts_home is not null 
+      and pts_away is not null
+    group by season_id
+    order by season_id desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: draft_round_physical_attributes
+  description: Examine the relationship between physical attributes and draft success.
+  input: How do average height and weight vary by draft round for drafted players?
+  expected_output: |
+    select  
+      draft_round,
+      metric(avg_player_height) as avg_height_inches,
+      metric(avg_player_weight) as avg_weight_pounds,
+      metric(count_players) as players_drafted
+    from entity('player')
+    where draft_round is not null
+      and height_inches is not null
+      and weight_pounds is not null
+    group by draft_round
+    order by draft_round
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: close_game_performance
+  description: Find teams that perform differently in close games vs blowouts.
+  input: Which teams have the best record in games decided by 5 points or less?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      metric(close_game_wins_home) as close_wins,
+      metric(close_game_losses_home) as close_losses,
+      metric(total_close_games_home) as total_close_games
+    from entity('game')
+    where season_type = 'Regular Season'
+      and pts_home is not null 
+      and pts_away is not null
+    group by team_name_home
+    having total_close_games > 10
+    order by close_wins desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: longest_single_team_stints
+  description: Longest single-team stints
+  input: Which players have the longest single-team tenure in years?
+  expected_output: |
+    select
+      full_name as player_name,
+      longest_team_tenure_years
+    from entity('player')
+    where longest_team_tenure_years is not null
+    order by longest_team_tenure_years desc, player_name
+    limit 25
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: frequent_team_returners
+  description: Frequent returners to previous teams
+  input: Which players have the most return stints to former teams?
+  expected_output: |
+    select
+      full_name as player_name,
+      player_return_stints_calculated as return_stints,
+      total_team_affiliations as total_stints,
+      total_teams_played_for as distinct_teams
+    from entity('player')
+    where player_return_stints_calculated > 0
+    order by return_stints desc, total_stints desc, player_name
+    limit 20
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: will fail due to error in input config (lookup entity returned without entity_ and error in template - entity lookup with alias error)
+  name: team_blowout_games
+  description: Biggest blowout games for a given team
+  input: What were the biggest blowout games involving the Boston Celtics?
+  expected_output: |
+    select
+      g.game_id,
+      g.game_date,
+      g.team_name_home,
+      g.team_name_away,
+      g.pts_home,
+      g.pts_away,
+      g.point_margin_abs as margin
+    from entity('team') t
+    join entity('game') g
+    where t.full_name = 'Boston Celtics'
+      and g.game_id is not null
+    order by margin desc
+    limit 20
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: lowest_scoring_games
+  description: Identify defensive battles by finding games with the lowest total points.
+  input: Which games had the lowest total point totals?
+  expected_output: |
+    select  
+      game_id,
+      team_name_home,
+      team_name_away,
+      pts_home,
+      pts_away,
+      total_points,
+      game_date,
+      season_type
+    from entity('game')
+    where pts_home is not null and pts_away is not null
+    order by total_points asc
+    limit 10
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: top_scorers_with_efficiency
+  description: Find the most prolific scorers by analyzing career points and shooting efficiency.
+  input: Who are the top 20 highest scoring players with good shooting efficiency?
+  expected_output: |
+    select  
+      p.full_name as player_name,
+      p.position,
+      p.career_points,
+      p.career_games,
+      p.avg_points_per_game,
+      p.avg_shooting_percentage,
+      p.career_double_doubles,
+      p.career_triple_doubles
+    from entity('player') p
+    where p.career_points > 10000
+      and p.avg_shooting_percentage > 0.40
+    order by p.career_points desc
+    limit 20
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: team_reunion_players
+  description: Identify players who frequently return to former teams, showing reunion patterns.
+  input: Which players are known for reuniting with teams they previously played for?
+  expected_output: |
+    select 
+      p.full_name as player_name,
+      p.position,
+      p.player_return_stints_calculated as total_return_stints,
+      p.total_team_affiliations as total_teams,
+      p.total_teams_played_for as distinct_teams,
+      p.career_team_changes as team_changes
+    from entity('player') p
+    where p.player_return_stints_calculated > 0
+    order by p.player_return_stints_calculated desc, p.total_team_affiliations desc
+    limit 20
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: most_loyal_players
+  description: Analyze player loyalty by finding players who have spent the longest time with a single team.
+  input: Which players have shown the most loyalty by staying with one team for the longest period?
+  expected_output: |
+    select 
+      p.full_name as player_name,
+      p.first_team_affiliation_date,
+      p.last_team_affiliation_date,
+      p.longest_team_tenure_years,
+      p.total_team_affiliations,
+      p.avg_team_tenure_years,
+      p.career_team_changes
+    from entity('player') p
+    where p.longest_team_tenure_years >= 10
+    order by p.longest_team_tenure_years desc
+    limit 20
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: team_total_points_scored
+  description: Analyze team offensive performance by comparing total points scored by all team players.
+  input: Which teams have the highest total points scored by all their players combined?
+  expected_output: |
+    select  
+      t.full_name as team_name,
+      t.city,
+      t.team_total_points as total_team_points,
+      t.team_total_assists as total_team_assists,
+      t.team_win_percentage as team_win_pct,
+      round(t.team_total_points / nullif(t.team_total_assists, 0), 2) as points_per_assist_ratio
+    from entity('team') t
+    where t.team_total_points > 50000
+    order by t.team_total_points desc
+    limit 15
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: will fail due to error in input config (lookup entity returned without entity_ and error in template - entity lookup with alias error)
+  name: player_career_teams
+  description: Show all teams that a specific player has played for throughout their career.
+  input: Which teams has LeBron James played for during his NBA career?
+  expected_output: |
+    select 
+      t.full_name as team_f_name,
+      p.full_name as player_f_name
+    from entity('team') t
+    join entity('player') p
+    where p.full_name = 'LeBron James'
+    group by 1, 2
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: will fail due to error in input config (lookup entity returned without entity_ and error in template - entity lookup with alias error)
+  name: team_season_games
+  name: team_season_games
+  description: Show all games that a specific team has played in during a particular season.
+  input: What games did the Los Angeles Lakers play in the 2019-20 season?
+  expected_output: |
+    select 
+      g.game_id,
+      g.game_date,
+      g.season_type,
+      case 
+        when g.team_id_home = t.id then 'Home'
+        when g.team_id_away = t.id then 'Away'
+      end as home_away,
+      case 
+        when g.team_id_home = t.id then g.team_name_away
+        when g.team_id_away = t.id then g.team_name_home
+      end as opponent,
+      g.pts_home,
+      g.pts_away
+    from entity('team') t
+    join entity('game') g
+    where t.full_name = 'Los Angeles Lakers'
+      and g.season_id = 22019
+    order by g.game_date
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: will fail due to error in input config (lookup entity returned without entity_ and error in template - entity lookup with alias error)
+  name: player_season_games
+  name: player_season_games
+  description: Show all games that a specific player participated in during a particular season.
+  input: What games did Stephen Curry play in during the 2020-21 season?
+  expected_output: |
+    select distinct
+      g.game_id,
+      g.game_date,
+      g.season_type,
+      g.team_name_home,
+      g.team_name_away,
+      g.pts_home,
+      g.pts_away
+    from entity('player') p
+    join entity('game') g
+    where p.full_name = 'Stephen Curry'
+      and g.season_id = 22020
+    order by g.game_date
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: will fail due to error in input config (lookup entity returned without entity_ and error in template - entity lookup with alias error)
+  name: player_teams_list
+  name: player_teams_list
+  description: Show all teams a player has played for (one row per team).
+  input: Which teams has LeBron James played for during his NBA career?
+  expected_output: |
+    select 
+      t.full_name as team_name
+    from entity('player') p
+    join entity('team') t
+    where p.full_name = 'LeBron James'
+    order by team_name
+    group by 1
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: closest_games
+  name: closest_games
+  description: Identify the closest games by smallest point margin.
+  input: Which games had the smallest point margin?
+  expected_output: |
+    select  
+      game_id,
+      team_name_home,
+      team_name_away,
+      pts_home,
+      pts_away,
+      point_margin,
+      point_margin_abs,
+      game_date,
+      season_type
+    from entity('game')
+    where pts_home is not null and pts_away is not null
+    order by point_margin_abs asc
+    limit 10
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: will fail due to error in input config (lookup entity returned without entity_ and error in template - entity lookup with alias error)
+  name: top_scorers_by_season
+  description: Top scorers by season using per-game box scores
+  input: Who are the top 15 players by average points per game in the 2019-20 season?
+  expected_output: |
+    select
+      p.full_name as player_name,
+      metric(avg_points_per_game_career) as avg_ppg
+    from entity('player') p
+    join entity('game') g
+    where g.season_id = 22019
+    group by 1
+    order by avg_ppg desc
+    limit 15
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: highest_win_percentage_teams
+  description: Highest team win percentage across history (team_game_stats-based)
+  input: Which teams have the highest win percentage overall?
+  expected_output: |
+    select
+      t.full_name as team_name,
+      t.team_win_percentage as win_rate,
+      t.team_total_points as total_points,
+      t.team_total_assists as total_assists
+    from entity('team') t
+    order by win_rate desc, total_points desc
+    limit 20
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: high_volume_efficient_scorers
+  description: Analyze shooting efficiency trends by comparing true shooting percentage with volume metrics for strategic roster evaluation.
+  input: Show me players with high-volume scoring and elite efficiency - at least 15 PPG with 60%+ true shooting percentage.
+  expected_output: |
+    select  
+      player_full_name,
+      team_full_name,
+      metric(avg_points_per_game) as scoring_average,
+      metric(true_shooting_percentage) as ts_percentage,
+      metric(three_point_attempt_rate) as three_pt_rate,
+      metric(usage_rate_estimate) as estimated_usage,
+      metric(total_games_played) as games_played
+    from entity('player_game')
+    group by player_full_name, team_full_name
+    having scoring_average >= 15 
+      and ts_percentage >= 60
+      and games_played >= 25
+    order by ts_percentage desc, scoring_average desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: efficient_scoring_and_defense
+  description: Evaluate player consistency and clutch performance by analyzing efficient scoring frequency and defensive impact correlation.
+  input: Which players consistently deliver efficient scoring AND defensive impact? Show those with 40%+ efficient scoring games and 25+ defensive impact games.
+  expected_output: |
+    select  
+      player_full_name,
+      position,
+      metric(efficient_scorer_percentage) as efficient_game_rate,
+      metric(defensive_impact_games) as defensive_impact_games,
+      metric(double_doubles_count) as double_doubles,
+      metric(avg_plus_minus) as avg_plus_minus,
+      metric(win_percentage) as team_win_rate,
+      metric(total_games_played) as games_played
+    from entity('player_game')
+    group by player_full_name, position
+    having efficient_game_rate >= 40
+      and defensive_impact_games >= 25
+      and games_played >= 50
+    order by efficient_game_rate desc, defensive_impact_games desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: organizational_stability_teams
+  description: Analyze organizational stability by examining teams with the most successful long-term player relationships and minimal roster turnover.
+  input: Find teams that excel at building long-term relationships - high loyalty, low turnover, and players who return
+  expected_output: |
+    select  
+      team_full_name,
+      metric(long_tenure_affiliations) as loyalty_score,
+      metric(short_stint_affiliations) as roster_turnover,
+      metric(return_stint_count) as players_who_returned,
+      metric(avg_affiliation_duration_years) as stability_metric,
+      metric(unique_players_count) as total_players
+    from entity('player_team')
+    group by team_full_name
+    having loyalty_score >= 2
+      and roster_turnover <= 20
+      and stability_metric >= 1.0
+    order by loyalty_score desc, stability_metric desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: strong_team_loyalty_players
+  description: Evaluate player career path patterns by analyzing return stint behavior and team loyalty across different tenure types.
+  input: Which players demonstrate the strongest team loyalty patterns through multiple long stints and return behavior?
+  expected_output: |
+    select  
+      player_full_name,
+      metric(long_tenure_affiliations) as long_term_commitments,
+      metric(return_stint_count) as loyalty_returns,
+      metric(avg_affiliation_duration_years) as commitment_depth,
+      metric(stint_verification) as stint_efficiency,
+      metric(team_affiliations_list) as career_path
+    from entity('player_team')
+    group by player_full_name
+    having long_term_commitments >= 2 
+      and loyalty_returns >= 1
+      and commitment_depth >= 4.0
+         order by commitment_depth desc, long_term_commitments desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: best_defensive_teams
+  description: Analyze team defensive performance by examining rebounding, steals, and blocks to identify elite defensive units.
+  input: Find the best defensive teams based on rebounds, steals, and blocks per game - I want teams that dominate defensively
+  expected_output: |
+    select  
+      team_full_name,
+      metric(avg_rebounds_per_game) as rebounds_per_game,
+      metric(avg_steals_per_game) as steals_per_game,
+      metric(avg_blocks_per_game) as blocks_per_game,
+      metric(avg_turnovers_per_game) as turnovers_forced,
+      metric(avg_field_goal_percentage) as opponent_fg_pct,
+      metric(games_played) as games
+    from entity('team_game')
+    group by team_full_name
+    having games >= 35
+    order by rebounds_per_game desc, steals_per_game desc
+    limit 15
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: most_consistent_teams
+  description: Evaluate team consistency by analyzing win percentage variance and performance stability across different game contexts.
+  input: Which teams are most consistent? Show me teams with high win rates and balanced home/away performance
+  expected_output: |
+    select  
+      team_full_name,
+      metric(win_percentage) as overall_win_rate,
+      metric(home_win_percentage) as home_win_rate,
+      metric(away_win_percentage) as away_win_rate,
+      metric(avg_points_per_game) as scoring_consistency,
+      metric(avg_plus_minus) as point_differential_per_team,
+      metric(games_played) as sample_size
+    from entity('team_game')
+    group by team_full_name
+    having overall_win_rate >= 0.6
+      and home_win_rate >= 0.65
+      and away_win_rate >= 0.5
+      and sample_size >= 50
+    order by overall_win_rate desc, point_differential_per_team desc
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  comment: works on dev branch as production branch is not up to date with the bug fix
+  name: overtime_performance_leaders
+  description: Analyze team performance in different game scenarios by examining overtime games and their outcomes.
+  input: Which teams perform best in overtime games?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      metric(count_games) as total_games,
+      metric(total_home_wins) as total_wins,
+      metric(home_win_percentage) as win_rate
+    from entity('game')
+    where season_type = 'Regular Season'
+      and is_overtime_game = true
+    group by team_name_home
+    having total_games > 5
+    order by win_rate desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: first_round_draft_success
+  description: Analyze team draft strategy effectiveness by examining draft pick success across different rounds.
+  input: Which teams have been most successful with their first round draft picks?
+  expected_output: |
+    select  
+      full_name as team_name,
+      first_round_picks_count as first_round_picks,
+      lottery_picks_count as lottery_picks,
+      highest_draft_pick,
+      most_recent_draft_year
+    from entity('team')
+    where first_round_picks_count > 5
+    order by first_round_picks_count desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: season_win_leaders
+  description: Rank teams by regular-season wins and win rate.
+  input: Which teams have the most wins and highest win rates in the current season?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      season_id,
+      metric(count_games) as games_in_season,
+      metric(total_home_wins) as wins,
+      metric(total_home_losses) as losses,
+      metric(home_win_percentage) as win_rate
+    from entity('game')
+    where season_type = 'Regular Season'
+    group by team_name_home, season_id
+    order by win_rate desc, wins desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: rest_pattern_performance
+  description: Analyze rest advantage by examining back-to-back game performance.
+  input: How do teams perform in games with different rest patterns?
+  expected_output: |
+    select  
+      season_id,
+      team_name_home as team_name,
+      metric(home_win_percentage) as win_rate,
+      metric(avg_offensive_rating) as avg_points_scored,
+      metric(avg_defensive_rating) as avg_points_allowed,
+      metric(count_games) as total_games
+    from entity('game')
+    where season_type = 'Regular Season'
+    group by season_id, team_name_home
+    having total_games > 40
+    order by season_id desc, win_rate desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: playoff_vs_regular_season
+  description: Calculate team clutch performance in high-pressure situations.
+  input: Which teams perform best in playoff games vs regular season?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      metric(regular_season_wins) as regular_season_wins,
+      metric(regular_season_games) as regular_season_games,
+      metric(playoff_wins) as playoff_wins,
+      metric(playoff_games) as playoff_games
+    from entity('game')
+    group by team_name_home
+    having regular_season_games > 50 and playoff_games > 5
+    order by playoff_wins desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  comment: works on dev branch
+  name: draft_position_value
+  description: Examine draft value analysis by comparing draft position to career longevity.
+  input: Which draft positions provide the best value in terms of career length?
+  expected_output: |
+    select  
+      draft_tier,
+      metric(avg_career_games) as avg_career_length,
+      metric(avg_career_points) as avg_career_scoring,
+      metric(avg_points_per_game_career) as avg_ppg,
+      metric(count_players) as players_in_tier
+    from entity('player')
+    where draft_position is not null
+    group by draft_tier
+    order by avg_career_length desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: team_efficiency_ratings
+  description: Calculate advanced team efficiency metrics and pace of play analysis.
+  input: Which teams have the most efficient offensive and defensive ratings?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      season_id,
+      metric(avg_offensive_rating) as avg_offensive_rating,
+      metric(avg_defensive_rating) as avg_defensive_rating,
+      metric(net_rating) as net_rating,
+      metric(count_games) as games_played,
+      metric(avg_game_points_scored) as avg_total_points_per_game
+    from entity('game')
+    where season_type = 'Regular Season'
+      and pts_home is not null 
+      and pts_away is not null
+    group by team_name_home, season_id
+    order by net_rating desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: highest_player_tenure_teams
+  description: Analyze team loyalty by finding teams that retain players for the longest periods.
+  input: Which teams have the highest average player tenure (players stay longest)?
+  expected_output: |
+    select 
+      t.full_name as team_name,
+      t.city,
+      t.avg_player_tenure_years as avg_player_tenure_years,
+      t.total_player_affiliations as total_player_periods,
+      t.team_player_loyalty_score as long_term_relationships,
+      t.draft_picks_retained as players_drafted_retained
+    from entity('team') t
+    where t.total_player_affiliations >= 10
+    order by t.avg_player_tenure_years desc
+    limit 15
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: highest_roster_turnover
+  description: Find teams with the highest roster turnover by analyzing short-term player relationships.
+  input: Which teams have had the most roster instability with many short-term player signings?
+  expected_output: |
+    select 
+      t.full_name as team_name,
+      t.city,
+      t.team_roster_turnover as short_term_signings,
+      t.total_player_affiliations as total_affiliations,
+      round((t.team_roster_turnover * 100.0 / t.total_player_affiliations), 2) as turnover_percentage
+    from entity('team') t
+    where t.total_player_affiliations >= 10
+    order by turnover_percentage desc
+    limit 15
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: draft_retention_vs_acquisition
+  description: Analyze team stability by comparing draft pick retention versus player acquisition patterns.
+  input: Which teams are best at developing and retaining their drafted players versus acquiring veterans?
+  expected_output: |
+    select 
+      t.full_name as team_name,
+      t.abbreviation,
+      t.draft_picks_retained as players_drafted_retained,
+      t.total_player_affiliations as total_player_relationships,
+      t.team_player_loyalty_score as long_term_relationships,
+      round((t.draft_picks_retained * 100.0 / t.total_player_affiliations), 2) as draft_retention_rate,
+      round((t.team_player_loyalty_score * 100.0 / t.total_player_affiliations), 2) as loyalty_rate
+    from entity('team') t
+    where t.total_player_affiliations >= 5
+    order by draft_retention_rate desc, loyalty_rate desc
+    limit 20
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: multi_team_career_timelines
+  description: Track career journeys by showing complete team affiliation timelines for veteran players.
+  input: Show me the complete career timeline for players who have played for at least 4 different teams.
+  expected_output: |
+    select 
+      p.full_name as player_name,
+      p.total_team_affiliations,
+      p.total_teams_played_for as distinct_teams,
+      p.career_team_changes,
+      p.player_return_stints_calculated as return_stints,
+      p.first_team_affiliation_date,
+      p.last_team_affiliation_date,
+      p.longest_team_tenure_years,
+      p.avg_team_tenure_years
+    from entity('player') p
+    where p.total_teams_played_for >= 4
+    order by p.total_team_affiliations desc, p.full_name
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: games_with_most_achievements
+  description: Find the most exciting games with high statistical achievements.
+  input: Which games had the most double-doubles and triple-doubles combined?
+  expected_output: |
+    select  
+      g.game_id,
+      g.game_date,
+      g.team_name_home,
+      g.team_name_away,
+      g.season_type,
+      g.game_double_doubles as double_doubles_in_game,
+      g.game_triple_doubles as triple_doubles_in_game,
+      (g.game_double_doubles + g.game_triple_doubles) as total_statistical_achievements,
+      g.total_game_points as total_points,
+      g.total_game_assists as total_assists
+    from entity('game') g
+    where g.game_double_doubles > 0 or g.game_triple_doubles > 0
+    order by total_statistical_achievements desc, g.total_game_points desc
+    limit 25
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: double_triple_double_leaders
+  description: Identify the most versatile players based on double-doubles and triple-doubles frequency.
+  input: Which players have the highest rate of double-doubles and triple-doubles per game?
+  expected_output: |
+    select  
+      p.full_name as player_name,
+      p.position,
+      p.career_games,
+      p.career_double_doubles,
+      p.career_triple_doubles,
+      round(p.career_double_doubles * 100.0 / nullif(p.career_games, 0), 2) as double_double_rate_pct,
+      round(p.career_triple_doubles * 100.0 / nullif(p.career_games, 0), 2) as triple_double_rate_pct,
+      p.avg_points_per_game,
+      p.player_win_percentage
+    from entity('player') p
+    where p.career_games >= 100
+      and p.career_double_doubles >= 10
+    order by triple_double_rate_pct desc, double_double_rate_pct desc
+    limit 20
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: scoring_and_winning_leaders
+  description: Analyze winning impact by finding players with the best combination of individual performance and team success.
+  input: Which players have the best combination of high scoring and winning percentage?
+  expected_output: |
+    select  
+      p.full_name as player_name,
+      p.position,
+      p.career_points,
+      p.career_games,
+      p.avg_points_per_game,
+      p.player_win_percentage,
+      p.avg_shooting_percentage,
+      round(p.career_points * p.player_win_percentage / 100, 0) as winning_weighted_points
+    from entity('player') p
+    where p.career_games >= 200
+      and p.avg_points_per_game >= 15.0
+      and p.player_win_percentage >= 0.55
+    order by winning_weighted_points desc, p.player_win_percentage desc
+    limit 25
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  comment: will fail due to error in input config (lookup entity returned without entity_ and error in template - entity lookup with alias error)
+  name: season_high_efficiency_scorers
+  description: High-efficiency scorers in a season
+  input: Which players combined high scoring and high shooting efficiency in 2021-22?
+  expected_output: |
+    select
+      p.full_name as player_name,
+      p.avg_shooting_percentage as avg_fg_pct,
+      metric(avg_points_per_game_career) as avg_ppg
+    from entity('player') p
+    join entity('game') g
+    where g.season_id = 22021
+    group by 1,2
+    having avg_ppg >= 20 and p.avg_shooting_percentage >= 0.45
+    order by avg_ppg desc, p.avg_shooting_percentage desc
+    limit 25
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: clutch_shooting_efficiency
+  description: Analyze player efficiency in clutch situations by comparing shooting performance in high-pressure games vs regular games.
+  input: Which players have the best shooting efficiency in games with 30+ minutes played (proxy for clutch situations)?
+  expected_output: |
+    select  
+      full_name,
+      position as position,
+      high_minute_shooting_percentage as shooting_percentage,
+      high_minute_true_shooting as true_shooting_pct,
+      career_efficient_scorer_rate as efficient_game_rate,
+      high_minute_games_count as high_minute_games,
+      career_games as total_games
+    from entity('player')
+    where position is not null and high_minute_games_count >= 20
+    order by true_shooting_pct desc, efficient_game_rate desc
+    limit 25
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: three_point_evolution_by_position
+  description: Analyze the three-point revolution by examining shooting frequency evolution across different player positions.
+  input: How has three-point attempt rate evolved by position, and which positions shoot most efficiently from beyond the arc?
+  expected_output: |
+    select  
+      position,
+      metric(avg_career_three_point_percentage) as three_point_efficiency,
+      metric(avg_career_three_point_rate) as avg_three_point_rate,
+      metric(count_players) as player_count,
+      metric(avg_points_per_game_career) as avg_points_per_game
+    from entity('player')
+    where position is not null and career_games >= 50
+    group by position
+    order by avg_three_point_rate desc, three_point_efficiency desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: usage_rate_efficiency_analysis
+  description: Examine the relationship between player usage rate and shooting efficiency to identify optimal offensive loads.
+  input: What's the relationship between estimated usage rate and true shooting percentage across different player types?
+  expected_output: |
+    select  
+      position,
+      usage_tier,
+      AVG(career_usage_rate) as avg_usage_rate,
+      AVG(career_true_shooting) as avg_true_shooting,
+      AVG(career_turnover_rate) as avg_turnover_rate,
+      COUNT(*) as player_count
+    from entity('player')
+    where position is not null and career_games >= 50
+    group by position, usage_tier
+    order by avg_usage_rate desc, avg_true_shooting desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: height_vs_three_point_shooting
+  description: Analyze how player height correlates with three-point shooting frequency and efficiency in the modern NBA.
+  input: How does player height affect three-point shooting patterns and efficiency?
+  expected_output: |
+    select  
+      CASE 
+        WHEN height_inches >= 84 THEN 'Very Tall (7ft+)'
+        WHEN height_inches >= 80 THEN 'Tall (6''8" - 6''11")'
+        WHEN height_inches >= 76 THEN 'Medium (6''4" - 6''7")'
+        ELSE 'Guards (< 6''4")'
+      END as height_category,
+      AVG(career_three_point_rate) as avg_three_point_rate,
+      AVG(career_three_point_percentage) as three_point_efficiency,
+      AVG(career_points / NULLIF(career_games, 0)) as avg_points,
+      COUNT(*) as player_count
+    from entity('player')
+    where height_inches is not null and position is not null and career_games >= 30
+    group by height_category
+    order by avg_three_point_rate desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: pace_and_efficiency_balance
+  description: Analyze team pace and offensive efficiency relationship to find optimal playing styles.
+  input: Which teams achieve the best balance between pace of play and offensive efficiency?
+  expected_output: |
+    select  
+      full_name as team_name,
+      team_total_points as total_points,
+      team_total_assists as total_assists,
+      total_wins,
+      total_losses,
+      CASE 
+        WHEN (team_total_points / NULLIF(total_wins + total_losses, 0)) >= 115 THEN 'High Scoring'
+        WHEN (team_total_points / NULLIF(total_wins + total_losses, 0)) >= 105 THEN 'Medium Scoring'
+        ELSE 'Low Scoring'
+      END as scoring_tier
+    from entity('team')
+    where total_wins + total_losses > 0
+    order by total_wins desc, team_total_points desc
+    limit 30
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: strongest_home_venues
+  description: Analyze home court advantage patterns across different teams and identify the strongest home venues.
+  input: Which teams have the strongest home court advantage based on win percentage differences?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      metric(total_home_wins) as home_wins,
+      metric(total_home_losses) as home_losses,
+      metric(total_away_wins) as away_wins,
+      metric(total_away_losses) as away_losses,
+      metric(home_win_percentage) as home_win_pct,
+      metric(away_win_percentage) as away_win_pct,
+      metric(home_court_advantage) as home_advantage
+    from entity('game')
+    where season_type = 'Regular Season'
+    group by team_name_home
+    order by home_advantage desc
+    limit 30
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: high_minute_clutch_players
+  description: Identify players who perform best in high-minutes games, indicating clutch and endurance performance.
+  input: Which players maintain efficiency in high-minute games and demonstrate fourth quarter impact?
+  expected_output: |
+    select  
+      full_name,
+      position,
+      career_fourth_quarter_points as estimated_q4_points,
+      high_minute_shooting_percentage as high_minute_fg_pct,
+      career_versatility_score as statistical_versatility,
+      high_minute_games_count as high_minute_games
+    from entity('player')
+    where position is not null and high_minute_games_count >= 30 and career_games >= 50
+    order by estimated_q4_points desc, statistical_versatility desc
+    limit 30
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: most_versatile_contributors
+  description: Analyze player archetype distribution by examining statistical versatility and role specialization.
+  input: Which players are the most versatile contributors across multiple statistical categories?
+  expected_output: |
+    select  
+      full_name,
+      position,
+      career_versatility_score as versatility_score,
+      career_points / NULLIF(career_games, 0) as avg_points,
+      career_assists / NULLIF(career_games, 0) as avg_assists,
+      career_rebounds / NULLIF(career_games, 0) as avg_rebounds,
+      career_defensive_impact_games as defensive_games,
+      career_games as games_played
+    from entity('player')
+    where position is not null and career_games >= 40
+    order by versatility_score desc, avg_points desc
+    limit 25
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: top_playmakers
+  description: Analyze assist distribution and ball movement efficiency to identify primary playmakers.
+  input: Which players have the highest assist rates and best assist-to-turnover ratios?
+  expected_output: |
+    select  
+      full_name,
+      position,
+      career_high_assist_game_rate as high_assist_frequency,
+      career_assists / NULLIF(career_games, 0) as avg_assists_per_game,
+      career_turnover_rate as turnover_rate,
+      career_games as games_played
+    from entity('player')
+    where position is not null and career_games >= 30 
+    and (career_assists / NULLIF(career_games, 0)) >= 3
+    order by high_assist_frequency desc, avg_assists_per_game desc
+    limit 30
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  comment: works on dev
+  name: rookie_success_prediction
+  description: Analyze rookie performance prediction by examining draft position vs actual performance metrics.
+  input: How does draft position correlate with rookie success metrics and career trajectory?
+  expected_output: |
+   select  
+      draft_tier,
+      draft_position,
+      AVG(career_points) as avg_career_points,
+      AVG(career_points / NULLIF(career_games, 0)) as avg_career_ppg,
+      AVG(career_games) as avg_career_games,
+      COUNT(*) as players_in_tier,
+      AVG(CASE WHEN is_rookie THEN 1.0 ELSE 0.0 END) as rookie_percentage
+    from entity('player')
+    where draft_position is not null and draft_year >= 2010
+    group by draft_tier, draft_position
+    order by draft_position
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: quarter_performance_patterns
+  description: Analyze quarter-by-quarter performance patterns to identify team strengths in different game periods.
+  input: Which teams perform best in each quarter and how does this correlate with wins?
+  expected_output: |
+    select  
+      team_name_home as team_name,
+      AVG(q4_points_home_game) as avg_fourth_quarter,
+      SUM(CASE WHEN wl_home = 'W' THEN 1 ELSE 0 END) as home_wins,
+      AVG(CASE WHEN wl_home = 'W' THEN 1.0 ELSE 0.0 END) as home_win_pct,
+      COUNT(*) as total_home_games
+    from entity('game')
+    where season_type = 'Regular Season' AND q4_points_home_game IS NOT NULL
+    group by team_name_home
+    order by home_win_pct desc, avg_fourth_quarter desc
+    limit 30
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: competitive_vs_blowout_performance
+  description: Analyze competitive vs garbage time performance by comparing stats in different game contexts.
+  input: How do player statistics differ between competitive games and blowout situations?
+  expected_output: |
+    select  
+      full_name,
+      position,
+      career_points / NULLIF(career_games, 0) as overall_avg_points,
+      career_shooting_percentage as overall_fg_pct,
+      career_efficient_scorer_rate as efficient_games_pct,
+      career_games as total_games
+    from entity('player')
+    where position is not null and career_games >= 50
+    order by efficient_games_pct desc, overall_fg_pct desc
+    limit 40
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: most_impactful_players
+  description: Analyze player impact and effectiveness based on available statistical metrics.
+  input: Which players provide the most overall impact based on statistical production and efficiency?
+  expected_output: |
+    select  
+      full_name,
+      position,
+      career_points / NULLIF(career_games, 0) as avg_points_per_game,
+      career_shooting_percentage as field_goal_pct,
+      career_true_shooting as true_shooting_pct,
+      career_versatility_score as versatility,
+      career_games as games_played,
+      total_teams_played_for as teams_played
+    from entity('player')
+    where position is not null and career_games >= 30
+    order by versatility desc, true_shooting_pct desc
+    limit 30
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: position_matchup_advantages
+  description: Identify position matchup advantages by analyzing offensive performance against different defensive positions.
+  input: Which players excel against specific position matchups based on their statistical production?
+  expected_output: |
+    select  
+      position as player_position,
+      AVG(career_points / NULLIF(career_games, 0)) as avg_points,
+      AVG(career_true_shooting) as shooting_efficiency,
+      AVG(career_usage_rate) as usage_rate,
+      AVG(career_turnover_rate) as turnover_rate,
+      COUNT(*) as players_in_position,
+      AVG(career_versatility_score) as avg_versatility
+    from entity('player')
+    where position is not null and career_games >= 50
+    group by position
+    order by shooting_efficiency desc, avg_points desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: career_stability_analysis
+  description: Analyze player career stability by examining team affiliation patterns and stint durations.
+  input: Which players have the most stable careers based on team tenure and affiliation patterns?
+  expected_output: |
+    select  
+      full_name,
+      position,
+      avg_team_tenure_years as avg_stint_length,
+      career_team_changes as team_changes,
+      total_teams_played_for as teams_played,
+      career_games as total_games,
+      CASE 
+        WHEN avg_team_tenure_years >= 5 THEN 'Long-term'
+        WHEN avg_team_tenure_years >= 2 THEN 'Stable' 
+        ELSE 'Journeyman'
+      END as career_stability
+    from entity('player')
+    where total_teams_played_for >= 1 and career_games >= 100
+    order by avg_stint_length desc, team_changes asc
+    limit 30
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  comment: works on dev
+  name: draft_pick_value_analysis
+  description: Analyze draft pick value and trade efficiency by examining career outcomes relative to draft investment.
+  input: What's the actual value of different draft positions based on career production metrics?
+  expected_output: |
+    select  
+      draft_tier,
+      draft_round,
+      AVG(career_points) as avg_career_points,
+      AVG(career_points / NULLIF(career_games, 0)) as avg_career_ppg,
+      AVG(career_games) as avg_career_games,
+      COUNT(*) as players_drafted,
+      (AVG(career_points) / NULLIF(AVG(draft_position), 0)) as value_per_draft_slot
+    from entity('player')
+    where draft_position is not null and draft_year >= 2005
+    group by draft_tier, draft_round
+    order by value_per_draft_slot desc, avg_career_ppg desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: best_player_coach_combinations
+  description: Analyze the best coach player combination with the highest number of wins
+  input: Which player-coach combinations have resulted in the highest win percentages?
+  expected_output: |
+    SELECT 
+      player.full_name as player_name,
+      coach.coach_name,
+      COUNT(CASE WHEN player_game.win = true THEN 1 END) as wins_together,
+      COUNT(*) as games_together,
+      ROUND(COUNT(CASE WHEN player_game.win = true THEN 1 END) * 100.0 / COUNT(*), 2) as win_percentage
+    FROM entity('coach') coach
+    JOIN entity('player') player
+    JOIN entity('player_game') player_game
+    WHERE player_game.win = true
+    GROUP BY player.full_name, coach.coach_name
+    HAVING games_together >= 10
+    ORDER BY wins_together DESC, win_percentage DESC
+    LIMIT 20;
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: usage_rate_efficiency_trends
+  description: Analyze shooting efficiency trends across different player usage rates and roles.
+  input: How does shooting efficiency vary across different usage levels and what's the optimal usage for efficiency?
+  expected_output: |
+    select  
+      usage_tier as usage_category,
+      AVG(career_usage_rate) as avg_usage_rate,
+      AVG(career_true_shooting) as avg_true_shooting,
+      AVG(career_points / NULLIF(career_games, 0)) as avg_points,
+      AVG(career_turnover_rate) as avg_turnover_rate,
+      COUNT(*) as player_count
+    from entity('player')
+    where position is not null and career_games >= 50
+    group by usage_tier
+    order by avg_usage_rate desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: consistent_defensive_impact
+  description: Analyze defensive impact patterns by examining steals, blocks, and overall defensive contributions.
+  input: Which players make the most consistent defensive impact across different statistical categories?
+  expected_output: |
+    select  
+      full_name,
+      position,
+      career_defensive_impact_games as defensive_impact_games,
+      career_games as total_games,
+      (career_defensive_impact_games * 100.0 / NULLIF(career_games, 0)) as defensive_impact_rate,
+      career_versatility_score as overall_versatility
+    from entity('player')
+    where position is not null and career_games >= 40
+    order by defensive_impact_rate desc, defensive_impact_games desc
+    limit 30
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: most_consistent_players
+  description: Analyze momentum and performance consistency by examining game-to-game statistical variance.
+  input: Which players are most consistent in their statistical production and efficiency?
+  expected_output: |
+    select  
+      full_name,
+      position,
+      career_points / NULLIF(career_games, 0) as avg_points,
+      career_efficient_scorer_rate as consistency_rate,
+      career_double_doubles as double_doubles,
+      career_triple_doubles as triple_doubles,
+      career_versatility_score as versatility,
+      career_games as games_played
+    from entity('player')
+    where position is not null and career_games >= 50 
+    and (career_points / NULLIF(career_games, 0)) >= 10
+    order by consistency_rate desc, versatility desc
+    limit 25
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: international_vs_domestic_players
+  description: Analyze international player performance and adaptation patterns in the NBA.
+  input: How do international players compare to domestic players in terms of performance and career trajectories?
+  expected_output: |
+    select  
+      CASE WHEN country = 'USA' OR country IS NULL THEN 'Domestic' ELSE 'International' END as player_origin,
+      AVG(career_points / NULLIF(career_games, 0)) as avg_points,
+      AVG(career_true_shooting) as shooting_efficiency,
+      AVG(career_versatility_score) as versatility,
+      COUNT(*) as player_count,
+      AVG(experience) as avg_experience
+    from entity('player')
+    where position is not null and career_games >= 30
+    group by player_origin
+    order by shooting_efficiency desc, avg_points desc
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: championship_homegrown_teams
+  description: Find teams that have won championships with rosters featuring multiple homegrown players.
+  input: How many teams have won a championship with a roster featuring multiple players drafted by that same team?
+  expected_output: |
+    SELECT 
+      full_name,
+      draft_picks_retained,
+      total_player_affiliations,
+      avg_player_tenure_years,
+      team_player_loyalty_score,
+      players_returning_to_team,
+      count_drafts,
+      first_round_picks_count,
+      lottery_picks_count
+    FROM entity('team')
+    WHERE draft_picks_retained >= 5
+      AND team_player_loyalty_score >= 10
+    ORDER BY draft_picks_retained DESC, team_player_loyalty_score DESC
+    LIMIT 20
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: back_to_back_performance
+  description: Analyze how team performance changes in consecutive games by looking at win patterns.
+  input: How does a team's performance change in back-to-back games when playing at home versus on the road?
+  expected_output: |
+    SELECT 
+      team_name_home,
+      metric(home_win_percentage) as home_win_pct,
+      metric(away_win_percentage) as away_win_pct,
+      metric(home_court_advantage) as advantage_differential,
+      metric(total_home_wins) as home_wins,
+      metric(total_away_wins) as away_wins,
+      metric(avg_point_differential) as avg_margin
+    FROM entity('game')
+    WHERE season_type = 'Regular Season'
+    GROUP BY team_name_home
+    ORDER BY advantage_differential DESC
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  comment: works on dev
+  name: three_point_evolution_over_time
+  description: Analyze how three-point shooting has evolved for different player positions over time.
+  input: How has the average number of three-point attempts per game evolved for different player positions since the three-point line was introduced?
+  expected_output: |
+    SELECT 
+      position,
+      experience_bracket,
+      metric(count_players) as players_in_category,
+      metric(avg_career_three_point_rate) as avg_3pt_attempt_rate,
+      metric(avg_career_three_point_percentage) as avg_3pt_accuracy
+    FROM entity('player')
+    WHERE position IS NOT NULL
+      AND career_games >= 200
+      AND career_three_point_rate IS NOT NULL
+    GROUP BY position, experience_bracket
+    ORDER BY position, avg_3pt_attempt_rate DESC
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: successful_lottery_pick_teams
+  description: Find teams with the most lottery picks who went on to become successful players.
+  input: Which teams have the most lottery picks who went on to become an All-Star?
+  expected_output: |
+    SELECT 
+      full_name as team_name,
+      lottery_picks_count,
+      first_round_picks_count,
+      count_drafts,
+      avg_team_draft_position,
+      draft_picks_retained,
+      team_player_loyalty_score,
+      players_returning_to_team
+    FROM entity('team')
+    WHERE lottery_picks_count >= 10
+      AND draft_picks_retained >= 5
+    ORDER BY lottery_picks_count DESC, draft_picks_retained DESC
+  tags:
+    difficulty: HARD
+
+- type: SQL
+  name: nba_champions_history
+  description: List all NBA champions and their Finals results in chronological order.
+  input: Who won the NBA championship each year and what was the Finals result?
+  expected_output: |
+    SELECT 
+      season_year,
+      champion_team,
+      defeated_team,
+      series_result
+    FROM entity('season')
+    ORDER BY season_year DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: most_championships_teams
+  description: Count total championships won by each NBA team throughout history.
+  input: Which teams have won the most NBA championships?
+  expected_output: |
+    SELECT 
+      champion_team,
+      metric(count_seasons) as championship_count
+    FROM entity('season')
+    GROUP BY champion_team
+    ORDER BY championship_count DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: finals_series_competitiveness
+  description: Analyze Finals series competitiveness by examining series length and dominance patterns.
+  input: What's the average length of NBA Finals series and how many were sweeps vs seven-game series?
+  expected_output: |
+    SELECT 
+      metric(avg_series_length) as avg_games_per_series,
+      metric(sweep_count) as total_sweeps,
+      metric(seven_game_series_count) as seven_game_series,
+      metric(sweep_percentage) as sweep_percentage,
+      metric(seven_game_series_percentage) as seven_game_percentage
+    FROM entity('season');
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: finals_competitiveness_by_decade
+  description: Analyze championship competitiveness trends by examining Finals series patterns over different decades.
+  input: How has NBA Finals competitiveness changed over the decades?
+  expected_output: |
+    SELECT 
+      FLOOR(season_year / 10) * 10 as decade,
+      metric(avg_series_length) as avg_games_per_series,
+      metric(sweep_percentage) as sweep_rate,
+      metric(close_series_percentage) as competitive_series_rate,
+             metric(count_seasons) as championships_in_decade
+    FROM entity('season')
+    GROUP BY decade
+    ORDER BY decade DESC;
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: finals_mvp_without_championship
+  description: Find Finals MVP players whose teams did not win the championship that season (should not happen, but checking data completeness).
+  input: Which Finals MVP players' teams didn't win the championship that season?
+  expected_output: |
+    SELECT 
+      season_year,
+      finals_mvp,
+      champion_team,
+      defeated_team
+    FROM entity('season')
+    WHERE finals_mvp IS NOT NULL
+      AND champion_team IS NOT NULL
+    ORDER BY season_year DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: regular_season_mvp_without_championship
+  description: Find regular season MVP players whose teams did not win the championship that season, highlighting individual excellence without team success.
+  input: Which regular season MVP players' teams didn't win the championship that season?
+  expected_output: |
+    SELECT 
+      season_year,
+      regular_season_mvp,
+      champion_team,
+      defeated_team,
+      CASE 
+        WHEN regular_season_mvp IS NOT NULL AND champion_team IS NOT NULL THEN 'Regular season MVP data available'
+        ELSE 'Data incomplete'
+      END as mvp_championship_status
+    FROM entity('season')
+    WHERE regular_season_mvp IS NOT NULL
+      AND champion_team IS NOT NULL
+    ORDER BY season_year DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: most_finals_mvp_awards
+  description: Identify the player who has won the most Finals MVP awards throughout NBA history. Uses season_finals_mvp_to_player relationship.
+  input: What is the player that won the most Finals MVP titles?
+  expected_output: |
+    SELECT 
+      p.full_name as player_name,
+      COUNT(*) as finals_mvp_count,
+      MIN(s.season_year) as first_finals_mvp_year,
+      MAX(s.season_year) as last_finals_mvp_year,
+      STRING_AGG(CAST(s.season_year AS STRING), ', ' ORDER BY s.season_year) as finals_mvp_years
+    FROM entity('season') s
+    JOIN entity('player') p ON s.finals_mvp = p.full_name
+    WHERE s.finals_mvp IS NOT NULL
+    GROUP BY p.id, p.full_name
+    ORDER BY finals_mvp_count DESC, first_finals_mvp_year ASC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: most_regular_season_mvp_awards
+  description: Identify the player who has won the most regular season MVP awards throughout NBA history. Uses season_regular_mvp_to_player relationship.
+  input: What is the player that won the most regular season MVP titles?
+  expected_output: |
+    SELECT 
+      p.full_name as player_name,
+      COUNT(*) as mvp_count,
+      MIN(s.season_year) as first_mvp_year,
+      MAX(s.season_year) as last_mvp_year,
+      STRING_AGG(CAST(s.season_year AS STRING), ', ' ORDER BY s.season_year) as mvp_years
+    FROM entity('season') s
+    JOIN entity('player') p ON s.regular_season_mvp = p.full_name
+    WHERE s.regular_season_mvp IS NOT NULL
+    GROUP BY p.id, p.full_name
+    ORDER BY mvp_count DESC, first_mvp_year ASC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: regular_season_mvp_championship_correlation
+  description: Analyze the relationship between regular season MVP winners and championship success by examining how often regular season MVP players' teams win titles.
+  input: How often do regular season MVP players' teams win the championship in the same season?
+  expected_output: |
+    SELECT 
+      COUNT(*) as total_mvp_seasons,
+      COUNT(CASE 
+        WHEN regular_season_mvp IS NOT NULL AND champion_team IS NOT NULL THEN 1 
+        ELSE NULL 
+      END) as mvp_seasons_with_championship_data
+    FROM entity('season')
+    WHERE regular_season_mvp IS NOT NULL 
+      AND champion_team IS NOT NULL;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: top_coaches_by_career
+  description: Analyze coaching career longevity and success patterns by examining win percentages and career spans.
+  input: Which coaches have the longest careers and highest win percentages?
+  expected_output: |
+    SELECT 
+      coach_name,
+      years_active,
+      total_games_coached,
+      total_wins,
+      total_losses,
+      win_percentage,
+      total_head_coach_teams,
+      career_wins_over_500
+    FROM entity('coach')
+    WHERE total_games_coached >= 100
+    ORDER BY win_percentage DESC, years_active DESC
+    LIMIT 20
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: most_teams_coached
+  description: Identify coaches who have worked for the most different teams throughout their careers.
+  input: Which coaches have coached the most different teams in their careers?
+  expected_output: |
+    SELECT 
+      coach_name,
+      total_head_coach_teams,
+      total_head_coach_seasons,
+      total_assistant_seasons,
+      years_active,
+      first_year,
+      last_year
+    FROM entity('coach')
+    WHERE total_head_coach_teams >= 3
+    ORDER BY total_head_coach_teams DESC, total_head_coach_seasons DESC
+    LIMIT 15
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  name: coach_home_court_advantage
+  description: Analyze coaching performance by comparing home and away win records for coaches.
+  input: Which coaches have the best home court advantage with their teams?
+  expected_output: |
+    SELECT 
+      coach_name,
+      total_home_wins,
+      total_away_wins,
+      total_games_coached,
+      win_percentage,
+      avg_points_per_game,
+      (total_home_wins - total_away_wins) as home_advantage_wins
+    FROM entity('coach')
+    WHERE total_games_coached >= 200
+    ORDER BY home_advantage_wins DESC, win_percentage DESC
+    LIMIT 15
+  tags:
+    difficulty: MEDIUM
+
+- type: SQL
+  name: assistant_to_head_coach_path
+  description: Find coaches with the most successful assistant coaching experience before becoming head coaches.
+  input: Which coaches had the most assistant coaching experience before becoming head coaches?
+  expected_output: |
+    SELECT 
+      coach_name,
+      total_assistant_seasons,
+      total_head_coach_seasons,
+      total_games_coached,
+      win_percentage,
+      years_active,
+      CASE 
+        WHEN total_assistant_seasons >= 10 THEN 'Extensive Assistant Experience'
+        WHEN total_assistant_seasons >= 5 THEN 'Moderate Assistant Experience'
+        ELSE 'Limited Assistant Experience'
+      END as assistant_experience_level
+    FROM entity('coach')
+    WHERE total_assistant_seasons > 0 AND total_head_coach_seasons > 0
+    ORDER BY total_assistant_seasons DESC, win_percentage DESC
+    LIMIT 20
+  tags:
+    difficulty: MEDIUM

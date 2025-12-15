@@ -1,0 +1,308 @@
+name: coach
+
+description: Dimension table containing comprehensive coach information, career metadata,
+  and tenure details for NBA basketball coaches
+
+aliases: []
+
+key_table: nba.public.coach
+
+keys:
+- coach_id
+
+defaults: null
+
+features:
+- type: field
+  name: coach_id
+  description: Unique identifier for each NBA coach
+  data_type: number
+  asset: nba.public.coach
+  join_name: null
+  time_field: null
+  filters: []
+  field: coach_id
+- type: field
+  name: first_name
+  description: Coach's first name
+  data_type: string
+  asset: nba.public.coach
+  join_name: null
+  time_field: null
+  filters: []
+  field: first_name
+- type: field
+  name: last_name
+  description: Coach's last name
+  data_type: string
+  asset: nba.public.coach
+  join_name: null
+  time_field: null
+  filters: []
+  field: last_name
+- type: field
+  name: coach_name
+  description: Coach's complete full name
+  data_type: string
+  asset: nba.public.coach
+  join_name: null
+  time_field: null
+  filters: []
+  field: coach_name
+- type: field
+  name: first_year
+  description: First year the coach was active in the NBA
+  data_type: number
+  asset: nba.public.coach
+  join_name: null
+  time_field: null
+  filters: []
+  field: first_year
+- type: field
+  name: last_year
+  description: Last year the coach was active in the NBA
+  data_type: number
+  asset: nba.public.coach
+  join_name: null
+  time_field: null
+  filters: []
+  field: last_year
+- type: field
+  name: years_active
+  description: Total number of years the coach has been active in the NBA
+  data_type: number
+  asset: nba.public.coach
+  join_name: null
+  time_field: null
+  filters: []
+  field: years_active
+- type: metric
+  name: total_head_coach_seasons
+  description: Total number of seasons a coach has served as head coach
+  data_type: number
+  asset: coaching_staff
+  join_name: coach_to_coaching_staff
+  time_field: null
+  filters:
+  - type: field
+    field: coach_type
+    operator: equal
+    values:
+    - Head Coach
+  metric: total_head_coach_seasons
+- type: metric
+  name: total_assistant_seasons
+  description: Total number of seasons a coach has served as assistant coach
+  data_type: number
+  asset: coaching_staff
+  join_name: coach_to_coaching_staff
+  time_field: null
+  filters:
+  - type: field
+    field: coach_type
+    operator: in
+    values:
+    - Assistant Coach
+    - Assistant Coach for Player Development
+    - Lead Assistant Coach
+    - Associate Head Coach
+  metric: total_assistant_seasons
+- type: metric
+  name: total_games_coached
+  description: Total number of games coached as head coach
+  data_type: number
+  asset: team_game
+  join_name: coach_team_game__by_coaching_staff
+  time_field: null
+  filters: []
+  metric: games_played
+- type: metric
+  name: total_wins
+  description: Total wins as head coach
+  data_type: number
+  asset: team_game
+  join_name: coach_team_game__by_coaching_staff
+  time_field: null
+  filters: []
+  metric: wins_count
+- type: metric
+  name: total_losses
+  description: Total losses as head coach
+  data_type: number
+  asset: team_game
+  join_name: coach_team_game__by_coaching_staff
+  time_field: null
+  filters: []
+  metric: losses_count
+- type: metric
+  name: win_percentage
+  description: Overall win percentage as head coach
+  data_type: number
+  asset: team_game
+  join_name: coach_team_game__by_coaching_staff
+  time_field: null
+  filters: []
+  metric: win_percentage
+- type: metric
+  name: total_home_wins
+  description: Total home wins as head coach
+  data_type: number
+  asset: team_game
+  join_name: coach_team_game__by_coaching_staff
+  time_field: null
+  filters: []
+  metric: home_wins_count
+- type: metric
+  name: total_away_wins
+  description: Total away wins as head coach
+  data_type: number
+  asset: team_game
+  join_name: coach_team_game__by_coaching_staff
+  time_field: null
+  filters: []
+  metric: away_wins_count
+- type: formula
+  name: career_wins_over_500
+  description: Games over .500 (wins minus losses)
+  data_type: number
+  sql: '{total_wins} - {total_losses}'
+- type: metric
+  name: metric_distinct_coaches
+  description: null
+  data_type: number
+  asset: coaching_staff
+  join_name: coach_to_coaching_staff
+  time_field: null
+  filters: []
+  metric: distinct_coaches
+- type: metric
+  name: total_head_coach_teams
+  description: null
+  data_type: number
+  asset: coaching_staff
+  join_name: coach_to_coaching_staff
+  time_field: null
+  filters:
+  - type: field
+    field: coach_type
+    operator: equal
+    values: []
+  metric: total_head_coach_teams
+- type: metric
+  name: avg_points_per_game
+  description: null
+  data_type: number
+  asset: team_game
+  join_name: coach_team_game__by_coaching_staff
+  time_field: null
+  filters: []
+  metric: avg_points_per_game
+
+metrics:
+- name: count_coaches
+  description: |
+    Count of coaches
+    - "Use for analyzing coach population and demographics."
+    - "Filter by first_year and last_year to analyze coaching eras."
+  sql: COUNT(*)
+  examples: []
+- name: avg_coaching_career_length
+  description: |
+    Average length of coaching careers in years
+    - "Metrics the average duration of NBA coaching careers."
+    - "Useful for understanding coaching tenure patterns."
+  sql: AVG({years_active})
+  examples: []
+- name: longest_coaching_career
+  description: |
+    Longest coaching career in years
+    - "Identifies the coach with the longest career span."
+    - "Useful for historical analysis and career longevity studies."
+  sql: MAX({years_active})
+  examples: []
+- name: earliest_coaching_start
+  description: |
+    Earliest year a coach started in the NBA
+    - "Identifies the earliest coaching start year."
+    - "Useful for historical analysis of NBA coaching."
+  sql: MIN({first_year})
+  examples: []
+- name: latest_coaching_start
+  description: |
+    Most recent year a coach started in the NBA
+    - "Identifies the most recent coaching start year."
+    - "Useful for analyzing current coaching trends."
+  sql: MAX({first_year})
+  examples: []
+- name: avg_coach_name_length
+  description: |
+    Average length of coach full names
+    - "Metrics the average character length of coach full names."
+    - "Useful for UI design and display formatting."
+  sql: AVG(LENGTH({coach_name}))
+  examples: []
+- name: distinct_first_names
+  description: |
+    Count of unique coach first names
+    - "Metrics the diversity of coach first names."
+    - "Useful for demographic analysis."
+  sql: COUNT(DISTINCT {first_name})
+  examples: []
+- name: distinct_last_names
+  description: |
+    Count of unique coach last names
+    - "Metrics the diversity of coach last names."
+    - "Useful for demographic analysis."
+  sql: COUNT(DISTINCT {last_name})
+  examples: []
+- name: currently_active_coaches
+  description: |
+    Count of coaches who are currently active (last_year >= current year)
+    - "Counts coaches who are currently active in the NBA."
+    - "Useful for understanding current coaching landscape."
+  sql: COUNT(CASE WHEN {last_year} >= EXTRACT(YEAR FROM CURRENT_DATE) THEN 1 END)
+  examples: []
+- name: retired_coaches
+  description: |
+    Count of coaches who have retired (last_year < current year)
+    - "Counts coaches who have retired from the NBA."
+    - "Useful for historical analysis."
+  sql: COUNT(CASE WHEN {last_year} < EXTRACT(YEAR FROM CURRENT_DATE) THEN 1 END)
+  examples: []
+- name: total_coaching_games_all_coaches
+  description: |
+    Total games coached across all coaches
+    - "Aggregates total games coached across all coaches."
+    - "Useful for understanding overall coaching activity."
+  sql: SUM({total_games_coached})
+  examples: []
+- name: total_coaching_wins_all_coaches
+  description: |
+    Total wins across all coaches
+    - "Aggregates total wins across all coaches."
+    - "Useful for understanding overall coaching success."
+  sql: SUM({total_wins})
+  examples: []
+- name: avg_win_percentage_all_coaches
+  description: |
+    Average win percentage across all coaches
+    - "Calculates average win percentage across all coaches."
+    - "Useful for understanding overall coaching performance."  
+  sql: 'AVG({win_percentage})'
+
+related_sources: {}
+
+examples:
+- type: SQL
+  description: Returns all Playoffs game ids ordered by game date asc
+  input: List all the Playoffs games by the game date
+  expected_output: |
+    SELECT 
+      coach_name,
+      total_home_wins,
+      total_away_wins
+    FROM entity('coach')
+    order by total_home_wins desc
+    limit 10;
+  tags:
+    difficulty: EASY

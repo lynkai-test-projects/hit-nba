@@ -1,0 +1,2552 @@
+name: game
+
+description: Dimension table containing comprehensive game information, tags, and categorization for NBA basketball games
+
+key_table: nba.public.game
+
+keys:
+  - game_id
+
+features:
+
+  # Game Identification Fields
+  - type: field
+    name: game_id
+    data_type: number
+    source: nba.public.game
+    description: Unique identifier for each NBA game
+    field: game_id
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Game Date and Time Fields
+  - type: field
+    name: game_date
+    data_type: datetime
+    source: nba.public.game
+    description: Date when the game was played
+    field: game_date
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Season Information Fields
+  - type: field
+    name: season_id
+    data_type: number
+    source: nba.public.game
+    description: Identifier for the NBA season (e.g., 2023 for 2023-24 season)
+    field: season_id
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: season_type
+    data_type: string
+    source: nba.public.game
+    description: Type of season game (Regular Season, Playoffs, All-Star, Pre Season)
+    field: season_type
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Team Identification Fields - Away Team
+  - type: field
+    name: team_id_away
+    data_type: number
+    source: nba.public.game
+    description: Unique identifier for the away team
+    field: team_id_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_name_away
+    data_type: string
+    source: nba.public.game
+    description: Full name of the away team
+    field: team_name_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_abbreviation_away
+    data_type: string
+    source: nba.public.game
+    description: Abbreviated name of the away team (e.g., LAL, BOS)
+    field: team_abbreviation_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Team Identification Fields - Home Team
+  - type: field
+    name: team_id_home
+    data_type: number
+    source: nba.public.game
+    description: Unique identifier for the home team
+    field: team_id_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_name_home
+    data_type: string
+    source: nba.public.game
+    description: Full name of the home team
+    field: team_name_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_abbreviation_home
+    data_type: string
+    source: nba.public.game
+    description: Abbreviated name of the home team (e.g., LAL, BOS)
+    field: team_abbreviation_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Game Context Fields
+  - type: field
+    name: matchup_away
+    data_type: string
+    source: nba.public.game
+    description: Matchup description for the away team (e.g., "vs. BOS")
+    field: matchup_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: matchup_home
+    data_type: string
+    source: nba.public.game
+    description: Matchup description for the home team (e.g., "vs. LAL")
+    field: matchup_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: min
+    data_type: number
+    source: nba.public.game
+    description: Minutes played in the game
+    field: min
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Scoring Statistics - Away Team
+  - type: field
+    name: pts_away
+    data_type: number
+    source: nba.public.game
+    description: Total points scored by the away team
+    field: pts_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fgm_away
+    data_type: number
+    source: nba.public.game
+    description: Field goals made by the away team
+    field: fgm_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fga_away
+    data_type: number
+    source: nba.public.game
+    description: Field goal attempts by the away team
+    field: fga_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fg_pct_away
+    data_type: number
+    source: nba.public.game
+    description: Field goal percentage for the away team
+    field: fg_pct_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fg3m_away
+    data_type: number
+    source: nba.public.game
+    description: Three-point field goals made by the away team
+    field: fg3m_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fg3a_away
+    data_type: number
+    source: nba.public.game
+    description: Three-point field goal attempts by the away team
+    field: fg3a_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fg3_pct_away
+    data_type: string
+    source: nba.public.game
+    description: Three-point field goal percentage for the away team
+    field: fg3_pct_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: ftm_away
+    data_type: number
+    source: nba.public.game
+    description: Free throws made by the away team
+    field: ftm_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fta_away
+    data_type: number
+    source: nba.public.game
+    description: Free throw attempts by the away team
+    field: fta_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: ft_pct_away
+    data_type: number
+    source: nba.public.game
+    description: Free throw percentage for the away team
+    field: ft_pct_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Scoring Statistics - Home Team
+  - type: field
+    name: pts_home
+    data_type: number
+    source: nba.public.game
+    description: Total points scored by the home team
+    field: pts_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fgm_home
+    data_type: number
+    source: nba.public.game
+    description: Field goals made by the home team
+    field: fgm_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fga_home
+    data_type: number
+    source: nba.public.game
+    description: Field goal attempts by the home team
+    field: fga_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fg_pct_home
+    data_type: number
+    source: nba.public.game
+    description: Field goal percentage for the home team
+    field: fg_pct_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fg3m_home
+    data_type: number
+    source: nba.public.game
+    description: Three-point field goals made by the home team
+    field: fg3m_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fg3a_home
+    data_type: number
+    source: nba.public.game
+    description: Three-point field goal attempts by the home team
+    field: fg3a_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fg3_pct_home
+    data_type: string
+    source: nba.public.game
+    description: Three-point field goal percentage for the home team
+    field: fg3_pct_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: ftm_home
+    data_type: number
+    source: nba.public.game
+    description: Free throws made by the home team
+    field: ftm_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: fta_home
+    data_type: number
+    source: nba.public.game
+    description: Free throw attempts by the home team
+    field: fta_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: ft_pct_home
+    data_type: number
+    source: nba.public.game
+    description: Free throw percentage for the home team
+    field: ft_pct_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Rebounding Statistics - Away Team
+  - type: field
+    name: reb_away
+    data_type: number
+    source: nba.public.game
+    description: Total rebounds by the away team
+    field: reb_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: oreb_away
+    data_type: string
+    source: nba.public.game
+    description: Offensive rebounds by the away team
+    field: oreb_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: dreb_away
+    data_type: string
+    source: nba.public.game
+    description: Defensive rebounds by the away team
+    field: dreb_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Rebounding Statistics - Home Team
+  - type: field
+    name: reb_home
+    data_type: number
+    source: nba.public.game
+    description: Total rebounds by the home team
+    field: reb_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: oreb_home
+    data_type: string
+    source: nba.public.game
+    description: Offensive rebounds by the home team
+    field: oreb_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: dreb_home
+    data_type: string
+    source: nba.public.game
+    description: Defensive rebounds by the home team
+    field: dreb_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Other Statistics - Away Team
+  - type: field
+    name: ast_away
+    data_type: number
+    source: nba.public.game
+    description: Assists by the away team
+    field: ast_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: stl_away
+    data_type: string
+    source: nba.public.game
+    description: Steals by the away team
+    field: stl_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: blk_away
+    data_type: string
+    source: nba.public.game
+    description: Blocks by the away team
+    field: blk_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: tov_away
+    data_type: string
+    source: nba.public.game
+    description: Turnovers by the away team
+    field: tov_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pf_away
+    data_type: number
+    source: nba.public.game
+    description: Personal fouls by the away team
+    field: pf_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: plus_minus_away
+    data_type: number
+    source: nba.public.game
+    description: Plus/minus rating for the away team
+    field: plus_minus_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Other Statistics - Home Team
+  - type: field
+    name: ast_home
+    data_type: number
+    source: nba.public.game
+    description: Assists by the home team
+    field: ast_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: stl_home
+    data_type: string
+    source: nba.public.game
+    description: Steals by the home team
+    field: stl_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: blk_home
+    data_type: string
+    source: nba.public.game
+    description: Blocks by the home team
+    field: blk_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: tov_home
+    data_type: string
+    source: nba.public.game
+    description: Turnovers by the home team
+    field: tov_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pf_home
+    data_type: number
+    source: nba.public.game
+    description: Personal fouls by the home team
+    field: pf_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: plus_minus_home
+    data_type: number
+    source: nba.public.game
+    description: Plus/minus rating for the home team
+    field: plus_minus_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Game Outcome Fields
+  - type: field
+    name: wl_away
+    data_type: string
+    source: nba.public.game
+    description: Win/Loss result for the away team (W or L)
+    field: wl_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: wl_home
+    data_type: string
+    source: nba.public.game
+    description: Win/Loss result for the home team (W or L)
+    field: wl_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  # Media Availability Fields
+  - type: field
+    name: video_available_away
+    data_type: number
+    source: nba.public.game
+    description: Whether video is available for the away team (1 = available, 0 = not available)
+    field: video_available_away
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: video_available_home
+    data_type: number
+    source: nba.public.game
+    description: Whether video is available for the home team (1 = available, 0 = not available)
+    field: video_available_home
+    join_name: null
+    time_field: null
+    filters: [ ]
+
+  - type: formula
+    data_type: number
+    name: season_year
+    description: season year. use this when a user asks questions that require season.
+    sql: 'substring({season_id}, 2)'
+
+  # Formula Features - Calculated Fields
+  - type: formula
+    data_type: number
+    name: total_points
+    description: Total points scored in the game (home + away teams)
+    sql: '{pts_home} + {pts_away}'
+
+  # Game Scoring Delta Features
+  - type: formula
+    data_type: number
+    name: point_margin
+    description: Signed point margin (home team points minus away team points)
+    sql: '{pts_home} - {pts_away}'
+
+  - type: formula
+    data_type: number
+    name: point_margin_abs
+    description: Absolute point margin for blowout detection
+    sql: 'ABS({pts_home} - {pts_away})'
+
+  # Line Score Fields (from nba.public.line_score - 1:1 relationship)
+  # Home Team Quarter Points
+  - type: field
+    name: pts_qtr1_home
+    description: Home team points in Q1
+    data_type: number
+    source: nba.public.line_score
+    field: pts_qtr1_home
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_qtr2_home
+    description: Home team points in Q2
+    data_type: number
+    source: nba.public.line_score
+    field: pts_qtr2_home
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_qtr3_home
+    description: Home team points in Q3
+    data_type: number
+    source: nba.public.line_score
+    field: pts_qtr3_home
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_qtr4_home
+    description: Home team points in Q4
+    data_type: number
+    source: nba.public.line_score
+    field: pts_qtr4_home
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_ot1_home
+    description: Home team points in OT1
+    data_type: number
+    source: nba.public.line_score
+    field: pts_ot1_home
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+
+
+  # Away Team Quarter Points
+  - type: field
+    name: pts_qtr1_away
+    description: Away team points in Q1
+    data_type: number
+    source: nba.public.line_score
+    field: pts_qtr1_away
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_qtr2_away
+    description: Away team points in Q2
+    data_type: number
+    source: nba.public.line_score
+    field: pts_qtr2_away
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_qtr3_away
+    description: Away team points in Q3
+    data_type: number
+    source: nba.public.line_score
+    field: pts_qtr3_away
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_qtr4_away
+    description: Away team points in Q4
+    data_type: number
+    source: nba.public.line_score
+    field: pts_qtr4_away
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_ot1_away
+    description: Away team points in OT1
+    data_type: number
+    source: nba.public.line_score
+    field: pts_ot1_away
+    join_name: game_id_line_score
+    time_field: null
+    filters: [ ]
+
+  # Line Score Formula Features (calculated from fields)
+  - type: formula
+    name: first_half_points_home
+    description: Home team first half points (Q1 + Q2)
+    data_type: number
+    sql: '{pts_qtr1_home} + {pts_qtr2_home}'
+
+  - type: formula
+    name: second_half_points_home
+    description: Home team second half points (Q3 + Q4)
+    data_type: number
+    sql: '{pts_qtr3_home} + {pts_qtr4_home}'
+
+  - type: formula
+    name: first_half_points_away
+    description: Away team first half points (Q1 + Q2)
+    data_type: number
+    sql: '{pts_qtr1_away} + {pts_qtr2_away}'
+
+  - type: formula
+    name: second_half_points_away
+    description: Away team second half points (Q3 + Q4)
+    data_type: number
+    sql: '{pts_qtr3_away} + {pts_qtr4_away}'
+
+  # Overtime Detection Features (formula based on line_score fields)
+  - type: formula
+    data_type: boolean
+    name: is_overtime_game
+    description: Whether the game went to overtime (either team scored in OT1)
+    sql: |
+      CASE WHEN COALESCE({pts_ot1_home}, 0) > 0 OR COALESCE({pts_ot1_away}, 0) > 0 THEN TRUE ELSE FALSE END
+
+  - type: formula
+    name: home_team_won
+    description: Whether the home team won the game
+    data_type: boolean
+    sql: 'CASE WHEN {pts_home} > {pts_away} THEN TRUE ELSE FALSE END'
+
+  # Officials Features (from game_official entity)
+  - type: metric
+    name: officials_per_game
+    description: Number of officials assigned to each game
+    data_type: number
+    source: game_official
+    join_name: game_to_game_official
+    time_field: null
+    filters: [ ]
+    metric: count_assignments
+
+  # Other Stats Fields (from nba.public.other_stats - 1:1 relationship)
+  # Game and League Identification
+  - type: field
+    name: league_id
+    data_type: number
+    source: nba.public.other_stats
+    description: League identifier
+    field: league_id
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  # Home Team Identification
+  - type: field
+    name: team_id_home_other_stats
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team identifier (from other_stats)
+    field: team_id_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_abbreviation_home_other_stats
+    data_type: string
+    source: nba.public.other_stats
+    description: Home team abbreviation (from other_stats)
+    field: team_abbreviation_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_city_home_other_stats
+    data_type: string
+    source: nba.public.other_stats
+    description: Home team city (from other_stats)
+    field: team_city_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  # Home Team Advanced Statistics
+  - type: field
+    name: pts_paint_home
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team points in the paint
+    field: pts_paint_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_2nd_chance_home
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team second chance points
+    field: pts_2nd_chance_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_fb_home
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team fast break points
+    field: pts_fb_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: largest_lead_home
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team's largest lead in the game
+    field: largest_lead_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_turnovers_home
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team turnovers
+    field: team_turnovers_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: total_turnovers_home
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team total turnovers
+    field: total_turnovers_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_rebounds_home
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team rebounds
+    field: team_rebounds_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_off_to_home
+    data_type: number
+    source: nba.public.other_stats
+    description: Home team points off turnovers
+    field: pts_off_to_home
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  # Game Flow Statistics
+  - type: field
+    name: lead_changes
+    data_type: number
+    source: nba.public.other_stats
+    description: Number of lead changes in the game
+    field: lead_changes
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: times_tied
+    data_type: number
+    source: nba.public.other_stats
+    description: Number of times the game was tied
+    field: times_tied
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  # Away Team Identification
+  - type: field
+    name: team_id_away_other_stats
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team identifier (from other_stats)
+    field: team_id_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_abbreviation_away_other_stats
+    data_type: string
+    source: nba.public.other_stats
+    description: Away team abbreviation (from other_stats)
+    field: team_abbreviation_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_city_away_other_stats
+    data_type: string
+    source: nba.public.other_stats
+    description: Away team city (from other_stats)
+    field: team_city_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  # Away Team Advanced Statistics
+  - type: field
+    name: pts_paint_away
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team points in the paint
+    field: pts_paint_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_2nd_chance_away
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team second chance points
+    field: pts_2nd_chance_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_fb_away
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team fast break points
+    field: pts_fb_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: largest_lead_away
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team's largest lead in the game
+    field: largest_lead_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_turnovers_away
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team turnovers
+    field: team_turnovers_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: total_turnovers_away
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team total turnovers
+    field: total_turnovers_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: team_rebounds_away
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team rebounds
+    field: team_rebounds_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: pts_off_to_away
+    data_type: number
+    source: nba.public.other_stats
+    description: Away team points off turnovers
+    field: pts_off_to_away
+    join_name: game_id_other_stats
+    time_field: null
+    filters: [ ]
+
+  # Formula Features (from other_stats asset fields array)
+  - type: formula
+    name: points_off_turnovers
+    description: Points scored off opponent turnovers (combined home and away)
+    data_type: number
+    sql: 'COALESCE({pts_off_to_home}, 0) + COALESCE({pts_off_to_away}, 0)'
+
+  - type: formula
+    name: second_chance_points
+    description: Second chance points (combined home and away)
+    data_type: number
+    sql: 'COALESCE({pts_2nd_chance_home}, 0) + COALESCE({pts_2nd_chance_away}, 0)'
+
+  - type: formula
+    name: fast_break_points
+    description: Fast break points (combined home and away)
+    data_type: number
+    sql: 'COALESCE({pts_fb_home}, 0) + COALESCE({pts_fb_away}, 0)'
+
+  # Game Info Features (from nba.public.game_info)
+  - type: field
+    name: attendance
+    description: Reported attendance for the game
+    data_type: number
+    source: nba.public.game_info
+    field: attendance
+    join_name: game_id_info
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: arena_name
+    description: Name of the arena where the game was played
+    data_type: string
+    source: nba.public.game_info
+    field: arena_name
+    join_name: game_id_info
+    time_field: null
+    filters: [ ]
+
+  - type: formula
+    name: is_neutral_site
+    description: Whether the game was played at a neutral site (not home team's arena)
+    data_type: boolean
+    sql: |
+      CASE WHEN LOWER(COALESCE({arena_name}, '')) LIKE '%neutral%' THEN TRUE ELSE FALSE END
+
+  # Game Summary Features (from nba.public.game_summary)
+  - type: field
+    name: game_date_est
+    description: Game date in Eastern Standard Time
+    data_type: datetime
+    source: nba.public.game_summary
+    field: GAME_DATE_EST
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: game_sequence
+    description: Sequence number for the game (order within the day/season)
+    data_type: number
+    source: nba.public.game_summary
+    field: GAME_SEQUENCE
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: game_status_id
+    description: Numeric identifier for game status
+    data_type: number
+    source: nba.public.game_summary
+    field: GAME_STATUS_ID
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: game_status_text
+    description: Text description of game status (e.g., "Final", "Live", "Scheduled")
+    data_type: string
+    source: nba.public.game_summary
+    field: GAME_STATUS_TEXT
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: gamecode
+    description: Unique game code identifier
+    data_type: string
+    source: nba.public.game_summary
+    field: GAMECODE
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: live_period
+    description: Current period number if game is live (NULL if game is finished)
+    data_type: number
+    source: nba.public.game_summary
+    field: LIVE_PERIOD
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: live_pc_time
+    description: Live PC time remaining in current period (if game is live)
+    data_type: string
+    source: nba.public.game_summary
+    field: LIVE_PC_TIME
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: natl_tv_broadcaster
+    description: National TV broadcaster abbreviation (if game is nationally televised)
+    data_type: string
+    source: nba.public.game_summary
+    field: NATL_TV_BROADCASTER_ABBREVIATION
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: live_period_time_bcast
+    description: Live period time broadcast information
+    data_type: string
+    source: nba.public.game_summary
+    field: LIVE_PERIOD_TIME_BCAST
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  - type: field
+    name: wh_status
+    description: Win/loss status indicator
+    data_type: number
+    source: nba.public.game_summary
+    field: WH_STATUS
+    join_name: game_id_summary
+    time_field: null
+    filters: [ ]
+
+  # Calculated Fields from Game Summary
+  - type: formula
+    name: is_live_game
+    data_type: boolean
+    description: Whether the game is currently live (based on game status and live period)
+    sql: |
+      CASE 
+        WHEN UPPER(COALESCE({game_status_text}, '')) = 'LIVE' OR {live_period} IS NOT NULL 
+        THEN TRUE 
+        ELSE FALSE 
+      END
+
+  - type: formula
+    name: is_final_game
+    data_type: boolean
+    description: Whether the game is final/completed
+    sql: |
+      CASE 
+        WHEN UPPER(COALESCE({game_status_text}, '')) = 'FINAL' 
+        THEN TRUE 
+        ELSE FALSE 
+      END
+
+  - type: formula
+    name: is_scheduled_game
+    data_type: boolean
+    description: Whether the game is scheduled but not yet started
+    sql: |
+      CASE 
+        WHEN UPPER(COALESCE({game_status_text}, '')) = 'SCHEDULED' 
+        THEN TRUE 
+        ELSE FALSE 
+      END
+
+  - type: formula
+    name: is_nationally_televised
+    data_type: boolean
+    description: Whether the game is nationally televised
+    sql: |
+      CASE 
+        WHEN {natl_tv_broadcaster} IS NOT NULL AND TRIM({natl_tv_broadcaster}) != '' 
+        THEN TRUE 
+        ELSE FALSE 
+      END
+
+  - type: formula
+    name: game_status_category
+    data_type: string
+    description: Categorizes game status into groups (Live, Final, Scheduled, Other)
+    sql: |
+      CASE 
+        WHEN UPPER(COALESCE({game_status_text}, '')) = 'LIVE' THEN 'Live'
+        WHEN UPPER(COALESCE({game_status_text}, '')) = 'FINAL' THEN 'Final'
+        WHEN UPPER(COALESCE({game_status_text}, '')) = 'SCHEDULED' THEN 'Scheduled'
+        WHEN UPPER(COALESCE({game_status_text}, '')) LIKE '%POSTPONED%' THEN 'Postponed'
+        WHEN UPPER(COALESCE({game_status_text}, '')) LIKE '%CANCELLED%' THEN 'Cancelled'
+        ELSE 'Other'
+      END
+
+  # Game Statistics Features (from player_game_stats)
+  - type: metric
+    name: total_game_points
+    description: Total points scored by all players in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: total_points
+
+  - type: metric
+    name: total_game_assists
+    description: Total assists by all players in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: total_assists
+
+  - type: metric
+    name: total_game_rebounds
+    description: Total rebounds by all players in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: total_rebounds
+
+  - type: metric
+    name: game_double_doubles
+    description: Number of double-doubles achieved in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: double_doubles_count
+
+  - type: metric
+    name: game_triple_doubles
+    description: Number of triple-doubles achieved in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: triple_doubles_count
+
+  # Coach Metrics from coaching_staff entity via coach-game relationship
+  - type: metric
+    name: total_coaches_involved
+    data_type: number
+    description: Total number of distinct head coaches involved in selected games
+    source: coaching_staff
+    join_name: game_coach_via_coaching_staff
+    time_field: null
+    filters:
+      - type: field
+        field: coach_type
+        operator: equal
+        values:
+          - 'Head Coach'
+    metric: total_coaches_count
+
+  - type: metric
+    name: coaching_matchups_count
+    data_type: number
+    source: coaching_staff
+    description: Total number of head coach assignments in selected games
+    join_name: game_coach_via_coaching_staff
+    time_field: null
+    filters:
+      - type: field
+        field: coach_type
+        operator: equal
+        values:
+          - 'Head Coach'
+    metric: head_coach_count
+
+  # Dunk Statistics Features
+  - type: metric
+    name: total_dunks_in_game
+    description: Total dunks made by all players in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: total_dunks
+
+  - type: metric
+    name: players_with_dunks_in_game
+    description: Number of players who made dunks in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: players_with_dunks_count
+
+  - type: metric
+    name: max_dunks_by_single_player
+    description: Maximum dunks made by a single player in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: max_dunks_in_game
+
+  - type: metric
+    name: avg_dunks_in_game
+    description: Average dunks per player in this game
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters: [ ]
+    metric: avg_dunks
+
+  - type: metric
+    name: high_dunk_performance_games
+    description: Games with 10+ total dunks
+    data_type: number
+    source: player_game
+    join_name: null
+    time_field: null
+    filters:
+      - type: field
+        field: dunks
+        operator: 'gte'
+        values:
+          - '10'
+    metric: total_games_played
+
+metrics:
+
+  # Game Volume Metrics
+  - name: count_games
+    description: |
+      Count of games played
+      - "Use for analyzing game volume and scheduling patterns."
+      - "Filter by season_type to compare Regular Season vs Playoffs."
+    sql: 'COUNT(*)'
+
+  - name: total_game_points_scored
+    description: |
+      Total points scored across all games
+      - "Aggregates all points scored in games, using player statistics when available."
+      - "Falls back to direct game points for games without player stats (e.g., All-Star games)."
+      - "Useful for analyzing total offensive output across periods."
+    sql: 'SUM(COALESCE({total_game_points}, {pts_home} + {pts_away}))'
+
+  - name: avg_game_points_scored
+    description: |
+      Average points scored per game
+      - "Calculates average scoring per game, using player statistics when available."
+      - "Falls back to direct game points for games without player stats (e.g., All-Star games)."
+      - "Useful for analyzing pace and offensive trends over time."
+    sql: 'AVG(COALESCE({total_game_points}, {pts_home} + {pts_away}))'
+
+  # Officials Metrics
+  - name: count_assignments
+    description: |
+      Total number of officials assigned across all games
+      - "Aggregates officials assignments across games."
+      - "Useful for referee assignment analysis."
+    sql: 'SUM({officials_per_game})'
+
+  - name: avg_officials_assigned
+    description: |
+      Average number of officials assigned per game
+      - "Metrics average officiating capacity per game."
+      - "Useful for understanding referee assignment patterns."
+    sql: 'AVG({officials_per_game})'
+
+  # Scoring Metrics
+  - name: avg_total_points
+    description: |
+      Average total points scored per game (home + away teams)
+      - "Key metric for analyzing offensive trends and game pace."
+      - "Higher values indicate more offensive-oriented games."
+    sql: 'AVG({pts_home} + {pts_away})'
+
+  - name: sum_total_points
+    description: |
+      Sum of total points scored across all games
+      - "Use for total scoring volume analysis."
+    sql: 'SUM({pts_home} + {pts_away})'
+
+  # Line Score Metrics (from nba.public.line_score)
+  - name: avg_q4_scoring_home
+    description: |
+      Average home team Q4 points
+      - "Average 4th quarter scoring by home teams across all games."
+      - "Useful for analyzing clutch performance and late-game execution."
+    sql: 'AVG({pts_qtr4_home})'
+
+  - name: avg_q4_scoring_away
+    description: |
+      Average away team Q4 points
+      - "Average 4th quarter scoring by away teams across all games."
+      - "Useful for analyzing clutch performance and late-game execution."
+    sql: 'AVG({pts_qtr4_away})'
+
+  - name: avg_first_half_scoring_home
+    description: |
+      Average home team first half points
+      - "Average first half scoring by home teams."
+      - "Useful for analyzing game starts and early performance."
+    sql: 'AVG({first_half_points_home})'
+
+  - name: avg_second_half_scoring_home
+    description: |
+      Average home team second half points
+      - "Average second half scoring by home teams."
+      - "Useful for analyzing halftime adjustments and late-game performance."
+    sql: 'AVG({second_half_points_home})'
+
+  - name: avg_first_half_scoring_away
+    description: |
+      Average away team first half points
+      - "Average first half scoring by away teams."
+      - "Useful for analyzing game starts and early performance."
+    sql: 'AVG({first_half_points_away})'
+
+  - name: avg_second_half_scoring_away
+    description: |
+      Average away team second half points
+      - "Average second half scoring by away teams."
+      - "Useful for analyzing halftime adjustments and late-game performance."
+    sql: 'AVG({second_half_points_away})'
+
+  - name: overtime_games_count
+    description: |
+      Count of games with overtime (either team scored in OT1)  
+      - "Counts games that went to overtime."
+      - "Useful for analyzing game competitiveness and overtime frequency."
+    sql: 'SUM(CASE WHEN COALESCE({pts_ot1_home}, 0) > 0 OR COALESCE({pts_ot1_away}, 0) > 0 THEN 1 ELSE 0 END)'
+
+  - name: strong_fourth_quarter_teams_home
+    description: |
+      Count of home team performances with 30+ points in Q4
+      - "Counts home team games with strong 4th quarter performance (30+ points)."
+      - "Useful for identifying clutch teams and late-game execution."
+    sql: 'SUM(CASE WHEN {pts_qtr4_home} >= 30 THEN 1 ELSE 0 END)'
+
+  - name: strong_fourth_quarter_teams_away
+    description: |
+      Count of away team performances with 30+ points in Q4
+      - "Counts away team games with strong 4th quarter performance (30+ points)."
+      - "Useful for identifying clutch teams and late-game execution."
+    sql: 'SUM(CASE WHEN {pts_qtr4_away} >= 30 THEN 1 ELSE 0 END)'
+
+  # Team Performance Metrics
+  - name: avg_point_differential
+    description: |
+      Average point differential (home team points - away team points)
+      - "Positive values indicate home team advantage."
+      - "Use to analyze home court advantage and team dominance."
+    sql: 'AVG({pts_home} - {pts_away})'
+
+  # Shooting Efficiency Metrics
+  - name: avg_field_goal_percentage
+    description: |
+      Average field goal percentage across both teams
+      - "Metrics overall shooting efficiency in games."
+      - "Higher percentages indicate better offensive execution."
+    sql: 'AVG(({fg_pct_home} + {fg_pct_away}) / 2)'
+
+  - name: avg_three_point_percentage
+    description: |
+      Average three-point percentage across both teams
+      - "Metrics three-point shooting efficiency."
+      - "Note: Some fg3_pct fields may be stored as strings."
+    sql: 'AVG((CAST({fg3_pct_home} AS DECIMAL) + CAST({fg3_pct_away} AS DECIMAL)) / 2)'
+
+  # Game Pace Metrics
+  - name: avg_possessions
+    description: |
+      Average possessions per game (home + away teams)
+      - "Estimates game pace using field goal attempts and free throw attempts."
+      - "Higher values indicate faster-paced games."
+    sql: 'AVG(({fga_home} + {fga_away}) + 0.44 * ({fta_home} + {fta_away}))'
+
+  # Defensive Metrics
+  - name: avg_total_rebounds
+    description: |
+      Average total rebounds per game (home + away teams)
+      - "Metrics overall rebounding activity in games."
+    sql: 'AVG({reb_home} + {reb_away})'
+
+  - name: avg_total_assists
+    description: |
+      Average total assists per game (home + away teams)
+      - "Metrics ball movement and team play."
+    sql: 'AVG({ast_home} + {ast_away})'
+
+  # Dunk-related Metrics
+  - name: total_dunks_across_games
+    description: |
+      Total dunks across all games
+      - "Aggregates total dunks across game groups."
+      - "Useful for analyzing dunk trends by season, team, or game type."
+    sql: 'SUM({total_dunks_in_game})'
+
+  - name: avg_dunks
+    description: |
+      Average dunks per game
+      - "Metrics average dunk frequency per game."
+      - "Useful for analyzing dunk trends over time."
+    sql: 'AVG({total_dunks_in_game})'
+
+  - name: avg_players_with_dunks_per_game
+    description: |
+      Average number of players with dunks per game
+      - "Metrics average participation in dunking per game."
+      - "Useful for analyzing dunk culture and participation."
+    sql: 'AVG({players_with_dunks_in_game})'
+
+  - name: high_dunk_games_percentage
+    description: |
+      Percentage of games with 10+ dunks
+      - "Metrics the proportion of high-dunk games."
+      - "Useful for analyzing dunk excitement levels."
+    sql: 'AVG(CASE WHEN {total_dunks_in_game} >= 10 THEN 1 ELSE 0 END) * 100'
+
+  - name: max_dunks_in_any_game
+    description: |
+      Maximum dunks in any single game
+      - "Finds the highest dunk count in any game."
+      - "Useful for identifying exceptional dunk performances."
+    sql: 'MAX({total_dunks_in_game})'
+
+  # Win/Loss Analysis
+  - name: home_win_percentage
+    description: |
+      Percentage of games won by home teams
+      - "Metrics home court advantage effectiveness."
+      - "Values above 50% indicate home court advantage."
+    sql: |
+      AVG(CASE WHEN {wl_home} = 'W' THEN 1 ELSE 0 END) * 100
+
+  # Game Duration Analysis
+  - name: avg_game_minutes
+    description: |
+      Average minutes played per game
+      - "Metrics actual game duration in minutes."
+      - "Useful for scheduling and broadcast planning."
+    sql: 'AVG({min})'
+
+  # Team Win-Loss Metrics for SQL Examples
+  - name: total_away_wins
+    description: |
+      Total wins for teams playing away
+      - "Counts total away wins for win-loss analysis."
+    sql: |
+      SUM(CASE WHEN {wl_away} = 'W' THEN 1 ELSE 0 END)
+
+  - name: total_away_losses
+    description: |
+      Total losses for teams playing away
+      - "Counts total away losses for win-loss analysis."
+    sql: |
+      SUM(CASE WHEN {wl_away} = 'L' THEN 1 ELSE 0 END)
+
+  - name: total_home_wins
+    description: |
+      Wins per team per season
+      - "Seasonal win totals for team performance analysis."
+    sql: |
+      SUM(CASE WHEN {wl_home} = 'W' THEN 1 ELSE 0 END)
+
+  - name: total_home_losses
+    description: |
+      Losses per team per season
+      - "Seasonal loss totals for team performance analysis."
+    sql: |
+      SUM(CASE WHEN {wl_home} = 'L' THEN 1 ELSE 0 END)
+
+  - name: away_win_percentage
+    description: |
+      Away game win percentage
+      - "Metrics performance away from home court."
+    sql: |
+      AVG(CASE WHEN {wl_away} = 'W' THEN 1.0 ELSE 0.0 END)
+
+  # Home Court Advantage Analysis
+  - name: home_court_advantage
+    description: |
+      Difference between home and away win percentages
+      - "Quantifies home court advantage effect."
+    sql: |
+      (AVG(CASE WHEN {wl_home} = 'W' THEN 1.0 ELSE 0.0 END) - 
+          AVG(CASE WHEN {wl_away} = 'W' THEN 1.0 ELSE 0.0 END))
+
+  # Advanced Analytics Metrics
+  - name: avg_attendance
+    description: |
+      Average game attendance
+      - "Metrics fan engagement through attendance."
+    sql: 'AVG({attendance})'
+
+  - name: max_attendance
+    description: |
+      Maximum game attendance
+      - "Tracks peak attendance figures."
+    sql: 'MAX({attendance})'
+
+  - name: avg_margin_of_victory
+    description: |
+      Average margin of victory (absolute point differential)
+      - "Metrics competitiveness of games."
+    sql: 'AVG(ABS({pts_home} - {pts_away}))'
+
+  # Close Game Analytics
+  - name: close_game_wins_home
+    description: |
+      Number of close game wins (≤5 points) for home teams
+      - "Metrics clutch performance in tight games."
+    sql: 'SUM(CASE WHEN ABS({pts_home} - {pts_away}) <= 5 AND {pts_home} > {pts_away} THEN 1 ELSE 0 END)'
+
+  - name: close_game_losses_home
+    description: |
+      Number of close game losses (≤5 points) for home teams
+      - "Tracks close game losses for clutch analysis."
+    sql: 'SUM(CASE WHEN ABS({pts_home} - {pts_away}) <= 5 AND {pts_home} < {pts_away} THEN 1 ELSE 0 END)'
+
+  - name: total_close_games_home
+    description: |
+      Total number of close games (≤5 points) for home teams
+      - "Counts total close game experiences."
+    sql: 'SUM(CASE WHEN ABS({pts_home} - {pts_away}) <= 5 THEN 1 ELSE 0 END)'
+
+  # Team Performance Metrics
+  - name: avg_offensive_rating
+    description: |
+      Average points scored per game (offensive rating)
+      - "Metrics offensive efficiency."
+    sql: 'AVG({pts_home})'
+
+  - name: avg_defensive_rating
+    description: |
+      Average points allowed per game (defensive rating)
+      - "Metrics defensive efficiency."
+    sql: 'AVG({pts_away})'
+
+  - name: net_rating
+    description: |
+      Net rating (offensive rating minus defensive rating)
+      - "Overall team efficiency metric."
+    sql: 'AVG({pts_home}) - AVG({pts_away})'
+
+  # Season Type Specific Metrics
+  - name: regular_season_wins
+    description: |
+      Total wins in regular season games
+      - "Counts wins specifically in regular season."
+    sql: |
+      SUM(CASE WHEN {season_type} = 'Regular Season' AND {wl_home} = 'W' THEN 1 ELSE 0 END)
+
+  - name: regular_season_games
+    description: |
+      Total games played in regular season
+      - "Counts total regular season games."
+    sql: |
+      SUM(CASE WHEN {season_type} = 'Regular Season' THEN 1 ELSE 0 END)
+
+  - name: playoff_wins
+    description: |
+      Total wins in playoff games
+      - "Counts wins specifically in playoffs."
+    sql: |
+      SUM(CASE WHEN {season_type} = 'Playoffs' AND {wl_home} = 'W' THEN 1 ELSE 0 END)
+
+  - name: playoff_games
+    description: |
+      Total games played in playoffs
+      - "Counts total playoff games."
+    sql: |
+      SUM(CASE WHEN {season_type} = 'Playoffs' THEN 1 ELSE 0 END)
+
+  - name: last_game_date
+    description: |
+      Date of the most recent game
+      - "Tracks most recent game activity."
+    sql: 'MAX({game_date})'
+
+  # Other Stats Metrics (from nba.public.other_stats)
+  - name: avg_points_off_turnovers
+    description: |
+      Average points scored off turnovers per game
+      - "Metrics average points scored off opponent turnovers."
+      - "Useful for analyzing defensive pressure and transition offense."
+    sql: 'AVG({points_off_turnovers})'
+
+  - name: avg_second_chance_points
+    description: |
+      Average second chance points per game
+      - "Metrics average points scored on second chance opportunities."
+      - "Useful for analyzing offensive rebounding effectiveness."
+    sql: 'AVG({second_chance_points})'
+
+  - name: avg_fast_break_points
+    description: |
+      Average fast break points per game
+      - "Metrics average points scored in fast break situations."
+      - "Useful for analyzing pace and transition offense."
+    sql: 'AVG({fast_break_points})'
+
+  # Game Status Metrics (from game_summary)
+  - name: live_games_count
+    description: |
+      Count of games that are currently live
+      - "Counts games that are currently in progress."
+      - "Useful for real-time game tracking."
+    sql: 'SUM(CASE WHEN {is_live_game} THEN 1 ELSE 0 END)'
+
+  - name: final_games_count
+    description: |
+      Count of games that are final/completed
+      - "Counts games that have been completed."
+      - "Useful for analyzing completed game statistics."
+    sql: 'SUM(CASE WHEN {is_final_game} THEN 1 ELSE 0 END)'
+
+  - name: scheduled_games_count
+    description: |
+      Count of games that are scheduled but not yet started
+      - "Counts games that are scheduled for future play."
+      - "Useful for upcoming game analysis."
+    sql: 'SUM(CASE WHEN {is_scheduled_game} THEN 1 ELSE 0 END)'
+
+  - name: nationally_televised_games_count
+    description: |
+      Count of nationally televised games
+      - "Counts games that are broadcast on national TV."
+      - "Useful for analyzing TV coverage and marquee matchups."
+    sql: 'SUM(CASE WHEN {is_nationally_televised} THEN 1 ELSE 0 END)'
+
+  - name: nationally_televised_games_percentage
+    description: |
+      Percentage of games that are nationally televised
+      - "Calculates the percentage of games with national TV coverage."
+      - "Useful for analyzing broadcast distribution."
+    sql: 'AVG(CASE WHEN {is_nationally_televised} THEN 100.0 ELSE 0.0 END)'
+
+  - name: avg_game_sequence
+    description: |
+      Average game sequence number
+      - "Calculates average game sequence number."
+      - "Useful for analyzing game ordering patterns."
+    sql: 'AVG({game_sequence})'
+
+
+related_sources:
+  nba.public.line_score:
+    relationship: one_to_one
+    description: Quarter-by-quarter scoring for each game with separate home and away columns (1:1 relationship)
+    joins:
+      - name: game_id_line_score
+        default: true
+        type: fields
+        fields:
+          - source: game_id
+            destination: game_id
+            operator: equal
+  nba.public.game_info:
+    relationship: one_to_one
+    joins:
+      - name: game_id_info
+        default: true
+        type: fields
+        fields:
+          - source: game_id
+            destination: game_id
+            operator: equal
+  nba.public.game_summary:
+    relationship: one_to_one
+    joins:
+      - name: game_id_summary
+        default: true
+        type: fields
+        fields:
+          - source: game_id
+            destination: game_id
+            operator: equal
+  nba.public.other_stats:
+    relationship: one_to_one
+    joins:
+      - name: game_id_other_stats
+        default: true
+        type: fields
+        fields:
+          - source: game_id
+            destination: game_id
+            operator: equal
+
+examples:
+  - type: SQL
+    name: playoffs_games_by_date
+    description: Returns all Playoffs game ids ordered by game date asc
+    input: List all the Playoffs games by the game date
+    expected_output: |
+      SELECT 
+        game_id, 
+        season_type, 
+        game_date
+      FROM entity('game')
+      WHERE season_type = 'Playoffs'
+      ORDER BY game_date;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: games_count_by_season_type
+    description: Returns the count of games by season type
+    input: How many games were played in each season type?
+    expected_output: |
+      SELECT 
+        season_type, 
+        metric(count_games) as game_count
+      FROM entity('game')
+      GROUP BY season_type
+      ORDER BY game_count DESC;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: games_by_season_2022_23
+    description: Count of games played in the 2023-24 season by season type
+    input: How many games were played in the 2022-23 season?
+    expected_output: |
+      SELECT 
+        season_type, 
+        metric(count_games) as game_count
+      FROM entity('game')
+      WHERE season_id = 22022
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: monthly_game_count_2023
+    description: Monthly game count for games after 2023
+    input: How many games were played per month in 2023?
+    expected_output: |
+      SELECT 
+        DATE_TRUNC('month', game_date) as month,
+        metric(count_games) as games_played
+      FROM entity('game')
+      WHERE game_date >= '2023-01-01'
+      GROUP BY month
+      ORDER BY month;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: total_points_by_season_type
+    description: Total points scored across all games by season type
+    input: What's the total points scored across all games by season type?
+    expected_output: |
+      SELECT 
+        season_type, 
+        metric(total_game_points_scored) as total_points,
+        metric(count_games) as games_played,
+        metric(avg_game_points_scored) as avg_points_per_game
+      FROM entity('game')
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: avg_points_per_game_by_season
+    description: Average points scored per game by season in regular season
+    input: What's the average points scored per game by season?
+    expected_output: |
+      SELECT 
+        season_id,
+        metric(avg_game_points_scored) as avg_points_per_game,
+        metric(count_games) as games_played
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+      GROUP BY season_id
+      ORDER BY season_id DESC;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: total_officials_assigned
+    description: Total number of officials assigned across all games
+    input: What is the total number of officials assigned across all games?
+    expected_output: |
+      SELECT 
+        metric(count_games) as total_games,
+        metric(count_assignments) as total_official_assignments,
+        metric(avg_officials_assigned) as avg_officials_per_game
+      FROM entity('game');
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: avg_officials_per_game
+    description: Average number of officials assigned per game by season
+    input: What is the average number of officials per game?
+    expected_output: |
+      SELECT 
+        season_id,
+        metric(avg_officials_assigned) as avg_officials_per_game
+      FROM entity('game')
+      GROUP BY season_id
+      ORDER BY season_id;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: avg_total_points_current_season
+    description: Average total points per game by season type for 2023
+    input: What's the average total points per game this season?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(avg_total_points) as avg_points_per_game
+      FROM entity('game')
+      WHERE season_id like '%2022%'
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: highest_scoring_teams
+    description: Teams involved in highest scoring games on average
+    input: Which teams are involved in the highest scoring games?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(avg_total_points) as avg_game_points
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+      GROUP BY team_name_home
+      ORDER BY avg_game_points DESC;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: playoff_points_total
+    description: Total points scored in the playoffs vs regular season for 2023
+    input: What's the total points scored in the playoffs?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(sum_total_points) as total_points
+      FROM entity('game')
+      WHERE season_id  like '%2022%'
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: top_fourth_quarter_scorers_home
+    description: Teams that score the most in the 4th quarter on average at home
+    input: Which teams score the most in the 4th quarter on average at home?
+    expected_output: |
+      SELECT 
+        team_name_home as team_name,
+        metric(avg_q4_scoring_home) as avg_fourth_quarter_points
+      FROM entity('game')
+      GROUP BY team_name_home
+      ORDER BY avg_fourth_quarter_points DESC NULLS LAST;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: top_fourth_quarter_scorers_away
+    description: Teams that score the most in the 4th quarter on average away
+    input: Which teams score the most in the 4th quarter on average away?
+    expected_output: |
+      SELECT 
+        team_name_away as team_name,
+        metric(avg_q4_scoring_away) as avg_fourth_quarter_points
+      FROM entity('game')
+      GROUP BY team_name_away
+      ORDER BY avg_fourth_quarter_points DESC;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: home_court_advantage_by_team
+    description: Average home court advantage in points by team
+    input: What's the average home court advantage in points?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(avg_point_differential) as avg_margin
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+      GROUP BY team_name_home
+      ORDER BY avg_margin DESC;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: point_differential_by_season_type
+    description: Point differential analysis by season type
+    input: How do point differentials vary by season type?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(avg_point_differential) as avg_differential
+      FROM entity('game')
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: avg_shooting_pct_current_season
+    description: Average shooting percentage by season type for 2023
+    input: What's the average shooting percentage this season?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(avg_field_goal_percentage) as avg_fg_pct
+      FROM entity('game')
+      WHERE season_id = 2023
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: three_point_shooting_evolution
+    description: Three-point shooting evolution over seasons
+    input: How has three-point shooting evolved over seasons?
+    expected_output: |
+      SELECT 
+        season_id,
+        metric(avg_three_point_percentage) as avg_3pt_pct
+      FROM entity('game')
+      GROUP BY season_id
+      ORDER BY season_id;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: avg_game_pace_current_season
+    description: Average pace of games by season type for 2023
+    input: What's the average pace of games this season?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(avg_possessions) as avg_possessions_per_game
+      FROM entity('game')
+      WHERE season_id = 2023
+      GROUP BY season_type;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: avg_rebounds_per_game
+    description: Average rebounding per game by season type
+    input: What's the average rebounding per game?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(avg_total_rebounds) as avg_rebounds
+      FROM entity('game')
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: most_assist_heavy_teams
+    description: Teams involved in the most assist-heavy games
+    input: Which teams are involved in the most assist-heavy games?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(avg_total_assists) as avg_assists
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+      GROUP BY team_name_home
+      ORDER BY avg_assists DESC;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: home_court_advantage_pct
+    description: Home court advantage percentage by season type
+    input: What's the home court advantage percentage?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(home_win_percentage) as home_win_pct
+      FROM entity('game')
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: best_home_record_teams
+    description: Teams with the best home record in regular season
+    input: Which teams have the best home record?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(home_win_percentage) as home_win_pct
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+      GROUP BY team_name_home
+      ORDER BY home_win_pct DESC;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: avg_game_duration
+    description: Average game duration by season type
+    input: What's the average game duration?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(avg_game_minutes) as avg_minutes
+      FROM entity('game')
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: away_wins_by_team
+    description: Away wins by team
+    input: How many away games has each team won?
+    expected_output: |
+      SELECT 
+        team_name_away,
+        metric(total_away_wins) as away_wins
+      FROM entity('game')
+      GROUP BY team_name_away;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: away_losses_by_team
+    description: Away losses by team
+    input: How many away games has each team lost?
+    expected_output: |
+      SELECT 
+        team_name_away,
+        metric(total_away_losses) as away_losses
+      FROM entity('game')
+      GROUP BY team_name_away;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: home_wins_by_team_season
+    description: Home wins per team per season in regular season
+    input: How many wins did each team have in 2023?
+    expected_output: |
+      SELECT 
+        season_id,
+        team_name_home,
+        metric(total_home_wins) as wins
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+      GROUP BY season_id, team_name_home;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: home_losses_by_team_season
+    description: Home losses per team per season in regular season
+    input: How many losses did each team have in 2023?
+    expected_output: |
+      SELECT 
+        season_id,
+        team_name_home,
+        metric(total_home_losses) as losses
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+      GROUP BY season_id, team_name_home;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: away_win_pct_by_team
+    description: Away game win percentage by team
+    input: What's each team's away win percentage?
+    expected_output: |
+      SELECT 
+        team_name_away,
+        metric(away_win_percentage) as away_win_pct
+      FROM entity('game')
+      GROUP BY team_name_away;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: home_court_advantage_analysis
+    description: Home court advantage analysis by team
+    input: Which teams have the biggest home court advantage?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(home_court_advantage) as advantage
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: attendance_trends
+    description: Attendance trends by season and game type
+    input: What are the attendance trends by season and game type?
+    expected_output: |
+      SELECT 
+        season_id,
+        season_type,
+        metric(avg_attendance) as avg_attendance,
+        metric(max_attendance) as max_attendance,
+        metric(count_games) as games_with_attendance
+      FROM entity('game')
+      WHERE attendance IS NOT NULL
+      GROUP BY season_id, season_type
+      ORDER BY season_id DESC, avg_attendance DESC;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: highest_attendance_by_season
+    description: Highest attendance for games by season
+    input: What was the highest attendance for games?
+    expected_output: |
+      SELECT 
+        season_id,
+        metric(max_attendance) as highest_attendance
+      FROM entity('game')
+      GROUP BY season_id;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: avg_margin_of_victory
+    description: Average margin of victory by season type
+    input: What's the average margin of victory in games?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(avg_margin_of_victory) as avg_margin
+      FROM entity('game')
+      GROUP BY season_type;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: best_close_game_record
+    description: Teams with the best record in games decided by 5 points or less
+    input: Which teams have the best record in games decided by 5 points or less?
+    expected_output: |
+      SELECT 
+        team_name_home as team_name,
+        metric(close_game_wins_home) as close_wins,
+        metric(close_game_losses_home) as close_losses,
+        metric(total_close_games_home) as total_close_games
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+        AND pts_home IS NOT NULL 
+        AND pts_away IS NOT NULL
+      GROUP BY team_name_home
+      HAVING total_close_games > 10
+      ORDER BY close_wins DESC;
+    tags:
+      difficulty: HARD
+
+  - type: SQL
+    name: close_game_losses_by_team
+    description: Close game losses by team
+    input: How many close games has each team lost?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(close_game_losses_home) as close_losses
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: total_close_games_by_team
+    description: Total close games played by team
+    input: How many close games has each team played?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(total_close_games_home) as close_games
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: team_efficiency_metrics
+    description: Advanced team efficiency metrics with net rating
+    input: Which teams have the most efficient offensive and defensive ratings?
+    expected_output: |
+      SELECT 
+        team_name_home as team_name,
+        season_id,
+        metric(avg_offensive_rating) as avg_offensive_rating,
+        metric(avg_defensive_rating) as avg_defensive_rating,
+        metric(net_rating) as net_rating,
+        metric(count_games) as games_played,
+        metric(avg_game_points_scored) as avg_total_points_per_game
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+        AND pts_home IS NOT NULL 
+        AND pts_away IS NOT NULL
+      GROUP BY team_name_home, season_id
+      ORDER BY net_rating DESC;
+    tags:
+      difficulty: HARD
+
+  - type: SQL
+    name: defensive_ratings_by_team
+    description: Defensive ratings by team
+    input: Which teams have the best defensive ratings?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(avg_defensive_rating) as defensive_rating
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: net_rating_by_team
+    description: Net rating analysis by team
+    input: Which teams have the best net ratings?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(net_rating) as net_rating
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: MEDIUM
+
+  - type: SQL
+    name: playoff_vs_regular_season_performance
+    description: Team performance in playoff games vs regular season
+    input: Which teams perform best in playoff games vs regular season?
+    expected_output: |
+      SELECT 
+        team_name_home as team_name,
+        metric(regular_season_wins) as regular_season_wins,
+        metric(regular_season_games) as regular_season_games,
+        metric(playoff_wins) as playoff_wins,
+        metric(playoff_games) as playoff_games
+      FROM entity('game')
+      GROUP BY team_name_home
+      HAVING regular_season_games > 50 AND playoff_games > 5
+      ORDER BY playoff_wins DESC;
+    tags:
+      difficulty: HARD
+
+  - type: SQL
+    name: regular_season_games_by_team
+    description: Regular season games played by team
+    input: How many regular season games has each team played?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(regular_season_games) as games
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: playoff_wins_by_team
+    description: Playoff wins by team
+    input: How many playoff wins does each team have?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(playoff_wins) as playoff_wins
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: playoff_games_by_team
+    description: Playoff games played by team
+    input: How many playoff games has each team played?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(playoff_games) as games
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: most_recent_game_by_team
+    description: Most recent game date by team
+    input: When did each team last play?
+    expected_output: |
+      SELECT 
+        team_name_home,
+        metric(last_game_date) as last_game
+      FROM entity('game')
+      GROUP BY team_name_home;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: game_details_by_id
+    description: Game details for specific game ID
+    input: What are the game details for game ID 0022301234?
+    expected_output: |
+      SELECT 
+        game_id,
+        game_date,
+        season_type,
+        team_name_home,
+        team_name_away,
+        pts_home,
+        pts_away
+      FROM entity('game')
+      WHERE game_id = 0022301234;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: all_star_games_count
+    description: All-Star games count
+    input: How many All-Star games are in the dataset?
+    expected_output: |
+      SELECT 
+        metric(count_games) as all_star_games
+      FROM entity('game')
+      WHERE season_type = 'All-Star';
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: regular_season_vs_playoffs_count
+    description: Regular season vs playoffs game count comparison
+    input: Which games occurred during the regular season vs playoffs?
+    expected_output: |
+      SELECT 
+        season_type,
+        metric(count_games) as game_count
+      FROM entity('game')
+      WHERE season_type IN ('Regular Season', 'Playoffs')
+      GROUP BY season_type
+      ORDER BY game_count DESC;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: games_on_specific_date
+    description: Games played on a specific date
+    input: What games were played on a specific date?
+    expected_output: |
+      SELECT 
+        game_id,
+        team_name_home,
+        team_name_away,
+        pts_home,
+        pts_away,
+        season_type
+      FROM entity('game')
+      WHERE game_date = '2023-12-25';
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    name: playoff_games_2023_24
+    description: Games from 2023-24 playoff season
+    input: Which games belong to the 2023-24 playoff season?
+    expected_output: |
+      SELECT 
+        game_id,
+        game_date,
+        team_name_home,
+        team_name_away,
+        pts_home,
+        pts_away
+      FROM entity('game')
+      WHERE season_id = 22023 AND season_type = 'Playoffs'
+      ORDER BY game_date;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    description: Games with most dunks
+    input: Which games had the most dunks?
+    expected_output: |
+      SELECT 
+        game_id,
+        game_date,
+        team_name_home,
+        team_name_away,
+        total_dunks_in_game,
+        players_with_dunks_in_game,
+        max_dunks_by_single_player
+      FROM entity('game')
+      WHERE total_dunks_in_game > 0
+      ORDER BY total_dunks_in_game DESC
+      LIMIT 10;
+    tags:
+      difficulty: EASY
+
+  - type: SQL
+    description: Dunk trends by season
+    input: What are the dunk trends by season?
+    expected_output: |
+      SELECT 
+        season_year,
+        metric(avg_dunks) as avg_dunks,
+        metric(avg_players_with_dunks_per_game) as avg_players_with_dunks,
+        metric(high_dunk_games_percentage) as high_dunk_games_pct,
+        metric(count_games) as total_games
+      FROM entity('game')
+      WHERE season_type = 'Regular Season'
+      GROUP BY season_year
+      ORDER BY season_year DESC;
+    tags:
+      difficulty: MEDIUM

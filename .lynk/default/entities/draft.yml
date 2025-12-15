@@ -1,0 +1,766 @@
+name: draft
+
+description: Fact table containing draft combine statistics and draft history data, representing physical measurements, athletic testing results, and draft information for players
+
+key_table: nba.public.draft_combine_stats
+
+keys:
+- player_id
+- season
+
+features:
+
+# Identification Fields
+- type: field
+  name: season
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: NBA season identifier (numeric format)
+  field: season
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: player_id
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Unique identifier for the player
+  field: player_id
+  join_name: null
+  time_field: null
+  filters: []
+
+# Player Name Fields (from asset table)
+- type: field
+  name: first_name
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Player's first name
+  field: first_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: last_name
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Player's last name
+  field: last_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: player_name
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Player's complete full name
+  field: player_name
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: position
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Player's position
+  field: position
+  join_name: null
+  time_field: null
+  filters: []
+
+# Height Measurement Fields
+- type: field
+  name: height_wo_shoes
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Player height without shoes (in inches)
+  field: height_wo_shoes
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: height_wo_shoes_ft_in
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Player height without shoes (feet and inches format, e.g., "6-8")
+  field: height_wo_shoes_ft_in
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: height_w_shoes
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Player height with shoes (in inches)
+  field: height_w_shoes
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: height_w_shoes_ft_in
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Player height with shoes (feet and inches format, e.g., "6-8.5")
+  field: height_w_shoes_ft_in
+  join_name: null
+  time_field: null
+  filters: []
+
+# Weight Field
+- type: field
+  name: weight
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Player weight (in pounds)
+  field: weight
+  join_name: null
+  time_field: null
+  filters: []
+
+# Wingspan Fields
+- type: field
+  name: wingspan
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Player wingspan measurement (in inches)
+  field: wingspan
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: wingspan_ft_in
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Player wingspan (feet and inches format, e.g., "7-0")
+  field: wingspan_ft_in
+  join_name: null
+  time_field: null
+  filters: []
+
+# Standing Reach Fields
+- type: field
+  name: standing_reach
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Player standing reach measurement (in inches)
+  field: standing_reach
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: standing_reach_ft_in
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Player standing reach (feet and inches format)
+  field: standing_reach_ft_in
+  join_name: null
+  time_field: null
+  filters: []
+
+# Body Composition Fields
+- type: field
+  name: body_fat_pct
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Body fat percentage
+  field: body_fat_pct
+  join_name: null
+  time_field: null
+  filters: []
+
+# Hand Measurement Fields
+- type: field
+  name: hand_length
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Hand length measurement (in inches)
+  field: hand_length
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: hand_width
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Hand width measurement (in inches)
+  field: hand_width
+  join_name: null
+  time_field: null
+  filters: []
+
+# Vertical Leap Fields
+- type: field
+  name: standing_vertical_leap
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Standing vertical leap measurement (in inches)
+  field: standing_vertical_leap
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: max_vertical_leap
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Maximum vertical leap measurement (in inches)
+  field: max_vertical_leap
+  join_name: null
+  time_field: null
+  filters: []
+
+# Agility and Speed Fields
+- type: field
+  name: lane_agility_time
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Lane agility time (in seconds)
+  field: lane_agility_time
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: modified_lane_agility_time
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Modified lane agility time (in seconds)
+  field: modified_lane_agility_time
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: three_quarter_sprint
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Three-quarter court sprint time (in seconds)
+  field: three_quarter_sprint
+  join_name: null
+  time_field: null
+  filters: []
+
+# Strength Field
+- type: field
+  name: bench_press
+  data_type: number
+  source: nba.public.draft_combine_stats
+  description: Bench press repetitions at 185 pounds
+  field: bench_press
+  join_name: null
+  time_field: null
+  filters: []
+
+# Shooting Spot Fields - 15 Feet
+- type: field
+  name: spot_fifteen_corner_left
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from 15-foot corner left spot
+  field: spot_fifteen_corner_left
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_fifteen_break_left
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from 15-foot break left spot
+  field: spot_fifteen_break_left
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_fifteen_top_key
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from 15-foot top key spot
+  field: spot_fifteen_top_key
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_fifteen_break_right
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from 15-foot break right spot
+  field: spot_fifteen_break_right
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_fifteen_corner_right
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from 15-foot corner right spot
+  field: spot_fifteen_corner_right
+  join_name: null
+  time_field: null
+  filters: []
+
+# Shooting Spot Fields - College Distance
+- type: field
+  name: spot_college_corner_left
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from college distance corner left spot
+  field: spot_college_corner_left
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_college_break_left
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from college distance break left spot
+  field: spot_college_break_left
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_college_top_key
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from college distance top key spot
+  field: spot_college_top_key
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_college_break_right
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from college distance break right spot
+  field: spot_college_break_right
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_college_corner_right
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from college distance corner right spot
+  field: spot_college_corner_right
+  join_name: null
+  time_field: null
+  filters: []
+
+# Shooting Spot Fields - NBA Distance
+- type: field
+  name: spot_nba_corner_left
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from NBA distance corner left spot
+  field: spot_nba_corner_left
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_nba_break_left
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from NBA distance break left spot
+  field: spot_nba_break_left
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_nba_top_key
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from NBA distance top key spot
+  field: spot_nba_top_key
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_nba_break_right
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from NBA distance break right spot
+  field: spot_nba_break_right
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: spot_nba_corner_right
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Shooting percentage from NBA distance corner right spot
+  field: spot_nba_corner_right
+  join_name: null
+  time_field: null
+  filters: []
+
+# Off-Dribble Shooting Fields - 15 Feet
+- type: field
+  name: off_drib_fifteen_break_left
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Off-dribble shooting percentage from 15-foot break left spot
+  field: off_drib_fifteen_break_left
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: off_drib_fifteen_top_key
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Off-dribble shooting percentage from 15-foot top key spot
+  field: off_drib_fifteen_top_key
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: off_drib_fifteen_break_right
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Off-dribble shooting percentage from 15-foot break right spot
+  field: off_drib_fifteen_break_right
+  join_name: null
+  time_field: null
+  filters: []
+
+# Off-Dribble Shooting Fields - College Distance
+- type: field
+  name: off_drib_college_break_left
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Off-dribble shooting percentage from college distance break left spot
+  field: off_drib_college_break_left
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: off_drib_college_top_key
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Off-dribble shooting percentage from college distance top key spot
+  field: off_drib_college_top_key
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: off_drib_college_break_right
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: Off-dribble shooting percentage from college distance break right spot
+  field: off_drib_college_break_right
+  join_name: null
+  time_field: null
+  filters: []
+
+# On-Move Shooting Fields
+- type: field
+  name: on_move_fifteen
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: On-move shooting percentage from 15-foot distance
+  field: on_move_fifteen
+  join_name: null
+  time_field: null
+  filters: []
+
+- type: field
+  name: on_move_college
+  data_type: string
+  source: nba.public.draft_combine_stats
+  description: On-move shooting percentage from college distance
+  field: on_move_college
+  join_name: null
+  time_field: null
+  filters: []
+
+# Draft History Fields (from draft_history asset)
+- type: field
+  name: draft_position
+  description: Player's overall draft pick position
+  data_type: number
+  source: nba.public.draft_history
+  field: overall_pick
+  join_name: draft_to_draft_history
+  time_field: null
+  filters: []
+
+- type: field
+  name: draft_year
+  description: Year the player was drafted
+  data_type: number
+  source: nba.public.draft_history
+  field: season
+  join_name: draft_to_draft_history
+  time_field: null
+  filters: []
+
+- type: field
+  name: draft_round
+  description: Round in which the player was drafted
+  data_type: number
+  source: nba.public.draft_history
+  field: round_number
+  join_name: draft_to_draft_history
+  time_field: null
+  filters: []
+
+- type: field
+  name: drafting_team_id
+  description: Team ID that originally drafted the player
+  data_type: number
+  source: nba.public.draft_history
+  field: team_id
+  join_name: draft_to_draft_history
+  time_field: null
+  filters: []
+
+- type: field
+  name: organization_type
+  description: Pre-NBA organization type (raw field)
+  data_type: string
+  source: nba.public.draft_history
+  field: organization_type
+  join_name: draft_to_draft_history
+  time_field: null
+  filters: []
+
+- type: field
+  name: pre_nba_organization
+  description: Organization type before NBA (College/University, High School, Other Team/Club)
+  data_type: string
+  source: nba.public.draft_history
+  field: organization_type_clean
+  join_name: draft_to_draft_history
+  time_field: null
+  filters: []
+
+# Draft History Formula Fields
+- type: formula
+  name: draft_season_year
+  data_type: datetime
+  description: Draft year as a date format
+  sql: 'TO_DATE(CAST({draft_year} AS VARCHAR), ''YYYY'')'
+
+- type: formula
+  name: is_first_round
+  data_type: boolean
+  description: Whether the pick was in the first round (round 1)
+  sql: 'case when coalesce({draft_round},0)=1 then true else false end'
+
+- type: formula
+  name: is_lottery_pick
+  data_type: boolean
+  description: Whether the pick was a lottery pick (picks 1-14)
+  sql: 'case when coalesce({draft_position},0) between 1 and 14 then true else false end'
+
+metrics:
+
+# asset asset Metrics
+- name: avg_height_no_shoes
+  description: |
+    Average height without shoes.
+    - "Calculates average height without shoes across records."
+    - "Useful for analyzing physical attribute trends."
+  sql: 'AVG({height_wo_shoes})'
+
+- name: avg_wingspan
+  description: |
+    Average wingspan measurement.
+    - "Calculates average wingspan across records."
+    - "Useful for analyzing physical attribute trends."
+  sql: 'AVG({wingspan})'
+
+- name: avg_vertical_leap
+  description: |
+    Average maximum vertical leap.
+    - "Calculates average maximum vertical leap across records."
+    - "Useful for analyzing athletic performance trends."
+  sql: 'AVG({max_vertical_leap})'
+
+- name: avg_standing_reach
+  description: |
+    Average standing reach measurement.
+    - "Calculates average standing reach across records."
+    - "Useful for analyzing physical attribute trends."
+  sql: 'AVG({standing_reach})'
+
+- name: avg_body_fat
+  description: |
+    Average body fat percentage.
+    - "Calculates average body fat percentage across records."
+    - "Useful for analyzing physical composition trends."
+  sql: 'AVG({body_fat_pct})'
+
+# Counting Metrics
+- name: count_drafts
+  description: |
+    Count of draft records (player-season combinations).
+    - "Use for analyzing draft data coverage and activity."
+    - "Filter by season to analyze combine participation by year."
+    - "Filter by player_id to analyze individual player combine history."
+  sql: 'COUNT(*)'
+
+# Player Analysis Metrics
+- name: distinct_players
+  description: |
+    Count of distinct players with combine data.
+    - "Counts unique players in the dataset."
+    - "Useful for analyzing combine participation."
+  sql: 'COUNT(DISTINCT {player_id})'
+
+# Season Analysis Metrics
+- name: distinct_seasons
+  description: |
+    Count of distinct seasons with combine data.
+     - "Counts unique seasons in the dataset."
+     - "Useful for analyzing temporal coverage."
+  sql: 'COUNT(DISTINCT {season})'
+
+- name: avg_draft_position
+  description: |
+    Average overall draft pick position.
+    - "Calculates average draft position across records."
+    - "Useful for analyzing draft quality trends."
+  sql: 'AVG({draft_position})'
+
+- name: first_round_picks
+  description: |
+    Count of first round picks.
+    - "Counts picks in the first round (round 1)."
+    - "Useful for analyzing first round participation."
+  sql: 'SUM(CASE WHEN {is_first_round} THEN 1 ELSE 0 END)'
+
+- name: lottery_picks_count
+  description: |
+    Count of lottery picks (1-14).
+    - "Counts picks in lottery range (picks 1-14)."
+    - "Useful for analyzing lottery pick participation."
+  sql: 'SUM(CASE WHEN {is_lottery_pick} THEN 1 ELSE 0 END)'
+
+- name: first_round_percentage
+  description: |
+    Percentage of picks that were first round.
+    - "Calculates percentage of first round picks."
+    - "Useful for analyzing draft round distribution."
+  sql: 'AVG(CASE WHEN {is_first_round} THEN 1.0 ELSE 0.0 END)'
+
+- name: lottery_percentage
+  description: |
+    Percentage of picks that were lottery picks.
+    - "Calculates percentage of lottery picks."
+    - "Useful for analyzing lottery participation rates."
+  sql: 'AVG(CASE WHEN {is_lottery_pick} THEN 1.0 ELSE 0.0 END)'
+
+- name: earliest_pick
+  description: |
+    Highest (earliest) overall pick number.
+    - "Finds the earliest (best) draft pick."
+    - "Useful for identifying top draft selections."
+  sql: 'MIN({draft_position})'
+
+- name: latest_pick
+  description: |
+    Lowest (latest) overall pick number.
+    - "Finds the latest (worst) draft pick."
+    - "Useful for identifying late draft selections."
+  sql: 'MAX({draft_position})'
+
+- name: international_players
+  description: |
+    Count of international players (non-College/University organization type).
+    - "Counts players from non-college backgrounds."
+    - "Useful for analyzing international draft participation."
+  sql: 'SUM(CASE WHEN UPPER({organization_type}) <> ''COLLEGE/UNIVERSITY'' THEN 1 ELSE 0 END)'
+
+examples:
+- type: SQL
+  description: Player combine stats for a specific season
+  input: What are the combine statistics for players in the 2023 season?
+  expected_output: |
+    SELECT 
+      player_name,
+      season,
+      height_wo_shoes,
+      wingspan,
+      max_vertical_leap,
+      standing_reach,
+      body_fat_pct
+    FROM entity('draft')
+    WHERE season = 2023
+    ORDER BY player_name;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Player combine history
+  input: Show me the combine statistics for a specific player across all seasons
+  expected_output: |
+    SELECT 
+      player_name,
+      season,
+      height_wo_shoes,
+      wingspan,
+      max_vertical_leap,
+      standing_reach,
+      body_fat_pct
+    FROM entity('draft')
+    WHERE player_id = [player_id]
+    ORDER BY season DESC;
+  tags:
+    difficulty: EASY
+
+- type: SQL
+  description: Average physical attributes by season
+  input: What are the average combine measurements by season?
+  expected_output: |
+    SELECT 
+      season,
+      metric(avg_height_no_shoes) as avg_height,
+      metric(avg_wingspan) as avg_wingspan,
+      metric(avg_vertical_leap) as avg_vertical,
+      metric(count_drafts) as player_count
+    FROM entity('draft')
+    GROUP BY season
+    ORDER BY season DESC;
+  tags:
+    difficulty: MEDIUM
+
+related_sources: 
+  nba.public.draft_history:    
+    description:  NBA Draft history records showing draft selections, pick numbers, and team selections.
+    relationship: one_to_one    
+    joins:    
+    - name: draft_to_draft_history      
+      default: true      
+      type: fields      
+      fields:      
+      - source: player_id        
+        destination: person_id        
+        operator: equal  
+      - source: season        
+        destination: season        
+        operator: equal  

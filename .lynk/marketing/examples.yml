@@ -1,0 +1,13 @@
+examples:
+- type: SQL
+  name: lottery_pick_success
+  description: Find teams with the most lottery picks who went on to become successful
+    players.
+  input: Which teams have the most lottery picks who went on to become an All-Star?
+  expected_output: "SELECT \n  full_name as team_name,\n  lottery_picks_count,\n \
+    \ first_round_picks_count,\n  total_draft_picks,\n  avg_team_draft_position,\n\
+    \  draft_picks_retained,\n  team_player_loyalty_score,\n  players_returning_to_team\n\
+    FROM entity(team)\nWHERE lottery_picks_count >= 10\n  AND draft_picks_retained\
+    \ >= 5\nORDER BY lottery_picks_count DESC, draft_picks_retained DESC;\n"
+  tags:
+    difficulty: HARD
