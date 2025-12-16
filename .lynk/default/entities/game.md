@@ -7,7 +7,7 @@ The `game` entity represents individual NBA basketball games with their detailed
 
 ## Text-to-SQL Guidelines
 
-When generating SQL code, you myst take into account the following guidelines:
+When generating SQL code, you **MUST** take into account the following guidelines:
 
 - **Season Type Filtering:** Unless specified explicitly, always add the filter `season_type NOT IN ('Pre Season', 'All-Star')`.
 
