@@ -5,21 +5,15 @@
 ## Entity Summary
 The `game` entity represents individual NBA basketball games with their detailed metadata, scheduling information, season classification, and game context. This dimension table serves as the central reference point for all game-related analysis, connecting teams, players, statistics, and events to specific games.
 
-## Text-to-SQL Reasoning Guidelines
+## Text-to-SQL Guidelines
 
-- **Central Dimension:** The `game` entity is the central dimension for connecting all basketball statistics and events to specific games. Always use `game_id` for joins and grouping.
+When generating SQL code, you myst take into account the following guidelines:
 
-- **Season Type Filtering:** Unless specified explicitly, always filter out `season_type NOT IN ('Pre Season', 'All-Star')`.
+- **Season Type Filtering:** Unless specified explicitly, always add the filter `season_type NOT IN ('Pre Season', 'All-Star')`.
 
 - **Time-Based Analysis:** Use `game_date` to filter games within specific date ranges or seasons. Use `season_year` for season-level analysis.
 
 - **Display Guidelines:** For visualizations, use `season_year`. Use `game_date` for date-based queries.
-
-- **Game Status:** Use `game_status_text` to identify game status (Final, Live, Scheduled). Use `is_live_game`, `is_final_game`, `is_scheduled_game` for boolean filtering.
-
-- **National TV:** Use `is_nationally_televised` to identify nationally televised games.
-
-- **Game Summary Data:** Additional game information (status, broadcast, live data) comes from `game_summary` asset via `game_id_summary` join.
 
 ## Key Fields
 
