@@ -9,7 +9,7 @@ The `game` entity represents individual NBA basketball games with their detailed
 
 - **Central Dimension:** The `game` entity is the central dimension for connecting all basketball statistics and events to specific games. Always use `game_id` for joins and grouping.
 
-- **Season Type Filtering:** Use `season_type` to filter between Regular Season, Playoffs, All-Star, and Pre Season games. Unless specified explicitly, filter out `season_type NOT IN ('Pre Season', 'All-Star')`.
+- **Season Type Filtering:** Unless specified explicitly, always filter out `season_type NOT IN ('Pre Season', 'All-Star')`.
 
 - **Time-Based Analysis:** Use `game_date` to filter games within specific date ranges or seasons. Use `season_year` for season-level analysis.
 
