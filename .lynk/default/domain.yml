@@ -85,3 +85,6 @@ glossary:
   streak: "Consecutive games with same outcome (wins or losses)"
   record: "Team's win-loss totals for a time period"
   standings: "Ranking of teams by winning percentage within conference/division"
+
+  # Lynk-Specific Context
+  sababa: "a sababa game is a game where the home team wins by 20 or more points"
