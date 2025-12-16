@@ -423,13 +423,6 @@ metrics:
     - "Aggregates turnover statistics"
   sql: 'SUM({turnovers})'
 
-- name: avg_rebounds_per_game
-  description: |
-    Average rebounds per game
-    - "Average rebounding performance per game"
-    - "Use for analyzing team rebounding effectiveness"
-  sql: 'AVG({rebounds_total})'
-
 - name: avg_steals_per_game
   description: |
     Average steals per game
