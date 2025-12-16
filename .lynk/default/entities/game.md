@@ -37,25 +37,32 @@ When generating SQL code, you **MUST** take into account the following guideline
 
 ## Query Examples
 
-**Example 1:** Games by season type
+**Example 1:** 
+user: Games by season type
+ai:
 ```sql
 SELECT season_type, COUNT(*) as game_count
 FROM entity('game')
-WHERE season_type IN ('Regular Season', 'Playoffs')
+WHERE season_type NOT IN ('Pre Season', 'All-Star')
 GROUP BY season_type;
 ```
+---
 
-**Example 2:** Live games
+**Example 2:** Live games for pre season games
 ```sql
 SELECT game_id, game_date, home_team_id, visitor_team_id, game_status_text
 FROM entity('game')
 WHERE is_live_game = TRUE;
+    and season_type NOT IN ('Pre Season')
+    
 ```
+---
 
 **Example 3:** Nationally televised games
 ```sql
 SELECT game_id, game_date, season_type, natl_tv_broadcaster
 FROM entity('game')
 WHERE is_nationally_televised = TRUE
+    and season_type NOT IN ('Pre Season', 'All-Star')
 ORDER BY game_date DESC;
 ```
