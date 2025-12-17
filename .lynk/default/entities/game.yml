@@ -1363,7 +1363,7 @@ metrics:
     description: |
       Count of games played
       - "Use for analyzing game volume and scheduling patterns."
-      - "Filter by season_type to compare Regular Season vs Playoffs."
+      - "Unless specified otherwise, always add the filter : season_type NOT IN ('Pre Season', 'All-Star')."
     sql: 'COUNT(*)'
 
   - name: total_game_points_scored
