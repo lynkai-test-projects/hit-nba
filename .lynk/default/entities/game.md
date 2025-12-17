@@ -48,17 +48,20 @@ GROUP BY season_type;
 ```
 ---
 
-**Example 2:** Live games for pre season games
+**Example 2:** 
+user: Live games for pre season games
+ai:
 ```sql
 SELECT game_id, game_date, home_team_id, visitor_team_id, game_status_text
 FROM entity('game')
 WHERE is_live_game = TRUE;
     and season_type NOT IN ('Pre Season')
-    
 ```
 ---
 
-**Example 3:** Nationally televised games
+**Example 3:** 
+user: Nationally televised games
+ai:
 ```sql
 SELECT game_id, game_date, season_type, natl_tv_broadcaster
 FROM entity('game')
